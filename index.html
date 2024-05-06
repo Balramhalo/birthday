@@ -10,12 +10,48 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            background-color: #f8f8f8;
+            color: #333;
         }
         header, section, footer {
             padding: 20px;
         }
-        .intro, .skills, .projects {
+        header {
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            position: relative;
+        }
+        nav {
+            text-align: center;
+            margin-top: 20px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            position: relative;
+        }
+        nav a::before {
+            content: "🔗";
+            margin-right: 5px;
+        }
+        nav a:hover {
+            color: #ffcd01;
+        }
+        section {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
             margin-bottom: 30px;
+            transition: background-color 0.3s ease;
+        }
+        section:hover {
+            background-color: #f5f5f5;
+        }
+        .intro h2, .skills h2, .projects h2 {
+            color: #007bff;
         }
         .box {
             border: 1px solid #ccc;
@@ -25,6 +61,13 @@
             display: inline-block;
             border-radius: 5px;
             background-color: #f5f5f5;
+            margin-bottom: 10px;
+        }
+        footer {
+            text-align: center;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
         }
     </style>
 </head>
@@ -32,9 +75,11 @@
     <header>
         <h1>Nikkita Developer</h1>
         <nav>
-            <a href="#intro">Introduction</a> |
-            <a href="#skills">Skills</a> |
-            <a href="#projects">Projects</a>
+            <a href="#intro">🔗 Introduction</a>
+            <a href="#skills">🔗 Skills</a>
+            <a href="#projects">🔗 Projects</a>
+            <a href="https://twitter.com" target="_blank">Twitter</a>
+            <a href="https://discord.com" target="_blank">Discord</a>
         </nav>
     </header>
 
@@ -42,9 +87,6 @@
         <h2>Introduction</h2>
         <p>
             I'm Nikkita, a Python developer and Discord bot developer based in India. I have coding experience of 2 years and am proficient in English, Hindi, and Japanese languages. I've worked on various projects including Clone Bot and Warden, and I'm passionate about future projects, especially in the realm of <strong>G.P.D</strong>. Currently, I'm eager to learn GO and JavaScript to expand my skill set.
-        </p>
-        <p>
-            You can find me on <a href="https://twitter.com" target="_blank">Twitter</a> and <a href="https://discord.com" target="_blank">Discord</a>.
         </p>
     </section>
 
