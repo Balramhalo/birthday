@@ -81,11 +81,12 @@
             background-color: #007bff;
             color: #fff;
         }
-        /* Three dots menu */
+        /* Dropdown menu */
         .dropdown {
             position: absolute;
             top: 20px;
-            right: 60px;
+            right: 100px;
+            cursor: pointer;
         }
         .dropdown-content {
             display: none;
@@ -95,7 +96,6 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             z-index: 1;
             border-radius: 5px;
-            cursor: pointer;
         }
         .dropdown-content a {
             padding: 10px;
@@ -111,9 +111,8 @@
 <body>
     <header>
         <h1>Nikkita Developer</h1>
-        <button id="color-button">Change Color</button>
-        <div class="dropdown">
-            <span onclick="toggleDropdown()" class="dropbtn">...</span>
+        <div class="dropdown" onclick="toggleDropdown()">
+            <span>...</span>
             <div id="myDropdown" class="dropdown-content">
                 <a href="#intro">Introduction</a>
                 <a href="#skills">Skills</a>
@@ -124,6 +123,7 @@
             <a href="https://twitter.com" target="_blank">Twitter</a>
             <a href="https://discord.com" target="_blank">Discord</a>
         </nav>
+        <button id="color-button">Change Color</button>
     </header>
 
     <section id="intro">
@@ -167,13 +167,13 @@
             document.body.style.backgroundColor = colors[colorIndex]; // Change body background color
         }
 
-        // Add click event listener to color button
-        colorButton.addEventListener('click', changeColors);
-
         // Toggle dropdown menu
         function toggleDropdown() {
             dropdownContent.style.display === 'none' ? dropdownContent.style.display = 'block' : dropdownContent.style.display = 'none';
         }
+
+        // Add click event listener to color button
+        colorButton.addEventListener('click', changeColors);
     </script>
 </body>
 </html>
