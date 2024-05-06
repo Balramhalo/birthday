@@ -13,23 +13,23 @@
             background-color: #f8f8f8;
             color: #333;
         }
-        header, section, footer {
-            padding: 20px;
-        }
         header {
             background-color: #007bff;
             color: #fff;
             text-align: center;
+            padding: 20px;
             position: relative;
         }
         nav {
-            text-align: center;
-            margin-top: 20px;
+            text-align: right;
+            position: absolute;
+            top: 20px;
+            right: 20px;
         }
         nav a {
             color: #fff;
             text-decoration: none;
-            margin: 0 10px;
+            margin-left: 10px;
             position: relative;
         }
         nav a::before {
@@ -44,7 +44,7 @@
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            margin-bottom: 30px;
+            margin: 20px;
             transition: background-color 0.3s ease;
         }
         section:hover {
@@ -69,15 +69,27 @@
             color: #fff;
             padding: 10px;
         }
+        #color-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>Nikkita Developer</h1>
+        <button id="color-button">Change Color</button>
         <nav>
-            <a href="#intro">🔗 Introduction</a>
-            <a href="#skills">🔗 Skills</a>
-            <a href="#projects">🔗 Projects</a>
+            <a href="#intro">Introduction</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
             <a href="https://twitter.com" target="_blank">Twitter</a>
             <a href="https://discord.com" target="_blank">Discord</a>
         </nav>
@@ -106,5 +118,25 @@
     <footer>
         <p>&copy; 2024 Nikkita Developer</p>
     </footer>
+
+    <script>
+        const colorButton = document.getElementById('color-button');
+        const sections = document.querySelectorAll('section');
+
+        let colorIndex = 0;
+        const colors = ['#007bff', '#28a745', '#dc3545', '#ffc107']; // Array of colors
+
+        // Function to change section background colors
+        function changeColors() {
+            colorIndex = (colorIndex + 1) % colors.length;
+            sections.forEach(section => {
+                section.style.backgroundColor = colors[colorIndex];
+            });
+            document.body.style.backgroundColor = colors[colorIndex]; // Change body background color
+        }
+
+        // Add click event listener to color button
+        colorButton.addEventListener('click', changeColors);
+    </script>
 </body>
 </html>
