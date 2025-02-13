@@ -3,177 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nikkita Developer - Portfolio</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background-color: #f8f8f8;
-            color: #333;
-            transition: background-color 0.3s ease;
-        }
-        header {
-            background-color: #007bff;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-            position: relative;
-        }
-        nav {
-            text-align: right;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            margin-left: 10px;
-            position: relative;
-        }
-        nav a::before {
-            content: "🔗";
-            margin-right: 5px;
-        }
-        nav a:hover {
-            color: #ffcd01;
-        }
-        section {
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin: 20px;
-            transition: background-color 0.3s ease;
-        }
-        section:hover {
-            background-color: #f5f5f5;
-        }
-        .intro h2, .skills h2, .projects h2 {
-            color: #007bff;
-        }
-        .box {
-            border: 1px solid #ccc;
-            padding: 10px;
-            width: fit-content;
-            margin-right: 10px;
-            display: inline-block;
-            border-radius: 5px;
-            background-color: #f5f5f5;
-            margin-bottom: 10px;
-        }
-        footer {
-            text-align: center;
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px;
-        }
-        #color-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            cursor: pointer;
-            padding: 8px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: #fff;
-        }
-        /* Dropdown menu */
-        .dropdown {
-            position: absolute;
-            top: 20px;
-            right: 100px;
-            cursor: pointer;
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #fff;
-            min-width: 160px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            z-index: 1;
-            border-radius: 5px;
-        }
-        .dropdown-content a {
-            padding: 10px;
-            text-decoration: none;
-            color: #333;
-            display: block;
-        }
-        .dropdown-content a:hover {
-            background-color: #f5f5f5;
-        }
-    </style>
+    <title>Happy Birthday My Special One! 🎂❤️</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Nikkita Developer</h1>
-        <div class="dropdown" onclick="toggleDropdown()">
-            <span>...</span>
-            <div id="myDropdown" class="dropdown-content">
-                <a href="#intro">Introduction</a>
-                <a href="#skills">Skills</a>
-                <a href="#projects">Projects</a>
-            </div>
-        </div>
-        <nav>
-            <a href="https://twitter.com" target="_blank">Twitter</a>
-            <a href="https://discord.com" target="_blank">Discord</a>
-        </nav>
-        <button id="color-button">Change Color</button>
-    </header>
 
-    <section id="intro">
-        <h2>Introduction</h2>
-        <p>
-            I'm Nikkita, a Python developer and Discord bot developer based in India. I have coding experience of 2 years and am proficient in English, Hindi, and Japanese languages. I've worked on various projects including Clone Bot and Warden, and I'm passionate about future projects, especially in the realm of <strong>G.P.D</strong>. Currently, I'm eager to learn GO and JavaScript to expand my skill set.
+    <!-- Background Music -->
+    <audio id="bg-music" loop>
+        <source src="your-song.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Landing Page -->
+    <div class="birthday-container">
+        <h1>🎉 Happy Birthday, [Her Name]! 🎂</h1>
+        <p class="intro-text">Today is a special day because it's the day **you** were born, and I can't tell you how grateful I am for that. 💖</p>
+
+        <button id="start-btn">Click for a Surprise 🎁</button>
+    </div>
+
+    <!-- Hidden Surprise Section -->
+    <div class="hidden-content">
+        <h2>💌 A Special Letter Just for You 💌</h2>
+        <p class="letter-text">
+            Dear [Her Name],  
+            You are one of the most beautiful, kind, and wonderful souls I've ever met. Every moment spent with you is precious to me, and I just want to say **thank you** for being **you**.  
+            I hope this day brings you all the happiness you deserve. 💕  
         </p>
-    </section>
+        <button id="gallery-btn">See Our Memories 📸</button>
+    </div>
 
-    <section id="skills">
-        <h2>Skills</h2>
-        <div class="box">Python</div>
-        <div class="box">Discord.py</div>
-        <div class="box">HTML</div>
-        <div class="box">JavaScript</div>
-    </section>
+    <!-- Photo Gallery -->
+    <div class="gallery">
+        <h2>Our Beautiful Memories Together</h2>
+        <div class="gallery-container">
+            <img src="photo1.jpg" alt="Memory 1">
+            <img src="photo2.jpg" alt="Memory 2">
+            <img src="photo3.jpg" alt="Memory 3">
+        </div>
+    </div>
 
-    <section id="projects">
-        <h2>Projects</h2>
-        <p>Total projects: 3 (Worked: 2, Working: 1)</p>
-    </section>
+    <!-- Fireworks Animation -->
+    <canvas id="fireworks"></canvas>
 
-    <footer>
-        <p>&copy; 2024 Nikkita Developer</p>
-    </footer>
-
-    <script>
-        const colorButton = document.getElementById('color-button');
-        const sections = document.querySelectorAll('section');
-        const dropdownContent = document.getElementById('myDropdown');
-
-        let colorIndex = 0;
-        const colors = ['#007bff', '#28a745', '#dc3545', '#ffc107']; // Array of colors
-
-        // Function to change section background colors
-        function changeColors() {
-            colorIndex = (colorIndex + 1) % colors.length;
-            sections.forEach(section => {
-                section.style.backgroundColor = colors[colorIndex];
-            });
-            document.body.style.backgroundColor = colors[colorIndex]; // Change body background color
-        }
-
-        // Toggle dropdown menu
-        function toggleDropdown() {
-            dropdownContent.style.display === 'none' ? dropdownContent.style.display = 'block' : dropdownContent.style.display = 'none';
-        }
-
-        // Add click event listener to color button
-        colorButton.addEventListener('click', changeColors);
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
