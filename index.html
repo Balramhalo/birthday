@@ -3,48 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday My Special One! 🎂❤️</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Bhai Rating System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            overflow: hidden;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem 4rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            transform-style: preserve-3d;
+            transition: transform 0.3s;
+        }
+
+        .container:hover {
+            transform: rotateY(5deg) rotateX(5deg) translateY(-5px);
+        }
+
+        h1 {
+            color: #2d3436;
+            margin-bottom: 1.5rem;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255,255,255,0.3),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .btn:hover:before {
+            left: 100%;
+        }
+
+        #goodBtn {
+            background: #2ecc71;
+            color: white;
+        }
+
+        #badBtn {
+            background: #e74c3c;
+            color: white;
+            transition: all 0.1s;
+        }
+
+        .response-box {
+            margin-top: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .show-response {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #message {
+            font-size: 1.5em;
+            color: #2d3436;
+            margin-top: 1rem;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            animation: confetti 2s linear;
+        }
+
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
-
-    <!-- Background Music -->
-    <audio id="bg-music" loop>
-        <source src="your-song.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- Landing Page -->
-    <div class="birthday-container">
-        <h1>🎉 Happy Birthday, [Her Name]! 🎂</h1>
-        <p class="intro-text">Today is a special day because it's the day **you** were born, and I can't tell you how grateful I am for that. 💖</p>
-
-        <button id="start-btn">Click for a Surprise 🎁</button>
-    </div>
-
-    <!-- Hidden Surprise Section -->
-    <div class="hidden-content">
-        <h2>💌 A Special Letter Just for You 💌</h2>
-        <p class="letter-text">
-            Dear [Her Name],  
-            You are one of the most beautiful, kind, and wonderful souls I've ever met. Every moment spent with you is precious to me, and I just want to say **thank you** for being **you**.  
-            I hope this day brings you all the happiness you deserve. 💕  
-        </p>
-        <button id="gallery-btn">See Our Memories 📸</button>
-    </div>
-
-    <!-- Photo Gallery -->
-    <div class="gallery">
-        <h2>Our Beautiful Memories Together</h2>
-        <div class="gallery-container">
-            <img src="photo1.jpg" alt="Memory 1">
-            <img src="photo2.jpg" alt="Memory 2">
-            <img src="photo3.jpg" alt="Memory 3">
+    <div class="container">
+        <h1>👋 Bhai, Main Kaisa Hu? 😎</h1>
+        <div class="button-group">
+            <button id="goodBtn" class="btn">Acha 😍</button>
+            <button id="badBtn" class="btn">Bekar 😒</button>
+        </div>
+        <div class="response-box">
+            <div id="message"></div>
         </div>
     </div>
 
-    <!-- Fireworks Animation -->
-    <canvas id="fireworks"></canvas>
+    <script>
+        const goodBtn = document.getElementById('goodBtn');
+        const badBtn = document.getElementById('badBtn');
+        const message = document.getElementById('message');
+        const responseBox = document.querySelector('.response-box');
 
-    <script src="script.js"></script>
+        // Good Button Interaction
+        goodBtn.addEventListener('click', () => {
+            responseBox.classList.add('show-response');
+            message.innerHTML = "Aww! Thank You Yaar 😊<br>Tum Bhi Bahot Sundar Lag Rahe Ho! 💖";
+            createConfetti();
+            speak("Aww! Thank you yaar! Tum bhi bahot sundar lag rahe ho!");
+        });
+
+        // Bad Button Interaction
+        badBtn.addEventListener('mouseover', () => {
+            if (!badBtn.classList.contains('clicked')) {
+                const newX = Math.random() * (window.innerWidth - 100);
+                const newY = Math.random() * (window.innerHeight - 50);
+                badBtn.style.transform = `translate(${newX}px, ${newY}px)`;
+                badBtn.style.transition = 'all 0.3s ease';
+            }
+        });
+
+        badBtn.addEventListener('click', () => {
+            if (!badBtn.classList.contains('clicked')) {
+                badBtn.classList.add('clicked');
+                badBtn.textContent = "😂 Sorry Bhai! Just Kidding 😅";
+                badBtn.style.backgroundColor = "#f1c40f";
+                badBtn.style.transform = "scale(1.1)";
+                setTimeout(() => {
+                    badBtn.classList.remove('clicked');
+                    badBtn.textContent = "Bekar 😒";
+                    badBtn.style.backgroundColor = "#e74c3c";
+                    badBtn.style.transform = "none";
+                }, 2000);
+                createConfetti();
+                speak("Arre yaar! Main toh mazak kar raha tha!");
+            }
+        });
+
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * window.innerWidth + "px";
+                confetti.style.background = `hsl(${Math.random() * 360}, 70%, 60%)`;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 2000);
+            }
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'hi-IN';
+                utterance.rate = 1.1;
+                speechSynthesis.speak(utterance);
+            }
+        }
+    </script>
 </body>
 </html>
