@@ -3,212 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bhai Rating System</title>
+    <title>Bhai Status Verifier</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
         body {
+            margin: 0;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
             overflow: hidden;
+            font-family: 'Arial', sans-serif;
         }
 
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2rem 4rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            text-align: center;
-            transform-style: preserve-3d;
-            transition: transform 0.3s;
-        }
-
-        .container:hover {
-            transform: rotateY(5deg) rotateX(5deg) translateY(-5px);
-        }
-
-        h1 {
-            color: #2d3436;
-            margin-bottom: 1.5rem;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .button-group {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin: 2rem 0;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 1.2em;
-            transition: all 0.3s ease;
+        .btn-container {
             position: relative;
-            overflow: hidden;
+            height: 100vh;
         }
 
-        .btn:before {
-            content: '';
+        .choice-btn {
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                120deg,
-                transparent,
-                rgba(255,255,255,0.3),
-                transparent
-            );
-            transition: 0.5s;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 1.5rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
         }
 
-        .btn:hover:before {
-            left: 100%;
+        #achaBtn {
+            left: 10%;
+            background: #00ff88;
+            color: #1a1a1a;
+            animation: floatLeft 2s infinite;
         }
 
-        #goodBtn {
-            background: #2ecc71;
+        #bekarBtn {
+            right: 10%;
+            background: #ff4444;
             color: white;
+            animation: floatRight 2s infinite;
         }
 
-        #badBtn {
-            background: #e74c3c;
-            color: white;
-            transition: all 0.1s;
-        }
-
-        .response-box {
-            margin-top: 2rem;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
-        }
-
-        .show-response {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .hidden {
-            display: none;
+        .choice-btn:hover {
+            transform: translateY(-50%) scale(1.1);
         }
 
         #message {
-            font-size: 1.5em;
-            color: #2d3436;
-            margin-top: 1rem;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 2.5rem;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
         }
 
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #fff;
-            animation: confetti 2s linear;
+        @keyframes floatLeft {
+            0%, 100% { transform: translateY(-50%) translateX(0); }
+            50% { transform: translateY(-50%) translateX(-10px); }
         }
 
-        @keyframes confetti {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        @keyframes floatRight {
+            0%, 100% { transform: translateY(-50%) translateX(0); }
+            50% { transform: translateY(-50%) translateX(10px); }
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 1.5rem;
-                margin: 1rem;
-            }
-            .button-group {
-                flex-direction: column;
-            }
+        .teleport {
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>👋 Bhai, Main Kaisa Hu? 😎</h1>
-        <div class="button-group">
-            <button id="goodBtn" class="btn">Acha 😍</button>
-            <button id="badBtn" class="btn">Bekar 😒</button>
-        </div>
-        <div class="response-box">
-            <div id="message"></div>
-        </div>
+    <div class="btn-container">
+        <button id="achaBtn" class="choice-btn">Acha 😇</button>
+        <button id="bekarBtn" class="choice-btn">Bekar 😈</button>
+        <div id="message"></div>
     </div>
 
     <script>
-        const goodBtn = document.getElementById('goodBtn');
-        const badBtn = document.getElementById('badBtn');
+        const achaBtn = document.getElementById('achaBtn');
+        const bekarBtn = document.getElementById('bekarBtn');
         const message = document.getElementById('message');
-        const responseBox = document.querySelector('.response-box');
+        let teleportCount = 0;
 
-        // Good Button Interaction
-        goodBtn.addEventListener('click', () => {
-            responseBox.classList.add('show-response');
-            message.innerHTML = "Aww! Thank You Yaar 😊<br>Tum Bhi Bahot Sundar Lag Rahe Ho! 💖";
-            createConfetti();
-            speak("Aww! Thank you yaar! Tum bhi bahot sundar lag rahe ho!");
+        // Acha Button Handler
+        achaBtn.addEventListener('click', () => {
+            message.textContent = "Aww! 😘 Tu Bhi Bahut Acha Hai Yaar!";
+            message.style.opacity = '1';
+            achaBtn.style.display = 'none';
+            bekarBtn.style.display = 'none';
+            
+            setTimeout(() => {
+                message.style.opacity = '0';
+                achaBtn.style.display = 'block';
+                bekarBtn.style.display = 'block';
+            }, 5000);
         });
 
-        // Bad Button Interaction
-        badBtn.addEventListener('mouseover', () => {
-            if (!badBtn.classList.contains('clicked')) {
-                const newX = Math.random() * (window.innerWidth - 100);
-                const newY = Math.random() * (window.innerHeight - 50);
-                badBtn.style.transform = `translate(${newX}px, ${newY}px)`;
-                badBtn.style.transition = 'all 0.3s ease';
-            }
+        // Bekar Button Handler
+        bekarBtn.addEventListener('click', () => {
+            teleportCount++;
+            const maxX = window.innerWidth - bekarBtn.offsetWidth;
+            const maxY = window.innerHeight - bekarBtn.offsetHeight;
+            
+            bekarBtn.style.transition = `all ${Math.max(0.3, 1 - teleportCount*0.1)}s`;
+            bekarBtn.style.left = `${Math.random() * maxX}px`;
+            bekarBtn.style.top = `${Math.random() * maxY}px`;
+            bekarBtn.style.position = 'absolute';
+            bekarBtn.style.right = 'auto';
+            
+            bekarBtn.style.transform = `scale(${1 + teleportCount*0.1})`;
+            setTimeout(() => {
+                bekarBtn.style.transform = 'scale(1)';
+            }, 300);
         });
 
-        badBtn.addEventListener('click', () => {
-            if (!badBtn.classList.contains('clicked')) {
-                badBtn.classList.add('clicked');
-                badBtn.textContent = "😂 Sorry Bhai! Just Kidding 😅";
-                badBtn.style.backgroundColor = "#f1c40f";
-                badBtn.style.transform = "scale(1.1)";
-                setTimeout(() => {
-                    badBtn.classList.remove('clicked');
-                    badBtn.textContent = "Bekar 😒";
-                    badBtn.style.backgroundColor = "#e74c3c";
-                    badBtn.style.transform = "none";
-                }, 2000);
-                createConfetti();
-                speak("Arre yaar! Main toh mazak kar raha tha!");
-            }
+        // Window resize handler
+        window.addEventListener('resize', () => {
+            bekarBtn.style.left = `${Math.random() * (window.innerWidth - bekarBtn.offsetWidth)}px`;
+            bekarBtn.style.top = `${Math.random() * (window.innerHeight - bekarBtn.offsetHeight)}px`;
         });
-
-        function createConfetti() {
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.classList.add('confetti');
-                confetti.style.left = Math.random() * window.innerWidth + "px";
-                confetti.style.background = `hsl(${Math.random() * 360}, 70%, 60%)`;
-                document.body.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 2000);
-            }
-        }
-
-        function speak(text) {
-            if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'hi-IN';
-                utterance.rate = 1.1;
-                speechSynthesis.speak(utterance);
-            }
-        }
     </script>
 </body>
 </html>
