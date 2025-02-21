@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -245,15 +242,43 @@
         let bekarAttempts = 0;
 
         // Acha Button Handler
-        achaBtn.addEventListener('click', () => {
+        achaBtn.addEventListener('click', async () => {
             createParticles();
             document.querySelector('.button-group').style.opacity = '0';
             messageContainer.classList.add('visible');
+            messageText.textContent = '';
             
-            setTimeout(() => {
-                messageText.textContent = "Aww, Tu Bhi Bohot Achi Lagti Hai Mujhe!! 💖";
+            // Typing simulation sequence
+            const fakeType = async () => {
+                const fakeText = "Darling";
+                
+                // Type "Darling"
+                for(let i = 0; i < fakeText.length; i++) {
+                    messageText.textContent += fakeText[i];
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+                
+                // Fake deletion
+                await new Promise(resolve => setTimeout(resolve, 300));
+                messageText.textContent = "Darlin";
+                await new Promise(resolve => setTimeout(resolve, 150));
+                messageText.textContent = "Darli";
+                await new Promise(resolve => setTimeout(resolve, 150));
+                messageText.textContent = "Darl";
+                await new Promise(resolve => setTimeout(resolve, 150));
+                messageText.textContent = "";
+                
+                // Type real message
+                const realMessage = "Aww, Tu Bhi Bohot Achi Lagti Hai Mujhe!! 💖";
+                for(let i = 0; i < realMessage.length; i++) {
+                    messageText.textContent += realMessage[i];
+                    await new Promise(resolve => setTimeout(resolve, 50 + Math.random() * 30));
+                }
+                
                 messageText.classList.add('visible');
-            }, 2000);
+            };
+
+            await fakeType();
         });
 
         // Bekar Button Handler
