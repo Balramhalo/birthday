@@ -3,188 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flirty Bhai Status Check</title>
+    <title>Cyber Status Check</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial Rounded MT Bold', sans-serif;
+            font-family: 'Courier New', monospace;
         }
 
         body {
             min-height: 100vh;
-            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            background: linear-gradient(45deg, #0a0a0a, #1a1a1a);
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
         }
 
-        .container {
-            text-align: center;
-            position: relative;
-            width: 100%;
-        }
-
         .title {
-            color: white;
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            text-shadow: 0 0 15px rgba(0,0,0,0.3);
-            position: absolute;
+            position: fixed;
             top: 20%;
-            left: 50%;
-            transform: translateX(-50%);
-            transition: all 0.5s ease;
+            color: #0ff;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #0ff;
+            opacity: 1;
+            transition: all 0.5s;
         }
 
-        .button-group {
+        .button-container {
             display: flex;
-            justify-content: center;
-            gap: 1rem;
+            gap: 20px;
             position: relative;
-            margin-top: 30vh;
+            transition: all 0.5s;
         }
 
-        .flirty-btn {
-            padding: 1.2rem 2.5rem;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.3rem;
+        .cyber-btn {
+            padding: 1.5rem 3rem;
+            border: 2px solid #0ff;
+            background: rgba(0, 255, 255, 0.1);
+            color: #0ff;
+            font-size: 1.2rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            position: absolute;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
-            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0 50%);
         }
 
-        #achaBtn {
-            background: #ffffff;
-            color: #ff1493;
-            left: 20%;
-            animation: heartbeat 1.5s infinite;
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, #0ff, transparent);
+            animation: glow 4s linear infinite;
         }
 
         #bekarBtn {
-            background: #2d2d2d;
-            color: white;
-            right: 20%;
-            animation: shake 2s infinite;
+            border-color: #f00;
+            color: #f00;
         }
 
-        .flirty-message {
-            position: absolute;
-            top: 20%;
+        #bekarBtn::before {
+            background: linear-gradient(45deg, transparent, #f00, transparent);
+        }
+
+        .message {
+            position: fixed;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-size: 2.2rem;
+            transform: translate(-50%, -50%);
+            color: #0ff;
+            font-size: 2rem;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.5s ease;
             text-align: center;
+            max-width: 80vw;
         }
 
-        .visible {
-            opacity: 1;
+        .typing {
+            display: inline-block;
+            overflow: hidden;
+            border-right: 2px solid #0ff;
+            white-space: nowrap;
+            animation: typing 3s steps(40) forwards,
+                       blink-caret 0.75s step-end infinite 3s;
         }
 
-        .hidden {
-            opacity: 0;
+        @keyframes glow {
+            0% { transform: rotate(0deg) translate(-50%, -50%); }
+            100% { transform: rotate(360deg) translate(-50%, -50%); }
         }
 
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            15% { transform: scale(1.2); }
-            30% { transform: scale(1); }
-            45% { transform: scale(1.1); }
-            60% { transform: scale(1); }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #0ff; }
         }
 
-        .heart {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="white"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
-            animation: floatUp 3s linear;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-100vh) scale(0); opacity: 0; }
+        .matrix-code {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0.3;
+            z-index: -1;
         }
 
         @media (max-width: 768px) {
             .title { font-size: 2rem; }
-            .flirty-btn { padding: 1rem 2rem; }
-            .flirty-message { font-size: 1.8rem; }
+            .cyber-btn { padding: 1rem 2rem; }
+            .message { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
-    <h1 class="title">Me Kesa Lagta Hu? 😏</h1>
-    <div class="flirty-message" id="message"></div>
+    <h1 class="title">_STATUS_QUERY_INITIATED_</h1>
     
-    <div class="button-group">
-        <button id="achaBtn" class="flirty-btn">Acha 😍</button>
-        <button id="bekarBtn" class="flirty-btn">Bekar 😒</button>
+    <div class="button-container">
+        <button id="achaBtn" class="cyber-btn">ACCEPT [ACHĀ]</button>
+        <button id="bekarBtn" class="cyber-btn">DENY [BEKAR]</button>
     </div>
+
+    <div class="message" id="message"></div>
 
     <script>
         const title = document.querySelector('.title');
+        const buttons = document.querySelector('.button-container');
         const achaBtn = document.getElementById('achaBtn');
         const bekarBtn = document.getElementById('bekarBtn');
         const message = document.getElementById('message');
-        let bekarClicks = 0;
+        let bekarAttempts = 0;
 
         // Acha Button Handler
         achaBtn.addEventListener('click', () => {
-            title.classList.add('hidden');
-            message.innerHTML = "Tum toh dil mein bas gaye! 💖<br>Chalo ab tum batao ham kaisa hai? 😘";
-            message.classList.add('visible');
-            createHearts();
+            title.style.opacity = '0';
+            buttons.style.opacity = '0';
+            message.innerHTML = '<span class="typing">SYSTEM_OVERRIDE: CRITICAL_COMPLIMENT_RECEIVED >> "YOU_ARE_OPTIMAL"</span>';
+            message.style.opacity = '1';
+            
+            // Create matrix rain effect
+            createMatrixEffect();
             
             setTimeout(() => {
-                message.classList.remove('visible');
-                title.classList.remove('hidden');
+                message.style.opacity = '0';
+                title.style.opacity = '1';
+                buttons.style.opacity = '1';
             }, 5000);
         });
 
         // Bekar Button Handler
         bekarBtn.addEventListener('click', () => {
-            bekarClicks++;
+            bekarAttempts++;
+            
+            // Teleportation with constraints
             const maxX = window.innerWidth - bekarBtn.offsetWidth;
             const maxY = window.innerHeight - bekarBtn.offsetHeight;
             
-            bekarBtn.style.transition = `all ${Math.max(0.2, 0.6 - bekarClicks*0.1)}s`;
+            bekarBtn.style.transition = `all ${Math.max(0.1, 0.5 - bekarAttempts*0.05)}s`;
+            bekarBtn.style.position = 'fixed';
             bekarBtn.style.left = `${Math.random() * maxX}px`;
             bekarBtn.style.top = `${Math.random() * maxY}px`;
             
-            if(bekarClicks > 3) {
-                bekarBtn.innerHTML = `Bekar ${'😒'.repeat(bekarClicks)}`;
-                bekarBtn.style.fontSize = `${1.3 - (bekarClicks*0.05)}rem`;
+            // Progressive difficulty
+            if(bekarAttempts > 3) {
+                bekarBtn.style.fontSize = `${1.2 - (bekarAttempts*0.05)}rem`;
+                bekarBtn.style.filter = `hue-rotate(${bekarAttempts*30}deg)`;
+            }
+            
+            // Secret twist after 5 attempts
+            if(bekarAttempts === 5) {
+                document.body.style.background = 'linear-gradient(45deg, #ff0000, #000000)';
+                bekarBtn.textContent = "[SYSTEM_CORRUPTED]";
+                bekarBtn.style.animation = 'glitch 1s infinite';
             }
         });
 
-        function createHearts() {
-            for(let i = 0; i < 20; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.style.left = Math.random() * window.innerWidth + 'px';
-                heart.style.animationDelay = Math.random() * 2 + 's';
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 3000);
+        function createMatrixEffect() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*";
+            const container = document.body;
+            
+            for(let i = 0; i < 50; i++) {
+                const code = document.createElement('div');
+                code.className = 'matrix-code';
+                code.style.left = Math.random() * window.innerWidth + 'px';
+                code.style.animation = `fall ${Math.random() * 3 + 2}s linear infinite`;
+                code.style.animationDelay = Math.random() * 2 + 's';
+                
+                let content = '';
+                for(let j = 0; j < 50; j++) {
+                    content += chars[Math.floor(Math.random() * chars.length)];
+                }
+                
+                code.textContent = content;
+                container.appendChild(code);
+                
+                setTimeout(() => code.remove(), 5000);
             }
         }
 
-        // Mobile touch support
+        // Mobile touch handling
         [achaBtn, bekarBtn].forEach(btn => {
             btn.addEventListener('touchstart', (e) => {
                 e.preventDefault();
