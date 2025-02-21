@@ -3,123 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mai Kaisa Laga Hu?</title>
+    <title>Mai Kaisa Hu? 😎</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-
         body {
+            margin: 0;
             min-height: 100vh;
-            background: linear-gradient(45deg, #ff00ff, #00ffff);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
             overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            touch-action: manipulation;
+        }
+
+        .btn-container {
             position: relative;
+            height: 100vh;
         }
 
-        .container {
-            text-align: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        h1 {
-            color: #fff;
-            font-size: 3em;
-            text-shadow: 0 0 10px rgba(0,0,0,0.5);
-            margin-bottom: 2rem;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            position: relative;
-        }
-
-        .btn {
+        .choice-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
             padding: 1.5rem 3rem;
             border: none;
             border-radius: 50px;
-            font-size: 1.5em;
+            font-size: 1.5rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            position: absolute;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         #achaBtn {
-            background: linear-gradient(45deg, #00ff00, #00cc00);
-            color: #fff;
-            left: 20%;
-            animation: pulse 2s infinite;
+            left: 10%;
+            background: #00ff88;
+            color: #1a1a1a;
+            animation: floatLeft 2s infinite;
         }
 
         #bekarBtn {
-            background: linear-gradient(45deg, #ff0000, #cc0000);
-            color: #fff;
-            right: 20%;
-            animation: glitch 1s infinite;
+            right: 10%;
+            background: #ff4444;
+            color: white;
+            animation: floatRight 2s infinite;
+        }
+
+        .choice-btn:hover {
+            transform: translateY(-50%) scale(1.1);
         }
 
         #message {
-            color: #fff;
-            font-size: 2em;
-            margin-top: 2rem;
-            opacity: 0;
-            transition: opacity 0.5s;
-            position: absolute;
-            bottom: 20%;
+            position: fixed;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .particles {
-            position: absolute;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 2.5rem;
+            text-align: center;
+            opacity: 0;
             pointer-events: none;
-            z-index: 1;
+            transition: opacity 0.5s;
+            width: 90vw;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+        .stats {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 1.2rem;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        @keyframes floatLeft {
+            0%, 100% { transform: translateY(-50%) translateX(0); }
+            50% { transform: translateY(-50%) translateX(-10px); }
         }
 
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
+        @keyframes floatRight {
+            0%, 100% { transform: translateY(-50%) translateX(0); }
+            50% { transform: translateY(-50%) translateX(10px); }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            animation: confetti 2s linear;
+        }
+
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
         }
 
         @media (max-width: 768px) {
-            h1 { font-size: 2em; }
-            .btn { padding: 1rem 2rem; }
-            #message { font-size: 1.5em; }
+            .choice-btn {
+                padding: 1.2rem 2.5rem;
+                font-size: 1.2rem;
+            }
+            
+            #message {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Mai Kaisa Laga Hu? 🤔</h1>
-        <div class="button-container">
-            <button id="achaBtn" class="btn">Acha 😍</button>
-            <button id="bekarBtn" class="btn">Bekar 😒</button>
-        </div>
+    <div class="stats" id="stats">Attempts: 0</div>
+    <div class="btn-container">
+        <button id="achaBtn" class="choice-btn">Acha 😇</button>
+        <button id="bekarBtn" class="choice-btn">Bekar 😈</button>
         <div id="message"></div>
     </div>
 
@@ -127,60 +121,77 @@
         const achaBtn = document.getElementById('achaBtn');
         const bekarBtn = document.getElementById('bekarBtn');
         const message = document.getElementById('message');
+        const stats = document.getElementById('stats');
         let teleportCount = 0;
+        let attempts = 0;
+
+        // Mobile vibration support
+        const vibrate = (pattern) => {
+            if('vibrate' in navigator) navigator.vibrate(pattern);
+        };
 
         // Acha Button Handler
         achaBtn.addEventListener('click', () => {
-            createParticles(100);
-            message.textContent = "Aww! 😘 Tu Bhi Bahut Sundar Hai!";
+            vibrate([100, 50, 100]);
+            createConfetti();
+            message.innerHTML = "Aww! 😘<br>Tu Bhi Bahut Acha Hai Yaar!";
             message.style.opacity = '1';
-            achaBtn.style.transform = 'scale(1.5)';
+            stats.textContent = `Success in ${attempts+1} attempts!`;
+            
             setTimeout(() => {
                 message.style.opacity = '0';
-                achaBtn.style.transform = 'scale(1)';
-            }, 3000);
+                attempts = 0;
+                stats.textContent = 'Attempts: 0';
+            }, 5000);
         });
 
         // Bekar Button Handler
         bekarBtn.addEventListener('click', () => {
+            vibrate(50);
+            attempts++;
+            stats.textContent = `Attempts: ${attempts}`;
+            
             teleportCount++;
             const maxX = window.innerWidth - bekarBtn.offsetWidth;
             const maxY = window.innerHeight - bekarBtn.offsetHeight;
             
-            bekarBtn.style.transition = 'all 0.5s';
+            bekarBtn.style.transition = `all ${Math.max(0.3, 1 - teleportCount*0.1)}s`;
             bekarBtn.style.left = `${Math.random() * maxX}px`;
             bekarBtn.style.top = `${Math.random() * maxY}px`;
             bekarBtn.style.position = 'absolute';
-
-            if(teleportCount >= 3) {
-                bekarBtn.disabled = true;
-                bekarBtn.textContent = "Ab Bas! 😭";
-                bekarBtn.style.filter = 'grayscale(1)';
-                bekarBtn.style.animation = 'none';
+            bekarBtn.style.right = 'auto';
+            
+            // Progressive difficulty
+            bekarBtn.style.transform = `scale(${1 + teleportCount*0.1})`;
+            if(teleportCount > 3) {
+                bekarBtn.style.fontSize = `${1.8 - teleportCount*0.1}rem`;
             }
+            
+            setTimeout(() => {
+                bekarBtn.style.transform = 'scale(1)';
+            }, 300);
         });
 
-        function createParticles(count) {
-            for(let i = 0; i < count; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particles';
-                particle.style.left = `${Math.random() * window.innerWidth}px`;
-                particle.style.top = `${Math.random() * window.innerHeight}px`;
-                particle.style.width = particle.style.height = `${Math.random() * 10}px`;
-                particle.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                particle.style.borderRadius = '50%';
-                document.body.appendChild(particle);
-                
-                setTimeout(() => {
-                    particle.remove();
-                }, 1000);
+        function createConfetti() {
+            for(let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.background = `hsl(${Math.random() * 360}, 70%, 60%)`;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 2000);
             }
         }
 
-        // Mobile support
+        // Mobile touch optimization
         bekarBtn.addEventListener('touchstart', (e) => {
             e.preventDefault();
             bekarBtn.click();
+        });
+
+        // Orientation change handling
+        window.addEventListener('orientationchange', () => {
+            window.location.reload();
         });
     </script>
 </body>
