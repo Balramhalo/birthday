@@ -6,36 +6,60 @@
     <title>Fire Feedback System</title>
     <style>
         :root {
-            --bg-color: #1a1a1a;
+            --bg-color: #1a0f0f;
             --text-color: #fff3e0;
-            --primary-color: #ff6b35;
-            --secondary-color: #ff3c00;
-            --border-color: #4a2c2a;
-            --typing-bg: #2a1e1e;
-            --accent: #ff6b35;
+            --fire-1: #ff6b35;
+            --fire-2: #ff3c00;
+            --fire-3: #8b0000;
+            --paper: #2a1e1e;
         }
 
-        /* ... (keep previous CSS transitions and base styles) ... */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-color);
+            color: var(--text-color);
+            overflow: hidden;
+            background-image: 
+                linear-gradient(rgba(255,107,53,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,107,53,0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
 
         .container {
-            background: var(--typing-bg);
-            border-radius: 8px;
+            background: var(--paper);
             padding: 2rem;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(255,60,0,0.2);
             width: 95%;
             max-width: 600px;
             position: relative;
-            overflow: hidden;
+            border: 2px solid var(--fire-1);
+            animation: fire-glow 1.5s infinite alternate;
+        }
+
+        @keyframes fire-glow {
+            0% { box-shadow: 0 0 10px var(--fire-1); }
+            50% { box-shadow: 0 0 20px var(--fire-2); }
+            100% { box-shadow: 0 0 15px var(--fire-3); }
         }
 
         h1 {
-            font-family: 'Courier New', monospace;
-            color: var(--text-color);
+            text-align: center;
             margin-bottom: 2rem;
+            font-size: 2rem;
             padding: 1rem;
-            border-bottom: 2px solid var(--primary-color);
-            position: relative;
+            border-bottom: 2px solid var(--fire-1);
+            text-shadow: 0 0 10px rgba(255,107,53,0.3);
         }
 
         .button-group {
@@ -43,6 +67,7 @@
             gap: 1.5rem;
             justify-content: center;
             margin-top: 2rem;
+            position: relative;
         }
 
         .fire-btn {
@@ -51,72 +76,138 @@
             border-radius: 4px;
             font-size: 1.1rem;
             cursor: pointer;
-            background: linear-gradient(to bottom, #ff6b35, #ff3c00);
+            background: linear-gradient(to bottom, var(--fire-1), var(--fire-2));
             color: white;
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
             box-shadow: 0 2px 8px rgba(255,107,53,0.3);
         }
 
+        .fire-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255,60,0,0.4);
+        }
+
         .message-container {
-            /* Add paper-like texture */
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(255,255,255,0.05),
-                rgba(255,255,255,0.05) 1px,
-                transparent 1px,
-                transparent 4px
-            );
-            border: 2px solid var(--primary-color);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--paper);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 2px solid var(--fire-1);
+            box-shadow: 0 0 30px rgba(255,60,0,0.3);
+            display: none;
+            max-width: 80%;
             animation: fire-glow 1.5s infinite alternate;
         }
 
-        @keyframes fire-glow {
-            from { box-shadow: 0 0 10px var(--primary-color); }
-            to { box-shadow: 0 0 20px var(--secondary-color); }
+        .typing-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-height: 60px;
         }
 
         .typing-effect {
-            font-family: 'Courier New', monospace;
-            border-right: 2px solid var(--primary-color);
+            font-size: 1.4rem;
+            color: var(--text-color);
+            border-right: 2px solid var(--fire-1);
             white-space: nowrap;
             overflow: hidden;
             width: 0;
-            animation: typing 3s steps(40) forwards,
-                       blink-caret 0.75s step-end infinite;
         }
 
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
+        .typing-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--fire-1);
+            border-radius: 50%;
+            animation: dot-bounce 1.4s infinite;
+        }
+
+        @keyframes dot-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
         .fire-particle {
-            background: linear-gradient(to bottom, #ff6b35, #ff3c00);
-            width: 3px;
-            height: 3px;
-            animation: fire-float 1s ease-out;
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(to bottom, var(--fire-1), var(--fire-2));
+            border-radius: 50%;
+            pointer-events: none;
+            animation: fire-float 1.5s ease-out forwards;
+        }
+
+        @keyframes fire-float {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100vh) scale(0); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .fire-btn {
+                padding: 0.8rem 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Keep the same HTML structure -->
+    <div class="container">
+        <h1>Yeh Bata, Me Kesa Lagta Hu Tujhe? 🔥</h1>
+        <div class="button-group">
+            <button id="achaBtn" class="fire-btn">Acha 😇</button>
+            <button id="bekarBtn" class="fire-btn">Bekar 😈</button>
+        </div>
+        <div class="message-container" id="messageBox">
+            <div class="typing-container">
+                <div class="typing-effect" id="messageText"></div>
+                <div class="typing-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Modified Acha Button Handler
+        const achaBtn = document.getElementById('achaBtn');
+        const bekarBtn = document.getElementById('bekarBtn');
+        const messageBox = document.getElementById('messageBox');
+        const messageText = document.getElementById('messageText');
+        let bekarAttempts = 0;
+
+        // Acha Button Handler
         achaBtn.addEventListener('click', () => {
-            createParticles();
+            createFireParticles();
             document.querySelector('.button-group').style.opacity = '0';
-            messageContainer.classList.add('visible');
+            messageBox.style.display = 'block';
             
-            // Clear previous text
-            messageText.textContent = '';
-            
-            // Type message character by character
+            // Typing animation
             const finalMessage = "Aww, Tu Bhi Bohot Achi Lagti Hai Mujhe!! 💖";
             let index = 0;
             
             const typeCharacter = () => {
                 if(index < finalMessage.length) {
-                    messageText.textContent += finalMessage.charAt(index);
+                    messageText.textContent += finalMessage[index];
+                    messageText.style.width = messageText.textContent.length + 'ch';
                     index++;
                     setTimeout(typeCharacter, 100);
                 }
@@ -125,17 +216,44 @@
             typeCharacter();
         });
 
-        // Modified particle creation
-        function createParticles() {
-            for(let i = 0; i < 30; i++) {
+        // Bekar Button Handler
+        bekarBtn.addEventListener('click', () => {
+            bekarAttempts++;
+            createFireParticles();
+            
+            const containerRect = document.querySelector('.container').getBoundingClientRect();
+            const maxX = containerRect.width - bekarBtn.offsetWidth - 40;
+            const maxY = containerRect.height - bekarBtn.offsetHeight - 20;
+            
+            bekarBtn.style.transition = `all ${Math.max(0.2, 0.8 - bekarAttempts*0.1)}s`;
+            bekarBtn.style.transform = `translate(
+                ${Math.random() * maxX}px,
+                ${Math.random() * maxY}px
+            ) rotate(${Math.random() * 15 - 7.5}deg)`;
+        });
+
+        function createFireParticles() {
+            for(let i = 0; i < 20; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'fire-particle';
                 particle.style.left = Math.random() * 100 + '%';
                 particle.style.animationDelay = Math.random() * 0.5 + 's';
                 document.body.appendChild(particle);
-                setTimeout(() => particle.remove(), 1000);
+                setTimeout(() => particle.remove(), 1500);
             }
         }
+
+        // Mobile support
+        [achaBtn, bekarBtn].forEach(btn => {
+            btn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                btn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    btn.style.transform = 'scale(1)';
+                }, 100);
+                btn.click();
+            });
+        });
     </script>
 </body>
 </html>
