@@ -6,111 +6,83 @@
     <title>Fire Feedback System</title>
     <style>
         :root {
-            --fire-1: #ff6b00;
-            --fire-2: #ff3c00;
-            --fire-3: #ff0000;
             --bg-color: #1a1a1a;
-            --text-color: #ffffff;
+            --text-color: #fff3e0;
+            --primary-color: #ff6b35;
+            --secondary-color: #ff3c00;
+            --border-color: #4a2c2a;
+            --typing-bg: #2a1e1e;
+            --accent: #ff6b35;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
+        /* ... (keep previous CSS transitions and base styles) ... */
 
-        body {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: var(--bg-color);
-            color: var(--text-color);
+        .container {
+            background: var(--typing-bg);
+            border-radius: 8px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            width: 95%;
+            max-width: 600px;
+            position: relative;
             overflow: hidden;
         }
 
-        .container {
-            text-align: center;
-            padding: 2rem;
-            position: relative;
-        }
-
-        .fire-text {
-            font-size: 2.5rem;
-            text-shadow: 0 0 10px var(--fire-1),
-                         0 0 20px var(--fire-2),
-                         0 0 30px var(--fire-3);
-            animation: fire-flicker 1s infinite;
+        h1 {
+            font-family: 'Courier New', monospace;
+            color: var(--text-color);
             margin-bottom: 2rem;
+            padding: 1rem;
+            border-bottom: 2px solid var(--primary-color);
+            position: relative;
         }
 
         .button-group {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
             justify-content: center;
+            margin-top: 2rem;
         }
 
         .fire-btn {
             padding: 1rem 2rem;
             border: none;
-            border-radius: 8px;
-            font-size: 1.2rem;
+            border-radius: 4px;
+            font-size: 1.1rem;
             cursor: pointer;
-            background: linear-gradient(45deg, #ff6b00, #ff0000);
+            background: linear-gradient(to bottom, #ff6b35, #ff3c00);
             color: white;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .fire-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px var(--fire-1);
+            box-shadow: 0 2px 8px rgba(255,107,53,0.3);
         }
 
         .message-container {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.9);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 2px solid var(--fire-1);
-            box-shadow: 0 0 30px var(--fire-1);
-            display: none;
-            animation: fire-border 1s infinite;
+            /* Add paper-like texture */
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(255,255,255,0.05),
+                rgba(255,255,255,0.05) 1px,
+                transparent 1px,
+                transparent 4px
+            );
+            border: 2px solid var(--primary-color);
+            animation: fire-glow 1.5s infinite alternate;
+        }
+
+        @keyframes fire-glow {
+            from { box-shadow: 0 0 10px var(--primary-color); }
+            to { box-shadow: 0 0 20px var(--secondary-color); }
         }
 
         .typing-effect {
-            font-size: 1.5rem;
-            color: white;
-            border-right: 2px solid var(--fire-1);
+            font-family: 'Courier New', monospace;
+            border-right: 2px solid var(--primary-color);
             white-space: nowrap;
             overflow: hidden;
+            width: 0;
             animation: typing 3s steps(40) forwards,
                        blink-caret 0.75s step-end infinite;
-        }
-
-        .fire-particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--fire-1);
-            border-radius: 50%;
-            animation: fire-float 2s linear;
-        }
-
-        @keyframes fire-flicker {
-            0%, 100% { opacity: 0.9; }
-            50% { opacity: 1; }
-        }
-
-        @keyframes fire-border {
-            0% { border-color: var(--fire-1); box-shadow: 0 0 30px var(--fire-1); }
-            50% { border-color: var(--fire-2); box-shadow: 0 0 40px var(--fire-2); }
-            100% { border-color: var(--fire-3); box-shadow: 0 0 30px var(--fire-1); }
         }
 
         @keyframes typing {
@@ -118,99 +90,52 @@
             to { width: 100%; }
         }
 
-        @keyframes blink-caret {
-            from, to { border-color: transparent; }
-            50% { border-color: var(--fire-1); }
-        }
-
-        @keyframes fire-float {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-100vh) scale(0); opacity: 0; }
-        }
-
-        @media (max-width: 768px) {
-            .fire-text {
-                font-size: 2rem;
-            }
-            
-            .fire-btn {
-                padding: 0.8rem 1.5rem;
-            }
+        .fire-particle {
+            background: linear-gradient(to bottom, #ff6b35, #ff3c00);
+            width: 3px;
+            height: 3px;
+            animation: fire-float 1s ease-out;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="fire-text">Yeh Bata, Me Kesa Lagta Hu Tujhe? 🔥</h1>
-        <div class="button-group">
-            <button id="achaBtn" class="fire-btn">Acha 😊</button>
-            <button id="bekarBtn" class="fire-btn">Bekar 😒</button>
-        </div>
-        <div class="message-container" id="messageBox">
-            <div class="typing-effect" id="messageText"></div>
-        </div>
-    </div>
-
+    <!-- Keep the same HTML structure -->
     <script>
-        const achaBtn = document.getElementById('achaBtn');
-        const bekarBtn = document.getElementById('bekarBtn');
-        const messageBox = document.getElementById('messageBox');
-        const messageText = document.getElementById('messageText');
-        let bekarAttempts = 0;
-
-        // Acha Button Handler
+        // Modified Acha Button Handler
         achaBtn.addEventListener('click', () => {
-            createFireParticles();
-            document.querySelector('.button-group').style.display = 'none';
-            messageBox.style.display = 'block';
+            createParticles();
+            document.querySelector('.button-group').style.opacity = '0';
+            messageContainer.classList.add('visible');
             
-            // Simulate typing
-            const fullMessage = "Aww, Tu Bhi Bohot Achi Lagti Hai Mujhe!! 💖";
-            let currentChar = 0;
+            // Clear previous text
+            messageText.textContent = '';
             
-            const typeMessage = () => {
-                if(currentChar < fullMessage.length) {
-                    messageText.textContent += fullMessage[currentChar];
-                    currentChar++;
-                    setTimeout(typeMessage, 100);
+            // Type message character by character
+            const finalMessage = "Aww, Tu Bhi Bohot Achi Lagti Hai Mujhe!! 💖";
+            let index = 0;
+            
+            const typeCharacter = () => {
+                if(index < finalMessage.length) {
+                    messageText.textContent += finalMessage.charAt(index);
+                    index++;
+                    setTimeout(typeCharacter, 100);
                 }
             };
             
-            typeMessage();
+            typeCharacter();
         });
 
-        // Bekar Button Handler
-        bekarBtn.addEventListener('click', () => {
-            bekarAttempts++;
-            const maxX = window.innerWidth - bekarBtn.offsetWidth;
-            const maxY = window.innerHeight - bekarBtn.offsetHeight;
-            
-            bekarBtn.style.transition = `all ${Math.max(0.2, 0.8 - bekarAttempts*0.1)}s`;
-            bekarBtn.style.position = 'absolute';
-            bekarBtn.style.left = `${Math.random() * maxX}px`;
-            bekarBtn.style.top = `${Math.random() * maxY}px`;
-            
-            createFireParticles();
-        });
-
-        function createFireParticles() {
-            for(let i = 0; i < 20; i++) {
+        // Modified particle creation
+        function createParticles() {
+            for(let i = 0; i < 30; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'fire-particle';
-                particle.style.left = Math.random() * window.innerWidth + 'px';
-                particle.style.animationDelay = Math.random() * 1 + 's';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 0.5 + 's';
                 document.body.appendChild(particle);
-                setTimeout(() => particle.remove(), 2000);
+                setTimeout(() => particle.remove(), 1000);
             }
         }
-
-        // Mobile support
-        [achaBtn, bekarBtn].forEach(btn => {
-            btn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                btn.click();
-            });
-        });
     </script>
 </body>
 </html>
