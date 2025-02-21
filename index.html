@@ -3,16 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Me Kaisa Lagta Hu?</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Mai Kaisa Laga Hu?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 3em;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            position: relative;
+        }
+
+        .btn {
+            padding: 1.5rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: absolute;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+        }
+
+        #achaBtn {
+            background: linear-gradient(45deg, #00ff00, #00cc00);
+            color: #fff;
+            left: 20%;
+            animation: pulse 2s infinite;
+        }
+
+        #bekarBtn {
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            color: #fff;
+            right: 20%;
+            animation: glitch 1s infinite;
+        }
+
+        #message {
+            color: #fff;
+            font-size: 2em;
+            margin-top: 2rem;
+            opacity: 0;
+            transition: opacity 0.5s;
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .particles {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .btn { padding: 1rem 2rem; }
+            #message { font-size: 1.5em; }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Me Kaisa Lagta Hu?</h1>
-        <button id="acha-btn" class="button green">Acha 🤩</button>
-        <button id="bekar-btn" class="button red">Bekar 😭</button>
-        <p id="message"></p>
+        <h1>Mai Kaisa Laga Hu? 🤔</h1>
+        <div class="button-container">
+            <button id="achaBtn" class="btn">Acha 😍</button>
+            <button id="bekarBtn" class="btn">Bekar 😒</button>
+        </div>
+        <div id="message"></div>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        const achaBtn = document.getElementById('achaBtn');
+        const bekarBtn = document.getElementById('bekarBtn');
+        const message = document.getElementById('message');
+        let teleportCount = 0;
+
+        // Acha Button Handler
+        achaBtn.addEventListener('click', () => {
+            createParticles(100);
+            message.textContent = "Aww! 😘 Tu Bhi Bahut Sundar Hai!";
+            message.style.opacity = '1';
+            achaBtn.style.transform = 'scale(1.5)';
+            setTimeout(() => {
+                message.style.opacity = '0';
+                achaBtn.style.transform = 'scale(1)';
+            }, 3000);
+        });
+
+        // Bekar Button Handler
+        bekarBtn.addEventListener('click', () => {
+            teleportCount++;
+            const maxX = window.innerWidth - bekarBtn.offsetWidth;
+            const maxY = window.innerHeight - bekarBtn.offsetHeight;
+            
+            bekarBtn.style.transition = 'all 0.5s';
+            bekarBtn.style.left = `${Math.random() * maxX}px`;
+            bekarBtn.style.top = `${Math.random() * maxY}px`;
+            bekarBtn.style.position = 'absolute';
+
+            if(teleportCount >= 3) {
+                bekarBtn.disabled = true;
+                bekarBtn.textContent = "Ab Bas! 😭";
+                bekarBtn.style.filter = 'grayscale(1)';
+                bekarBtn.style.animation = 'none';
+            }
+        });
+
+        function createParticles(count) {
+            for(let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particles';
+                particle.style.left = `${Math.random() * window.innerWidth}px`;
+                particle.style.top = `${Math.random() * window.innerHeight}px`;
+                particle.style.width = particle.style.height = `${Math.random() * 10}px`;
+                particle.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                particle.style.borderRadius = '50%';
+                document.body.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            }
+        }
+
+        // Mobile support
+        bekarBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            bekarBtn.click();
+        });
+    </script>
 </body>
 </html>
