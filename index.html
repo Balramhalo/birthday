@@ -3,130 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bhai Status Verifier</title>
-    <style>
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-            overflow: hidden;
-            font-family: 'Arial', sans-serif;
-        }
-
-        .btn-container {
-            position: relative;
-            height: 100vh;
-        }
-
-        .choice-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            padding: 1.5rem 3rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
-        }
-
-        #achaBtn {
-            left: 10%;
-            background: #00ff88;
-            color: #1a1a1a;
-            animation: floatLeft 2s infinite;
-        }
-
-        #bekarBtn {
-            right: 10%;
-            background: #ff4444;
-            color: white;
-            animation: floatRight 2s infinite;
-        }
-
-        .choice-btn:hover {
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        #message {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 2.5rem;
-            text-align: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s;
-        }
-
-        @keyframes floatLeft {
-            0%, 100% { transform: translateY(-50%) translateX(0); }
-            50% { transform: translateY(-50%) translateX(-10px); }
-        }
-
-        @keyframes floatRight {
-            0%, 100% { transform: translateY(-50%) translateX(0); }
-            50% { transform: translateY(-50%) translateX(10px); }
-        }
-
-        .teleport {
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-    </style>
+    <title>Me Kaisa Lagta Hu?</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="btn-container">
-        <button id="achaBtn" class="choice-btn">Acha 😇</button>
-        <button id="bekarBtn" class="choice-btn">Bekar 😈</button>
-        <div id="message"></div>
+    <div class="container">
+        <h1>Me Kaisa Lagta Hu?</h1>
+        <button id="acha-btn" class="button green">Acha 🤩</button>
+        <button id="bekar-btn" class="button red">Bekar 😭</button>
+        <p id="message"></p>
     </div>
-
-    <script>
-        const achaBtn = document.getElementById('achaBtn');
-        const bekarBtn = document.getElementById('bekarBtn');
-        const message = document.getElementById('message');
-        let teleportCount = 0;
-
-        // Acha Button Handler
-        achaBtn.addEventListener('click', () => {
-            message.textContent = "Aww! 😘 Tu Bhi Bahut Acha Hai Yaar!";
-            message.style.opacity = '1';
-            achaBtn.style.display = 'none';
-            bekarBtn.style.display = 'none';
-            
-            setTimeout(() => {
-                message.style.opacity = '0';
-                achaBtn.style.display = 'block';
-                bekarBtn.style.display = 'block';
-            }, 5000);
-        });
-
-        // Bekar Button Handler
-        bekarBtn.addEventListener('click', () => {
-            teleportCount++;
-            const maxX = window.innerWidth - bekarBtn.offsetWidth;
-            const maxY = window.innerHeight - bekarBtn.offsetHeight;
-            
-            bekarBtn.style.transition = `all ${Math.max(0.3, 1 - teleportCount*0.1)}s`;
-            bekarBtn.style.left = `${Math.random() * maxX}px`;
-            bekarBtn.style.top = `${Math.random() * maxY}px`;
-            bekarBtn.style.position = 'absolute';
-            bekarBtn.style.right = 'auto';
-            
-            bekarBtn.style.transform = `scale(${1 + teleportCount*0.1})`;
-            setTimeout(() => {
-                bekarBtn.style.transform = 'scale(1)';
-            }, 300);
-        });
-
-        // Window resize handler
-        window.addEventListener('resize', () => {
-            bekarBtn.style.left = `${Math.random() * (window.innerWidth - bekarBtn.offsetWidth)}px`;
-            bekarBtn.style.top = `${Math.random() * (window.innerHeight - bekarBtn.offsetHeight)}px`;
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
