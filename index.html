@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Feedback System</title>
+    <title>Pro Feedback System</title>
     <style>
         :root {
             --bg-color: #0a0a0a;
@@ -19,7 +19,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Courier New', monospace;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
@@ -97,6 +97,18 @@
             box-shadow: 0 5px 20px rgba(0, 255, 136, 0.2);
         }
 
+        .cyber-btn:hover::before {
+            left: 100%;
+        }
+
+        #achaBtn {
+            border-color: var(--primary-color);
+        }
+
+        #bekarBtn {
+            border-color: var(--secondary-color);
+        }
+
         .message-container {
             position: absolute;
             top: 50%;
@@ -117,21 +129,28 @@
             animation: messageIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
-        .message-label {
-            font-size: 1.2rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-            text-align: center;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
         .typing-indicator {
             display: flex;
             align-items: center;
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
+
+        .typing-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 1.4s infinite;
+        }
+
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
 
         .message-text {
             font-size: 1.4rem;
@@ -142,15 +161,27 @@
             -webkit-text-fill-color: transparent;
             opacity: 0;
             transform: translateY(20px);
-            border-right: 2px solid var(--primary-color);
-            white-space: nowrap;
-            overflow: hidden;
-            width: 0;
         }
 
         .message-text.visible {
             opacity: 1;
             transform: translateY(0);
+            transition: all 0.6s 0.3s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        @keyframes messageIn {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
         .particles {
@@ -162,16 +193,6 @@
             animation: particle 2s linear infinite;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes messageIn {
-            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-
         @keyframes particle {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
             100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
@@ -181,9 +202,11 @@
             .container {
                 padding: 1.5rem;
             }
+
             h1 {
                 font-size: 1.6rem;
             }
+
             .cyber-btn {
                 padding: 1rem 2rem;
             }
@@ -197,9 +220,16 @@
             <button id="achaBtn" class="cyber-btn">Acha 😇</button>
             <button id="bekarBtn" class="cyber-btn">Bekar 😈</button>
         </div>
-        
+
         <div class="message-container" id="messageContainer">
-            <div class="message-label" id="messageLabel">Text</div>
+            <div class="typing-indicator">
+                <div class="typing-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                <span>Typing...</span>
+            </div>
             <div class="message-text" id="messageText"></div>
         </div>
     </div>
@@ -208,24 +238,20 @@
         const achaBtn = document.getElementById('achaBtn');
         const bekarBtn = document.getElementById('bekarBtn');
         const messageContainer = document.getElementById('messageContainer');
-        const messageLabel = document.getElementById('messageLabel');
         const messageText = document.getElementById('messageText');
         let bekarAttempts = 0;
 
-        // Typing functions
-        const typeText = async (text, speed = 100) => {
-            messageLabel.style.opacity = '1';
+        // Professional Typing Simulation
+        const typeText = async (element, text, speed = 100) => {
             for (let i = 0; i < text.length; i++) {
-                messageText.textContent += text[i];
-                messageText.style.width = `${messageText.textContent.length}ch`;
-                await new Promise(resolve => setTimeout(resolve, speed));
+                element.textContent += text[i];
+                await new Promise(resolve => setTimeout(resolve, speed + Math.random() * 50));
             }
         };
 
-        const deleteText = async (speed = 50) => {
-            while (messageText.textContent.length > 0) {
-                messageText.textContent = messageText.textContent.slice(0, -1);
-                messageText.style.width = `${messageText.textContent.length}ch`;
+        const deleteText = async (element, count, speed = 50) => {
+            for (let i = 0; i < count; i++) {
+                element.textContent = element.textContent.slice(0, -1);
                 await new Promise(resolve => setTimeout(resolve, speed));
             }
         };
@@ -236,15 +262,21 @@
             document.querySelector('.button-group').style.opacity = '0';
             messageContainer.classList.add('visible');
             messageText.textContent = '';
-            messageText.style.width = '0';
 
             // Typing sequence
-            await typeText('Darling', 120);
-            await new Promise(resolve => setTimeout(resolve, 500));
-            await deleteText(80);
-            await typeText('Aww, Tu Bhi Bohot Achi Lagti Hai Mujhe!! 💖', 60);
-            messageLabel.style.opacity = '0';
+            await typeText(messageText, '', 120);
+            await new Promise(resolve => setTimeout(resolve, 300));
+            await deleteText(messageText, 3);
+            await typeText(messageText, 'in', 150);
+            await new Promise(resolve => setTimeout(resolve, 200));
+            await deleteText(messageText, 2);
+            await new Promise(resolve => setTimeout(resolve, 100));
+            await typeText(messageText, 'Aww, Tu Bhi Bohot Achi Lagti Hai Mujhe!! 💖', 40);
+
             messageText.classList.add('visible');
+            
+            // Single added line to remove typing indicator
+            document.querySelector('.typing-indicator').style.display = 'none';
         });
 
         // Bekar Button Handler
@@ -253,13 +285,13 @@
             const containerRect = document.querySelector('.container').getBoundingClientRect();
             const maxX = containerRect.width - bekarBtn.offsetWidth - 40;
             const maxY = containerRect.height - bekarBtn.offsetHeight - 20;
-            
+
             bekarBtn.style.transition = `all ${Math.max(0.1, 0.5 - bekarAttempts*0.04)}s`;
             bekarBtn.style.transform = `translate(
                 ${Math.random() * maxX}px,
                 ${Math.random() * maxY}px
             ) rotate(${Math.random() * 15 - 7.5}deg)`;
-            
+
             if(bekarAttempts > 3) {
                 bekarBtn.style.filter = `hue-rotate(${bekarAttempts*30}deg)`;
             }
@@ -276,7 +308,7 @@
             }
         }
 
-        // Mobile support
+        // Mobile optimizations
         [achaBtn, bekarBtn].forEach(btn => {
             btn.addEventListener('touchstart', (e) => {
                 e.preventDefault();
