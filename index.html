@@ -3,195 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mai Kaisa Hu? 😎</title>
+    <title>Flirty Bhai Status Check</title>
     <style>
-        body {
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', sans-serif;
+        }
+
+        body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             overflow: hidden;
-            font-family: 'Arial', sans-serif;
-            touch-action: manipulation;
         }
 
-        .btn-container {
+        .container {
+            text-align: center;
             position: relative;
-            height: 100vh;
+            width: 100%;
         }
 
-        .choice-btn {
+        .title {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 15px rgba(0,0,0,0.3);
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            padding: 1.5rem 3rem;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.5s ease;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            position: relative;
+            margin-top: 30vh;
+        }
+
+        .flirty-btn {
+            padding: 1.2rem 2.5rem;
             border: none;
-            border-radius: 50px;
-            font-size: 1.5rem;
+            border-radius: 30px;
+            font-size: 1.3rem;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
+            transition: all 0.3s ease;
+            position: absolute;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+            transform-style: preserve-3d;
         }
 
         #achaBtn {
-            left: 10%;
-            background: #00ff88;
-            color: #1a1a1a;
-            animation: floatLeft 2s infinite;
+            background: #ffffff;
+            color: #ff1493;
+            left: 20%;
+            animation: heartbeat 1.5s infinite;
         }
 
         #bekarBtn {
-            right: 10%;
-            background: #ff4444;
+            background: #2d2d2d;
             color: white;
-            animation: floatRight 2s infinite;
+            right: 20%;
+            animation: shake 2s infinite;
         }
 
-        .choice-btn:hover {
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        #message {
-            position: fixed;
-            top: 50%;
+        .flirty-message {
+            position: absolute;
+            top: 20%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
             color: white;
-            font-size: 2.5rem;
-            text-align: center;
+            font-size: 2.2rem;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.5s;
-            width: 90vw;
+            transition: all 0.5s ease;
+            text-align: center;
         }
 
-        .stats {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            color: white;
-            font-size: 1.2rem;
+        .visible {
+            opacity: 1;
         }
 
-        @keyframes floatLeft {
-            0%, 100% { transform: translateY(-50%) translateX(0); }
-            50% { transform: translateY(-50%) translateX(-10px); }
+        .hidden {
+            opacity: 0;
         }
 
-        @keyframes floatRight {
-            0%, 100% { transform: translateY(-50%) translateX(0); }
-            50% { transform: translateY(-50%) translateX(10px); }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.2); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.1); }
+            60% { transform: scale(1); }
         }
 
-        .confetti {
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .heart {
             position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #fff;
-            animation: confetti 2s linear;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="white"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+            animation: floatUp 3s linear;
         }
 
-        @keyframes confetti {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100vh) scale(0); opacity: 0; }
         }
 
         @media (max-width: 768px) {
-            .choice-btn {
-                padding: 1.2rem 2.5rem;
-                font-size: 1.2rem;
-            }
-            
-            #message {
-                font-size: 1.8rem;
-            }
+            .title { font-size: 2rem; }
+            .flirty-btn { padding: 1rem 2rem; }
+            .flirty-message { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
-    <div class="stats" id="stats">Attempts: 0</div>
-    <div class="btn-container">
-        <button id="achaBtn" class="choice-btn">Acha 😇</button>
-        <button id="bekarBtn" class="choice-btn">Bekar 😈</button>
-        <div id="message"></div>
+    <h1 class="title">Me Kesa Lagta Hu? 😏</h1>
+    <div class="flirty-message" id="message"></div>
+    
+    <div class="button-group">
+        <button id="achaBtn" class="flirty-btn">Acha 😍</button>
+        <button id="bekarBtn" class="flirty-btn">Bekar 😒</button>
     </div>
 
     <script>
+        const title = document.querySelector('.title');
         const achaBtn = document.getElementById('achaBtn');
         const bekarBtn = document.getElementById('bekarBtn');
         const message = document.getElementById('message');
-        const stats = document.getElementById('stats');
-        let teleportCount = 0;
-        let attempts = 0;
-
-        // Mobile vibration support
-        const vibrate = (pattern) => {
-            if('vibrate' in navigator) navigator.vibrate(pattern);
-        };
+        let bekarClicks = 0;
 
         // Acha Button Handler
         achaBtn.addEventListener('click', () => {
-            vibrate([100, 50, 100]);
-            createConfetti();
-            message.innerHTML = "Aww! 😘<br>Tu Bhi Bahut Acha Hai Yaar!";
-            message.style.opacity = '1';
-            stats.textContent = `Success in ${attempts+1} attempts!`;
+            title.classList.add('hidden');
+            message.innerHTML = "Tum toh dil mein bas gaye! 💖<br>Chalo ab tum batao ham kaisa hai? 😘";
+            message.classList.add('visible');
+            createHearts();
             
             setTimeout(() => {
-                message.style.opacity = '0';
-                attempts = 0;
-                stats.textContent = 'Attempts: 0';
+                message.classList.remove('visible');
+                title.classList.remove('hidden');
             }, 5000);
         });
 
         // Bekar Button Handler
         bekarBtn.addEventListener('click', () => {
-            vibrate(50);
-            attempts++;
-            stats.textContent = `Attempts: ${attempts}`;
-            
-            teleportCount++;
+            bekarClicks++;
             const maxX = window.innerWidth - bekarBtn.offsetWidth;
             const maxY = window.innerHeight - bekarBtn.offsetHeight;
             
-            bekarBtn.style.transition = `all ${Math.max(0.3, 1 - teleportCount*0.1)}s`;
+            bekarBtn.style.transition = `all ${Math.max(0.2, 0.6 - bekarClicks*0.1)}s`;
             bekarBtn.style.left = `${Math.random() * maxX}px`;
             bekarBtn.style.top = `${Math.random() * maxY}px`;
-            bekarBtn.style.position = 'absolute';
-            bekarBtn.style.right = 'auto';
             
-            // Progressive difficulty
-            bekarBtn.style.transform = `scale(${1 + teleportCount*0.1})`;
-            if(teleportCount > 3) {
-                bekarBtn.style.fontSize = `${1.8 - teleportCount*0.1}rem`;
+            if(bekarClicks > 3) {
+                bekarBtn.innerHTML = `Bekar ${'😒'.repeat(bekarClicks)}`;
+                bekarBtn.style.fontSize = `${1.3 - (bekarClicks*0.05)}rem`;
             }
-            
-            setTimeout(() => {
-                bekarBtn.style.transform = 'scale(1)';
-            }, 300);
         });
 
-        function createConfetti() {
-            for(let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * window.innerWidth + 'px';
-                confetti.style.background = `hsl(${Math.random() * 360}, 70%, 60%)`;
-                document.body.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 2000);
+        function createHearts() {
+            for(let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.left = Math.random() * window.innerWidth + 'px';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 3000);
             }
         }
 
-        // Mobile touch optimization
-        bekarBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            bekarBtn.click();
-        });
-
-        // Orientation change handling
-        window.addEventListener('orientationchange', () => {
-            window.location.reload();
+        // Mobile touch support
+        [achaBtn, bekarBtn].forEach(btn => {
+            btn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                btn.click();
+            });
         });
     </script>
 </body>
