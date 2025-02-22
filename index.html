@@ -1,163 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Simulation</title>
-    <style>
-        /* Setting background and text color */
-        body {
-            background-color: black;
-            color: white;
-            font-family: Arial, sans-serif;
-        }
-
-        /* Container to hold all chat messages */
-        .chat-container {
-            width: 350px;
-            margin: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        /* General styling for messages */
-        .message {
-            max-width: 70%;
-            padding: 10px;
-            border-radius: 15px;
-            display: inline-block;
-            font-size: 14px;
-        }
-
-        /* Styling for receiver messages */
-        .receiver {
-            background-color: #3A3A3A;
-            align-self: flex-start;
-        }
-
-        /* Styling for sender messages */
-        .sender {
-            background-color: #5865F2;
-            align-self: flex-end;
-        }
-
-        /* Typing animation bubble */
-        .typing-indicator {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background-color: #3A3A3A;
-            padding: 10px;
-            border-radius: 15px;
-            width: 50px;
-        }
-
-        /* Three-dot animation */
-        .typing-indicator span {
-            width: 6px;
-            height: 6px;
-            background-color: white;
-            border-radius: 50%;
-            animation: blink 1s infinite alternate;
-        }
-
-        .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        /* Blinking effect for typing dots */
-        @keyframes blink {
-            0% { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
-
-        /* Styling for the "Seen just now" text */
-        .seen {
-            font-size: 12px;
-            color: gray;
-            text-align: right;
-            margin-right: 5px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instagram DM Visualization</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #000;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+    .container {
+      width: 400px;
+      height: 700px;
+      background-color: #000;
+      border: 1px solid #2f2f2f;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #2f2f2f;
+      background-color: #000;
+      flex-shrink: 0;
+    }
+    .header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+    .header .username {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .chat-area {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+    }
+    .message-row {
+      display: flex;
+      margin: 10px 0;
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+    }
+    .message-row.sent {
+      justify-content: flex-end;
+    }
+    .message-row.received {
+      justify-content: flex-start;
+    }
+    .bubble {
+      max-width: 70%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 1.4;
+      position: relative;
+      word-wrap: break-word;
+    }
+    .message-row.sent .bubble {
+      background-color: #0095f6;
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+    .message-row.received .bubble {
+      background-color: #262626;
+      border-bottom-left-radius: 4px;
+    }
+    .seen-indicator {
+      font-size: 11px;
+      color: #a8a8a8;
+      margin-top: 4px;
+      text-align: right;
+      font-style: italic;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    .typing-indicator {
+      display: inline-block;
+      width: 50px;
+      height: 16px;
+      position: relative;
+    }
+    .typing-indicator span {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin: 0 2px;
+      background-color: #fff;
+      border-radius: 50%;
+      opacity: 0.4;
+      animation: blink 1.4s infinite both;
+    }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink {
+      0%, 80%, 100% { opacity: 0.4; transform: translateY(0); }
+      40% { opacity: 1; transform: translateY(-3px); }
+    }
+    .options-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      padding: 10px;
+      border-top: 1px solid #2f2f2f;
+      background-color: #000;
+      flex-shrink: 0;
+    }
+    .option-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    .option-btn.bekar {
+      background-color: #ed4956;
+      color: #fff;
+      position: relative;
+    }
+    .option-btn.bekar:hover {
+      transform: translate(
+        calc(-50px + 100px * Math.random()),
+        calc(-50px + 100px * Math.random())
+      );
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <div class="header">
+      <img src="https://i.imgur.com/yDBXR2X.jpg" alt="Profile" onerror="this.src='https://via.placeholder.com/40?text=No+Pic';">
+      <div class="username">Tamar 👾</div>
+    </div>
+    <div class="chat-area" id="chatArea"></div>
+    <div class="options-bar" id="optionsBar">
+      <button class="option-btn bekar" id="bekarButton" onclick="handleBekar()">Bekar</button>
+    </div>
+  </div>
+  <script>
+    const conversation = [
+      { sender: 'received', text: 'Then me kyu nhi' },
+      { sender: 'received', text: 'kya kami hai' },
+      { sender: 'sent', text: 'Jb bnana hi nhi tko to' },
+      { sender: 'received', text: 'kya kami hai mere me' },
+      { sender: 'received', text: 'Me kesa lagta tujhe?' },
+      { sender: 'sent', text: 'Ek dost jesa' },
+      { sender: 'received', text: 'bas dost?' },
+      { sender: 'sent', text: 'Haan, acha dost' },
+      { sender: 'received', text: 'Acha dost ya bas dost?' },
+      { sender: 'sent', text: 'Bas dost' },
+      { sender: 'received', text: 'Okay.' }
+    ];
+    let currentIndex = 0;
 
-<!-- Chat Container -->
-<div class="chat-container">
-    <!-- First Message from the Receiver -->
-    <div class="message receiver">Acha?</div>
-</div>
+    function showNextMessage() {
+      if (currentIndex < conversation.length) {
+        const chatArea = document.getElementById("chatArea");
+        const msg = conversation[currentIndex];
 
-<script>
-    /**
-     * Function to add messages with optional typing animation.
-     * @param {string} text - The message to be displayed.
-     * @param {boolean} sender - If true, message is from our side; else, it's from the receiver.
-     * @param {boolean} isTyping - If true, show typing animation before the message.
-     * @param {number} delay - Delay before the message appears.
-     */
-    function appendMessage(text, sender = true, isTyping = false, delay = 1000) {
-        const chatContainer = document.querySelector(".chat-container");
+        if (msg.sender === "received") {
+          const typingIndicator = document.createElement("div");
+          typingIndicator.innerHTML = '<div class="bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div>';
+          chatArea.appendChild(typingIndicator);
+          chatArea.scrollTop = chatArea.scrollHeight;
 
-        if (isTyping) {
-            // Create typing animation bubble
-            let typingBubble = document.createElement("div");
-            typingBubble.classList.add("message", "receiver", "typing-indicator");
-            typingBubble.innerHTML = "<span></span><span></span><span></span>";
-            chatContainer.appendChild(typingBubble);
-
-            setTimeout(() => {
-                // Remove typing animation and add actual message
-                chatContainer.removeChild(typingBubble);
-                let messageBubble = document.createElement("div");
-                messageBubble.classList.add("message", sender ? "sender" : "receiver");
-                messageBubble.innerText = text;
-                chatContainer.appendChild(messageBubble);
-
-                // If sender, add "Seen just now"
-                if (sender) {
-                    setTimeout(() => {
-                        let seenText = document.createElement("div");
-                        seenText.classList.add("seen");
-                        seenText.innerText = "Seen just now";
-                        chatContainer.appendChild(seenText);
-                    }, 500);
-                }
-            }, delay);
+          setTimeout(() => {
+            chatArea.removeChild(typingIndicator);
+            addMessage(msg.sender, msg.text);
+            currentIndex++;
+            showNextMessage();
+          }, 1500);
         } else {
-            // Directly add message without typing animation
-            let messageBubble = document.createElement("div");
-            messageBubble.classList.add("message", sender ? "sender" : "receiver");
-            messageBubble.innerText = text;
-            chatContainer.appendChild(messageBubble);
-
-            // If sender, add "Seen just now"
-            if (sender) {
-                setTimeout(() => {
-                    let seenText = document.createElement("div");
-                    seenText.classList.add("seen");
-                    seenText.innerText = "Seen just now";
-                    chatContainer.appendChild(seenText);
-                }, 500);
-            }
+          addMessage(msg.sender, msg.text);
+          currentIndex++;
+          setTimeout(showNextMessage, 1000);
         }
+      } else {
+        document.getElementById("optionsBar").style.display = "flex";
+      }
     }
 
-    // Step 1: Typing animation for "Acha lagta hai" after 1 sec
-    setTimeout(() => {
-        appendMessage("Acha lagta hai", false, true, 1500);
-    }, 1000);
+    function addMessage(sender, text) {
+      const chatArea = document.getElementById("chatArea");
+      const messageRow = document.createElement("div");
+      messageRow.classList.add("message-row", sender);
 
-    // Step 2: Our response "Awwwww thank you!! Tu bhi bohot achi hai" after 3 sec
-    setTimeout(() => {
-        appendMessage("Awwwww thank you!! Tu bhi bohot achi hai", true, false);
-    }, 3000);
-</script>
+      const messageBubble = document.createElement("div");
+      messageBubble.classList.add("bubble");
+      messageBubble.innerText = text;
 
+      messageRow.appendChild(messageBubble);
+      chatArea.appendChild(messageRow);
+      chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
+    function handleBekar() {
+      const bekarBtn = document.getElementById("bekarButton");
+      bekarBtn.style.transform = `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)`;
+    }
+
+    showNextMessage(); // Start showing messages when the page loads
+  </script>
 </body>
 </html>
