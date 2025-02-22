@@ -53,26 +53,21 @@
             z-index: 100;
         }
 
-        .back-arrow {
-            font-size: 24px;
-            margin-right: 15px;
-            cursor: pointer;
-        }
-
         .profile-pic {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             object-fit: cover;
             position: relative;
+            margin-right: 12px;
         }
 
         .online-status {
             position: absolute;
             bottom: 0;
             right: 0;
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background: var(--online-status);
             border-radius: 50%;
             border: 2px solid var(--bg);
@@ -84,12 +79,12 @@
 
         .username {
             font-weight: 600;
-            font-size: 16px;
+            font-size: 14px;
         }
 
         .active-status {
             color: var(--secondary-text);
-            font-size: 12px;
+            font-size: 11px;
             margin-top: 2px;
         }
 
@@ -103,8 +98,9 @@
             background: none;
             border: none;
             color: var(--text);
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
+            padding: 8px;
         }
 
         /* Chat Area */
@@ -120,6 +116,13 @@
             gap: 8px;
             margin: 16px 0;
             align-items: flex-end;
+            opacity: 0;
+            animation: messageFade 0.3s ease-in forwards;
+        }
+
+        @keyframes messageFade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .received {
@@ -133,26 +136,20 @@
         .message-bubble {
             max-width: 75%;
             padding: 12px 16px;
-            border-radius: 22px;
-            font-size: 15px;
+            border-radius: 18px;
+            font-size: 14px;
             line-height: 1.4;
             position: relative;
-            animation: messageFade 0.3s ease-in;
-        }
-
-        @keyframes messageFade {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .received .message-bubble {
             background: var(--received-bg);
-            border-radius: 0 22px 22px 22px;
+            border-radius: 0 18px 18px 18px;
         }
 
         .sent .message-bubble {
             background: var(--sent-bg);
-            border-radius: 22px 0 22px 22px;
+            border-radius: 18px 0 18px 18px;
             color: white;
         }
 
@@ -172,37 +169,60 @@
             to { opacity: 1; }
         }
 
-        /* Input Area */
-        .input-area {
-            position: fixed;
-            bottom: 0;
-            width: 450px;
-            background: var(--bg);
-            border-top: 1px solid var(--border);
-            padding: 16px;
+        /* Typing Indicator */
+        .typing-indicator {
             display: flex;
-            gap: 12px;
             align-items: center;
-        }
-
-        .message-input {
-            flex-grow: 1;
-            background: var(--received-bg);
-            border: none;
-            border-radius: 22px;
-            padding: 12px 20px;
-            color: var(--text);
-            font-size: 15px;
-        }
-
-        .send-button {
-            background: transparent;
-            color: var(--sent-bg);
-            border: none;
-            font-weight: 600;
-            font-size: 15px;
+            gap: 4px;
             padding: 8px 12px;
+            background: var(--received-bg);
+            border-radius: 18px;
+            width: fit-content;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--text);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: typingBlink 1.4s infinite both;
+        }
+
+        @keyframes typingBlink {
+            0%, 80%, 100% { opacity: 0.4; }
+            40% { opacity: 1; }
+        }
+
+        /* Options Bar */
+        .options-bar {
+            display: none;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px;
+            border-top: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        .option-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .acha {
+            background: #3cab5c;
+            color: white;
+        }
+
+        .bekar {
+            background: #ed4956;
+            color: white;
+            position: relative;
         }
     </style>
 </head>
@@ -211,11 +231,11 @@
         <div class="header">
             <div class="back-arrow">←</div>
             <div style="position: relative;">
-                <img src="https://i.ibb.co/Jj238NKv/profile-pic.jpg" class="profile-pic" alt="Tamatar">
+                <img src="https://i.imgur.com/yDBXR2X.jpg" class="profile-pic" alt="Profile">
                 <div class="online-status"></div>
             </div>
             <div class="user-info">
-                <div class="username">Tamatar</div>
+                <div class="username">Tamar 👾</div>
                 <div class="active-status">Active now</div>
             </div>
             <div class="header-icons">
@@ -228,55 +248,117 @@
             <!-- Messages will be inserted here -->
         </div>
 
-        <div class="input-area">
-            <input type="text" class="message-input" placeholder="Message..." id="messageInput">
-            <button class="send-button" onclick="sendMessage()">Send</button>
+        <div class="options-bar" id="optionsBar">
+            <button class="option-btn acha" onclick="handleAcha()">Acha</button>
+            <button class="option-btn bekar" id="bekarBtn" onclick="handleBekar()">Bekar</button>
         </div>
     </div>
 
     <script>
-        let lastSeenIndicator = null;
-        
+        const conversation = [
+            { type: 'typing', duration: 1000 },
+            { text: 'Oyeeee sun', sender: 'received' },
+            { text: 'Hn bol rhe', sender: 'sent' },
+            { type: 'typing', duration: 1500 },
+            { text: 'me kesa lagta hu tujhe???', sender: 'received' }
+        ];
+
+        let currentStep = 0;
+        let lastSeen = null;
+
+        function showConversationStep() {
+            if (currentStep >= conversation.length) {
+                document.getElementById('optionsBar').style.display = 'flex';
+                return;
+            }
+
+            const step = conversation[currentStep];
+            const chatArea = document.getElementById('chatArea');
+
+            if (step.type === 'typing') {
+                const typing = createTypingIndicator();
+                chatArea.appendChild(typing);
+                chatArea.scrollTop = chatArea.scrollHeight;
+
+                setTimeout(() => {
+                    chatArea.removeChild(typing);
+                    currentStep++;
+                    showConversationStep();
+                }, step.duration);
+            } else {
+                createMessage(step.text, step.sender === 'sent');
+                currentStep++;
+                setTimeout(showConversationStep, 1000);
+            }
+        }
+
+        function createTypingIndicator() {
+            const container = document.createElement('div');
+            container.className = 'message received';
+            container.innerHTML = `
+                <img src="https://i.imgur.com/yDBXR2X.jpg" class="profile-pic" alt="Profile">
+                <div class="typing-indicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot" style="animation-delay: 0.2s"></div>
+                    <div class="typing-dot" style="animation-delay: 0.4s"></div>
+                </div>
+            `;
+            return container;
+        }
+
         function createMessage(text, isSent) {
             const chatArea = document.getElementById('chatArea');
             const message = document.createElement('div');
             message.className = `message ${isSent ? 'sent' : 'received'}`;
-            
+
+            if (!isSent) {
+                message.innerHTML = `
+                    <img src="https://i.imgur.com/yDBXR2X.jpg" class="profile-pic" alt="Profile">
+                `;
+            }
+
             const bubble = document.createElement('div');
             bubble.className = 'message-bubble';
             bubble.textContent = text;
-            
+
             if(isSent) {
-                if(lastSeenIndicator) lastSeenIndicator.remove();
+                if(lastSeen) lastSeen.remove();
                 const seen = document.createElement('div');
                 seen.className = 'seen-indicator';
                 seen.textContent = 'Seen just now';
                 bubble.appendChild(seen);
-                lastSeenIndicator = seen;
+                lastSeen = seen;
             }
-            
+
             message.appendChild(bubble);
             chatArea.appendChild(message);
             chatArea.scrollTop = chatArea.scrollHeight;
         }
 
-        function sendMessage() {
-            const input = document.getElementById('messageInput');
-            if(input.value.trim()) {
-                createMessage(input.value, true);
-                input.value = '';
+        function handleAcha() {
+            document.getElementById('optionsBar').style.display = 'none';
+            createMessage('tu bohot acha lagta hai', true);
+            
+            setTimeout(() => {
+                const typing = createTypingIndicator();
+                document.getElementById('chatArea').appendChild(typing);
                 
-                // Simulate reply after 1 second
                 setTimeout(() => {
-                    createMessage('This is a reply message', false);
-                }, 1000);
-            }
+                    typing.remove();
+                    createMessage('tu bhi lagti hai mujh bohot achi', false);
+                }, 1500);
+            }, 1000);
         }
 
-        // Initial messages
-        setTimeout(() => createMessage('Hey there! 👋', false), 500);
-        setTimeout(() => createMessage('Hi! How are you?', true), 1500);
-        setTimeout(() => createMessage('I'm good, thanks!', false), 2500);
+        function handleBekar() {
+            const bekarBtn = document.getElementById('bekarBtn');
+            const randomX = Math.random() * 200 - 100;
+            const randomY = Math.random() * 200 - 100;
+            bekarBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }
+
+        // Start conversation
+        setTimeout(showConversationStep, 1000);
     </script>
 </body>
 </html>
