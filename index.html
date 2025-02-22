@@ -1,237 +1,352 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram DM Clone</title>
-    <style>
-        :root {
-            --bg: #000000;
-            --text: #ffffff;
-            --border: #262626;
-            --sent-bg: #0095f6;
-            --received-bg: #262626;
-            --secondary-text: #a8a8a8;
-            --online-status: #00cc5b;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Instagram DM Clone</title>
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body {
+      font-family: sans-serif;
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      width: 400px;
+      height: 700px;
+      border: 1px solid #2f2f2f;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      background-color: #000;
+      overflow: hidden;
+      position: relative;
+    }
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-bottom: 1px solid #2f2f2f;
+      flex-shrink: 0;
+    }
+    .profile-pic {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      margin-right: 10px;
+      object-fit: cover;
+    }
+    .username {
+      font-weight: 600;
+      font-size: 16px;
+    }
+    /* Chat area */
+    .chat-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      scrollbar-width: none; /* Firefox */
+    }
+    .chat-area::-webkit-scrollbar {
+      display: none; /* Chrome, Safari */
+    }
+    /* Message bubbles */
+    .message-row {
+      display: flex;
+      margin-bottom: 12px;
+      align-items: flex-end;
+    }
+    .received {
+      justify-content: flex-start;
+    }
+    .sent {
+      justify-content: flex-end;
+    }
+    .bubble {
+      max-width: 70%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 1.4;
+      position: relative;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .received .bubble {
+      background-color: #2f2f2f;
+      border-bottom-left-radius: 4px;
+    }
+    .sent .bubble {
+      background-color: #6b49e0;
+      border-bottom-right-radius: 4px;
+      color: #fff;
+    }
+    .seen-text {
+      font-size: 10px;
+      color: #888;
+      text-align: right;
+      margin-top: 2px;
+    }
+    /* Typing Indicator */
+    .typing {
+      width: 50px;
+      height: 18px;
+      border-radius: 10px;
+      background: #2f2f2f;
+      position: relative;
+      overflow: hidden;
+    }
+    .typing::before,
+    .typing::after {
+      content: "";
+      position: absolute;
+      top: 7px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #fff;
+      animation: typing 1s infinite;
+    }
+    .typing::before {
+      left: 8px;
+    }
+    .typing::after {
+      left: 20px;
+      animation-delay: 0.2s;
+    }
+    .typing span {
+      position: absolute;
+      top: 7px;
+      left: 32px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #fff;
+      animation: typing 1s infinite;
+      animation-delay: 0.4s;
+    }
+    @keyframes typing {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1); }
+    }
 
-        body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-        }
+    /* Input area (bottom bar) */
+    .input-area {
+      border-top: 1px solid #2f2f2f;
+      padding: 8px;
+      flex-shrink: 0;
+      background-color: #000;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    .icon {
+      width: 28px;
+      height: 28px;
+      margin: 0 6px;
+    }
+    .message-input {
+      flex: 1;
+      background-color: #1a1a1a;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 12px;
+      margin: 0 6px;
+      color: #fff;
+      font-size: 14px;
+    }
+    .message-input:focus {
+      outline: none;
+    }
+    .options-bar {
+      display: none;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .option-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #fff;
+      transition: background 0.2s;
+    }
+    .option-btn:hover {
+      opacity: 0.9;
+    }
+    .acha {
+      background-color: #3cab5c;
+    }
+    .bekar {
+      background-color: #ed4956;
+    }
 
-        .container {
-            max-width: 450px;
-            margin: 0 auto;
-            height: 100vh;
-            position: relative;
-        }
-
-        .header {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            background: var(--bg);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .profile-pic {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            margin-right: 12px;
-            object-fit: cover;
-            position: relative;
-        }
-
-        .user-info {
-            flex-grow: 1;
-        }
-
-        .username {
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        .active-status {
-            color: var(--secondary-text);
-            font-size: 12px;
-            margin-top: 2px;
-        }
-
-        .chat-area {
-            padding: 16px;
-            padding-bottom: 80px;
-        }
-
-        .message {
-            display: flex;
-            gap: 8px;
-            margin: 16px 0;
-            align-items: flex-end;
-        }
-
-        .received {
-            flex-direction: row;
-        }
-
-        .sent {
-            flex-direction: row-reverse;
-        }
-
-        .message-bubble {
-            max-width: 75%;
-            padding: 12px 16px;
-            border-radius: 22px;
-            font-size: 15px;
-            line-height: 1.4;
-        }
-
-        .received .message-bubble {
-            background: var(--received-bg);
-            border-radius: 0 22px 22px 22px;
-        }
-
-        .sent .message-bubble {
-            background: var(--sent-bg);
-            border-radius: 22px 0 22px 22px;
-            color: white;
-        }
-
-        .time-stamp {
-            color: var(--secondary-text);
-            font-size: 11px;
-            margin: 4px 8px;
-        }
-
-        .input-area {
-            position: fixed;
-            bottom: 0;
-            width: 450px;
-            background: var(--bg);
-            border-top: 1px solid var(--border);
-            padding: 16px;
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .option-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 8px;
-        }
-
-        .option-button {
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .acha-button {
-            background: #0095f6;
-            color: white;
-        }
-
-        .bekar-button {
-            background: #ed4956;
-            color: white;
-            position: absolute;
-        }
-    </style>
+    /* Responsive for smaller widths */
+    @media (max-width: 450px) {
+      .container {
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 0;
+      }
+      .input-area {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <img src="https://i.imgur.com/yDBXR2X.jpg" class="profile-pic" alt="Profile">
-            <div class="user-info">
-                <div class="username">Tamatar</div>
-                <div class="active-status">Active now</div>
-            </div>
-        </div>
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <img 
+      src="https://i.imgur.com/yDBXR2X.jpg" 
+      alt="Profile" 
+      class="profile-pic"
+      onerror="this.src='https://via.placeholder.com/35/000/fff?text=No+Pic';"
+    >
+    <div class="username">bridegroom❤️</div>
+  </div>
 
-        <div class="chat-area" id="chatArea">
-            <!-- Initial Question -->
-            <div class="message received">
-                <div class="message-bubble">
-                    Bhai me kesa lagta hu??
-                    <div class="option-buttons">
-                        <button class="option-button acha-button" onclick="handleAcha()">Acha</button>
-                        <button class="option-button bekar-button" onclick="handleBekar()" 
-                                style="left: 120px; top: 120px;">Bekar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- Chat Area -->
+  <div class="chat-area" id="chatArea">
+    <!-- Messages will be dynamically inserted here -->
+  </div>
 
-        <div class="input-area">
-            <input type="text" class="message-input" placeholder="Message..." disabled>
-            <button class="send-button" disabled>Send</button>
-        </div>
-    </div>
+  <!-- Bottom Input Area (Mock) -->
+  <div class="input-area">
+    <!-- Icons (Placeholder) -->
+    <img src="https://i.imgur.com/xwYhEe5.png" alt="Camera" class="icon">
+    <input type="text" class="message-input" placeholder="Message..." disabled>
+    <img src="https://i.imgur.com/mcOFkPN.png" alt="Microphone" class="icon">
+    <img src="https://i.imgur.com/v95Rf2s.png" alt="Gallery" class="icon">
+    <img src="https://i.imgur.com/8WKh6YP.png" alt="Stickers" class="icon">
+    <img src="https://i.imgur.com/88T3V0g.png" alt="Plus" class="icon">
+  </div>
 
-    <script>
-        function handleAcha() {
-            const chatArea = document.getElementById('chatArea');
-            
-            // Remove buttons
-            document.querySelector('.option-buttons').remove();
-            
-            // Add sent message
-            const sentMessage = document.createElement('div');
-            sentMessage.className = 'message sent';
-            sentMessage.innerHTML = `
-                <div class="message-bubble">
-                    Acha lagta hai
-                    <div class="time-stamp">${getCurrentTime()}</div>
-                </div>
-            `;
-            chatArea.appendChild(sentMessage);
-            
-            // Add received response
-            setTimeout(() => {
-                const receivedMessage = document.createElement('div');
-                receivedMessage.className = 'message received';
-                receivedMessage.innerHTML = `
-                    <div class="message-bubble">
-                        awww thank you yrr
-                        <div class="time-stamp">${getCurrentTime()}</div>
-                    </div>
-                `;
-                chatArea.appendChild(receivedMessage);
-                chatArea.scrollTop = chatArea.scrollHeight;
-            }, 800);
-        }
+  <!-- Acha / Bekar Options -->
+  <div class="options-bar" id="optionsBar">
+    <button class="option-btn acha" onclick="handleAcha()">Acha</button>
+    <button class="option-btn bekar" onclick="handleBekar()">Bekar</button>
+  </div>
+</div>
 
-        function handleBekar() {
-            const bekarButton = document.querySelector('.bekar-button');
-            const containerRect = document.querySelector('.container').getBoundingClientRect();
-            
-            // Random position within container
-            const newX = Math.random() * (containerRect.width - 100);
-            const newY = Math.random() * (containerRect.height - 100);
-            
-            bekarButton.style.position = 'absolute';
-            bekarButton.style.left = `${newX}px`;
-            bekarButton.style.top = `${newY}px`;
-        }
+<script>
+/* 
+   Conversation flow in order:
+   1) received -> "Then me kyu nhi"
+   2) received -> "kya kami hai"
+   3) sent -> "Jb bnana hi nhi tko to"
+   4) received -> "kya kami hai mere me"
+   5) received -> "Me kesa lagta tujhe?"
+   => Show Acha/Bekar options 
+*/
+const conversation = [
+  { sender: 'received', text: 'Then me kyu nhi' },
+  { sender: 'received', text: 'kya kami hai' },
+  { sender: 'sent', text: 'Jb bnana hi nhi tko to' },
+  { sender: 'received', text: 'kya kami hai mere me' },
+  { sender: 'received', text: 'Me kesa lagta tujhe?' }
+];
 
-        function getCurrentTime() {
-            const now = new Date();
-            return now.toLocaleTimeString('en-US', { 
-                hour: 'numeric', 
-                minute: 'numeric', 
-                hour12: true 
-            }).replace(' AM', '').replace(' PM', '');
-        }
-    </script>
+// We’ll display messages one by one with a typing indicator
+let currentIndex = 0;
+
+function startConversation() {
+  if (currentIndex >= conversation.length) {
+    // All messages displayed
+    // Show the Acha/Bekar option bar for the final question
+    document.getElementById('optionsBar').style.display = 'flex';
+    return;
+  }
+  
+  const msg = conversation[currentIndex];
+  showTyping(msg.sender);
+  
+  // After a short delay, remove typing and show actual message
+  setTimeout(() => {
+    removeTyping(msg.sender);
+    appendMessageBubble(msg.sender, msg.text);
+    currentIndex++;
+    // Proceed to next message after a delay
+    setTimeout(startConversation, 600);
+  }, 1200);
+}
+
+// Show a typing bubble
+function showTyping(sender) {
+  const chatArea = document.getElementById('chatArea');
+  const row = document.createElement('div');
+  row.classList.add('message-row', sender);
+  
+  const bubble = document.createElement('div');
+  bubble.classList.add('bubble');
+  bubble.style.padding = '8px';
+  bubble.innerHTML = `<div class="typing"><span></span></div>`;
+  
+  row.appendChild(bubble);
+  chatArea.appendChild(row);
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+// Remove the typing bubble
+function removeTyping(sender) {
+  const chatArea = document.getElementById('chatArea');
+  const rows = chatArea.querySelectorAll('.message-row.' + sender);
+  if (!rows.length) return;
+  const lastRow = rows[rows.length - 1];
+  // if it has a .typing inside, remove that row
+  const typingDiv = lastRow.querySelector('.typing');
+  if (typingDiv) {
+    chatArea.removeChild(lastRow);
+  }
+}
+
+// Append final bubble with "seen" text
+function appendMessageBubble(sender, text) {
+  const chatArea = document.getElementById('chatArea');
+  const row = document.createElement('div');
+  row.classList.add('message-row', sender);
+  
+  const bubble = document.createElement('div');
+  bubble.classList.add('bubble');
+  bubble.textContent = text;
+  
+  // Add a 'seen' at the bottom for each message
+  const seen = document.createElement('div');
+  seen.classList.add('seen-text');
+  seen.textContent = 'Seen';
+  
+  bubble.appendChild(document.createElement('br'));
+  bubble.appendChild(seen);
+  
+  row.appendChild(bubble);
+  chatArea.appendChild(row);
+  
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+// Option Button Handlers
+function handleAcha() {
+  alert('Acha: Tujhse achi koi nahi! ❤️');
+}
+function handleBekar() {
+  alert('Bekar: Tu to bigad gayi re... 😂');
+}
+
+// Start on page load
+window.onload = () => {
+  startConversation();
+};
+</script>
 </body>
 </html>
