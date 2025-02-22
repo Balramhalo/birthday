@@ -14,6 +14,7 @@
             --border-color: #2a2a2a;
             --typing-bg: #1a1a1a;
             --accent: #00ff88;
+            --star-color: rgba(255, 255, 255, 0.8);
         }
 
         * {
@@ -29,21 +30,67 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: var(--bg-color);
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
             color: var(--text-color);
             overflow: hidden;
+            position: relative;
+        }
+
+        /* Starfield Background */
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-45deg);
+        }
+
+        .star {
+            position: absolute;
+            background: var(--star-color);
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Shooting Stars */
+        .shooting-star {
+            position: absolute;
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(-45deg, rgba(0, 255, 136, 0), var(--accent), rgba(0, 255, 136, 0));
+            border-radius: 999px;
+            filter: drop-shadow(0 0 6px var(--accent));
+            animation: shooting 2s infinite;
+        }
+
+        @keyframes shooting {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(-45deg);
+                opacity: 0;
+            }
+            20%, 100% { opacity: 0; }
+            10% {
+                opacity: 1;
+                transform: translateX(0%) translateY(0%) rotate(-45deg);
+            }
         }
 
         .container {
-            background: var(--bg-color);
+            background: rgba(10, 10, 10, 0.9);
             border-radius: 20px;
             padding: 2rem;
             border: 2px solid var(--border-color);
-            box-shadow: 0 0 40px rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.1),
+                        inset 0 0 20px rgba(0, 255, 136, 0.2);
             width: 95%;
             max-width: 600px;
             position: relative;
-            overflow: hidden;
+            z-index: 2;
+            backdrop-filter: blur(10px);
         }
 
         h1 {
@@ -58,7 +105,7 @@
         .button-group {
             display: flex;
             gap: 1.5rem;
-     ok       justify-content: center;
+            justify-content: center;
             position: relative;
             z-index: 2;
         }
@@ -84,8 +131,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(
-                90deg,
+            background: linear-gradient(90deg,
                 transparent,
                 rgba(0, 255, 136, 0.2),
                 transparent
@@ -215,6 +261,7 @@
     </style>
 </head>
 <body>
+    <div class="stars" id="stars"></div>
     <div class="container">
         <h1>Yeh Bata, Me Kesa Lagta Hu Tujhe? 💫</h1>
         <div class="button-group">
@@ -236,13 +283,47 @@
     </div>
 
     <script>
+        // Starfield Initialization
+        function createStarfield() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 200;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Shooting Stars Generator
+        function createShootingStar() {
+            const star = document.createElement('div');
+            star.className = 'shooting-star';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.left = Math.random() * 100 + '%';
+            document.body.appendChild(star);
+            
+            setTimeout(() => {
+                star.remove();
+            }, 2000);
+        }
+
+        // Initialize background effects
+        createStarfield();
+        setInterval(createShootingStar, 3000);
+
+        // Original Application Logic
         const achaBtn = document.getElementById('achaBtn');
         const bekarBtn = document.getElementById('bekarBtn');
         const messageContainer = document.getElementById('messageContainer');
         const messageText = document.getElementById('messageText');
         let bekarAttempts = 0;
 
-        // Professional Typing Simulation
         const typeText = async (element, text, speed = 100) => {
             for (let i = 0; i < text.length; i++) {
                 element.textContent += text[i];
@@ -257,14 +338,12 @@
             }
         };
 
-        // Acha Button Handler
         achaBtn.addEventListener('click', async () => {
             createParticles();
             document.querySelector('.button-group').style.opacity = '0';
             messageContainer.classList.add('visible');
             messageText.textContent = '';
 
-            // Typing sequence
             await typeText(messageText, '', 120);
             await new Promise(resolve => setTimeout(resolve, 300));
             await deleteText(messageText, 3);
@@ -275,12 +354,9 @@
             await typeText(messageText, 'Aww, Tu Bhi Bohot Achi Lagti Hai Mujhe!! 💖', 40);
 
             messageText.classList.add('visible');
-            
-            // Single added line to remove typing indicator
             document.querySelector('.typing-indicator').style.display = 'none';
         });
 
-        // Bekar Button Handler
         bekarBtn.addEventListener('click', () => {
             bekarAttempts++;
             const containerRect = document.querySelector('.container').getBoundingClientRect();
