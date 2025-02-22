@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Instagram DM</title>
     <style>
+        /* Instagram Exact Color Scheme */
         :root {
-            --bg: #000000;
-            --text: #ffffff;
-            --border: #262626;
-            --sent-bg: #0095f6;
-            --received-bg: #262626;
-            --secondary-text: #a8a8a8;
-            --online-status: #00cc5b;
-            --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --ig-primary-bg: #000000;
+            --ig-primary-text: #ffffff;
+            --ig-secondary-text: #a8a8a8;
+            --ig-separator: #262626;
+            --ig-blue-badge: #0095f6;
+            --ig-green-dot: #00cc5b;
+            --ig-red: #ed4956;
+            --ig-green: #3cab5c;
         }
 
         * {
@@ -21,277 +22,287 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background: var(--bg);
-            font-family: var(--font-system);
-            color: var(--text);
+            background: var(--ig-primary-bg);
+            color: var(--ig-primary-text);
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            touch-action: manipulation;
         }
 
-        .container {
-            width: 375px;
-            height: 667px;
-            background: var(--bg);
-            border: 1px solid var(--border);
+        /* Main Container (iPhone 13 Pro size) */
+        .ig-container {
+            width: 390px;
+            height: 844px;
+            background: var(--ig-primary-bg);
+            border: 1px solid var(--ig-separator);
             border-radius: 12px;
             overflow: hidden;
             position: relative;
         }
 
-        /* Header Styles */
-        .header {
-            padding: 8px 12px;
-            border-bottom: 1px solid var(--border);
+        /* Header (Exact Instagram Header) */
+        .ig-header {
+            height: 44px;
+            padding: 0 16px;
             display: flex;
             align-items: center;
-            background: var(--bg);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            height: 44px;
+            border-bottom: 0.5px solid var(--ig-separator);
+            position: relative;
+            z-index: 1000;
         }
 
-        .back-arrow {
+        .ig-back-arrow {
             width: 24px;
             height: 24px;
-            margin-right: 12px;
-            cursor: pointer;
+            margin-right: 16px;
             position: relative;
         }
 
-        .back-arrow::before {
+        .ig-back-arrow::before {
             content: "";
             position: absolute;
             left: 3px;
             top: 50%;
             width: 10px;
             height: 10px;
-            border-left: 2px solid var(--text);
-            border-bottom: 2px solid var(--text);
+            border-left: 2px solid #fff;
+            border-bottom: 2px solid #fff;
             transform: translateY(-50%) rotate(45deg);
         }
 
-        .profile-pic {
+        .ig-profile-container {
+            position: relative;
+            margin-right: 12px;
+        }
+
+        .ig-profile-pic {
             width: 28px;
             height: 28px;
             border-radius: 50%;
             object-fit: cover;
-            position: relative;
-            margin-right: 8px;
         }
 
-        .online-status {
+        .ig-online-status {
             position: absolute;
             bottom: 0;
             right: 0;
             width: 8px;
             height: 8px;
-            background: var(--online-status);
+            background: var(--ig-green-dot);
+            border: 1.5px solid var(--ig-primary-bg);
             border-radius: 50%;
-            border: 2px solid var(--bg);
         }
 
-        .user-info {
-            flex-grow: 1;
+        .ig-user-info {
+            flex: 1;
         }
 
-        .username {
-            font-weight: 600;
+        .ig-username {
             font-size: 16px;
+            font-weight: 600;
             line-height: 1.2;
         }
 
-        .active-status {
-            color: var(--secondary-text);
+        .ig-active-status {
             font-size: 11px;
+            color: var(--ig-secondary-text);
             margin-top: 1px;
         }
 
-        .header-icons {
+        .ig-header-icons {
             display: flex;
-            gap: 12px;
+            gap: 16px;
             margin-left: auto;
         }
 
-        .icon-btn {
-            background: none;
-            border: none;
-            color: var(--text);
-            cursor: pointer;
-            padding: 6px;
-            display: flex;
-            align-items: center;
+        .ig-icon {
+            width: 24px;
+            height: 24px;
+            fill: var(--ig-primary-text);
         }
 
-        .icon-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--text);
-        }
-
-        /* Chat Area */
-        .chat-area {
-            padding: 8px 12px;
-            padding-bottom: 60px;
-            height: calc(100% - 104px);
+        /* Chat Area (Exact Message Styling) */
+        .ig-chat-area {
+            padding: 8px 16px 80px;
+            height: calc(100% - 44px);
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
 
-        .message {
-            display: flex;
-            gap: 8px;
+        /* Message Bubbles */
+        .ig-message-row {
             margin: 12px 0;
-            align-items: flex-end;
+            display: flex;
             opacity: 0;
-            animation: messageFade 0.25s ease-out forwards;
+            animation: igMessageFade 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
         }
 
-        @keyframes messageFade {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes igMessageFade {
+            0% { opacity: 0; transform: translateY(8px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
-        .received {
-            flex-direction: row;
+        .ig-received {
+            justify-content: flex-start;
         }
 
-        .sent {
-            flex-direction: row-reverse;
+        .ig-sent {
+            justify-content: flex-end;
         }
 
-        .message-bubble {
+        .ig-message-bubble {
             max-width: 75%;
             padding: 8px 12px;
-            border-radius: 18px;
+            border-radius: 22px;
             font-size: 14px;
             line-height: 1.4;
             position: relative;
         }
 
-        .received .message-bubble {
-            background: var(--received-bg);
-            border-radius: 0 18px 18px 4px;
+        .ig-received .ig-message-bubble {
+            background: var(--ig-separator);
+            border-radius: 0 22px 22px 6px;
         }
 
-        .sent .message-bubble {
-            background: var(--sent-bg);
-            border-radius: 18px 4px 4px 18px;
-            color: white;
+        .ig-sent .ig-message-bubble {
+            background: var(--ig-blue-badge);
+            border-radius: 22px 6px 6px 22px;
+            color: #fff;
         }
 
-        .seen-indicator {
-            font-size: 11px;
-            color: var(--secondary-text);
+        .ig-seen-indicator {
             position: absolute;
             right: 8px;
             bottom: -16px;
+            font-size: 11px;
+            color: var(--ig-secondary-text);
             opacity: 0;
-            animation: seenFade 0.2s ease-in forwards;
-            animation-delay: 0.3s;
+            animation: igSeenFade 0.2s ease-in forwards;
+            animation-delay: 0.4s;
         }
 
-        @keyframes seenFade {
+        @keyframes igSeenFade {
             from { opacity: 0; }
             to { opacity: 1; }
         }
 
-        /* Typing Indicator */
-        .typing-indicator {
-            display: flex;
+        /* Typing Indicator (Exact Instagram Style) */
+        .ig-typing-indicator {
+            display: inline-flex;
             align-items: center;
-            gap: 4px;
             padding: 8px 12px;
-            background: var(--received-bg);
-            border-radius: 18px;
-            width: fit-content;
+            background: var(--ig-separator);
+            border-radius: 22px;
+            gap: 4px;
         }
 
-        .typing-dot {
+        .ig-typing-dot {
             width: 5px;
             height: 5px;
-            background: var(--text);
+            background: #fff;
             border-radius: 50%;
             opacity: 0.4;
-            animation: typingBlink 1.4s infinite both;
+            animation: igTyping 1.4s infinite both;
         }
 
-        @keyframes typingBlink {
-            0%, 80%, 100% { opacity: 0.4; }
-            40% { opacity: 1; }
+        @keyframes igTyping {
+            0%, 80%, 100% { opacity: 0.4; transform: translateY(0); }
+            40% { opacity: 1; transform: translateY(-1.5px); }
         }
 
-        /* Options Bar */
-        .options-bar {
+        /* Options Modal (Instagram-style Dialog) */
+        .ig-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(4px);
             display: none;
             justify-content: center;
-            gap: 16px;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .ig-options-modal {
+            background: var(--ig-primary-bg);
+            border-radius: 12px;
+            padding: 24px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+        }
+
+        .ig-option-btn {
+            width: 100%;
             padding: 12px;
-            border-top: 1px solid var(--border);
-            background: var(--bg);
-            position: sticky;
-            bottom: 0;
-        }
-
-        .option-btn {
-            padding: 8px 20px;
             border: none;
-            border-radius: 20px;
-            font-size: 14px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: 600;
+            margin: 8px 0;
             cursor: pointer;
-            transition: transform 0.2s;
-            font-family: var(--font-system);
+            transition: transform 0.1s;
         }
 
-        .acha {
-            background: #3cab5c;
-            color: white;
+        .ig-option-btn:active {
+            transform: scale(0.98);
         }
 
-        .bekar {
-            background: #ed4956;
-            color: white;
+        .ig-option-acha {
+            background: var(--ig-green);
+            color: #fff;
+        }
+
+        .ig-option-bekar {
+            background: var(--ig-red);
+            color: #fff;
             position: relative;
+            overflow: hidden;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="back-arrow"></div>
-            <div style="position: relative;">
-                <img src="https://i.ibb.co/Jj238NKv/profile-pic.jpg" class="profile-pic" alt="Profile">
-                <div class="online-status"></div>
+    <!-- Main Container -->
+    <div class="ig-container">
+        <!-- Header -->
+        <div class="ig-header">
+            <div class="ig-back-arrow"></div>
+            <div class="ig-profile-container">
+                <img src="https://i.ibb.co/Jj238NKv/profile-pic.jpg" class="ig-profile-pic" alt="Tamatar">
+                <div class="ig-online-status"></div>
             </div>
-            <div class="user-info">
-                <div class="username">Tamatar 👾</div>
-                <div class="active-status">Active now</div>
+            <div class="ig-user-info">
+                <div class="ig-username">Tamatar 👾</div>
+                <div class="ig-active-status">Active now</div>
             </div>
-            <div class="header-icons">
-                <button class="icon-btn">
-                    <svg viewBox="0 0 24 24"><path d="M20.005 5.005v14h-16v-14h16zm-8 10c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0-9c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z"/></svg>
-                </button>
-                <button class="icon-btn">
-                    <svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
-                </button>
+            <div class="ig-header-icons">
+                <svg class="ig-icon" viewBox="0 0 24 24"><path d="M20.005 5.005v14h-16v-14h16zm-8 10c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0-9c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z"/></svg>
+                <svg class="ig-icon" viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
             </div>
         </div>
 
-        <div class="chat-area" id="chatArea"></div>
+        <!-- Chat Area -->
+        <div class="ig-chat-area" id="chatArea"></div>
 
-        <div class="options-bar" id="optionsBar">
-            <button class="option-btn acha" onclick="handleAcha()">Acha</button>
-            <button class="option-btn bekar" id="bekarBtn" onclick="handleBekar()">Bekar</button>
+        <!-- Modal Overlay -->
+        <div class="ig-modal-overlay" id="modalOverlay">
+            <div class="ig-options-modal">
+                <button class="ig-option-btn ig-option-acha" onclick="handleAcha()">Acha</button>
+                <button class="ig-option-btn ig-option-bekar" id="bekarBtn" onclick="handleBekar()">Bekar</button>
+            </div>
         </div>
     </div>
 
     <script>
+        // Instagram-like Conversation Flow
         const conversation = [
             { type: 'typing', duration: 1200 },
             { text: 'Oyeeee sun', sender: 'received' },
@@ -302,10 +313,11 @@
 
         let currentStep = 0;
         let lastSeen = null;
+        let isModalOpen = false;
 
         function showConversationStep() {
             if (currentStep >= conversation.length) {
-                document.getElementById('optionsBar').style.display = 'flex';
+                showOptionsModal();
                 return;
             }
 
@@ -313,76 +325,81 @@
             const chatArea = document.getElementById('chatArea');
 
             if (step.type === 'typing') {
-                const typing = createTypingIndicator();
-                chatArea.appendChild(typing);
-                chatArea.scrollTop = chatArea.scrollHeight;
-
+                showTypingIndicator();
                 setTimeout(() => {
-                    chatArea.removeChild(typing);
                     currentStep++;
                     showConversationStep();
                 }, step.duration);
             } else {
-                createMessage(step.text, step.sender === 'sent');
+                createMessageElement(step.text, step.sender);
                 currentStep++;
                 setTimeout(showConversationStep, 800);
             }
         }
 
-        function createTypingIndicator() {
-            const container = document.createElement('div');
-            container.className = 'message received';
-            container.innerHTML = `
-                <img src="https://i.ibb.co/Jj238NKv/profile-pic.jpg" class="profile-pic" alt="Profile">
-                <div class="typing-indicator">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot" style="animation-delay: 0.2s"></div>
-                    <div class="typing-dot" style="animation-delay: 0.4s"></div>
+        function showTypingIndicator() {
+            const chatArea = document.getElementById('chatArea');
+            const typing = document.createElement('div');
+            typing.className = 'ig-message-row ig-received';
+            typing.innerHTML = `
+                <div class="ig-message-bubble">
+                    <div class="ig-typing-indicator">
+                        <div class="ig-typing-dot"></div>
+                        <div class="ig-typing-dot" style="animation-delay: 0.2s"></div>
+                        <div class="ig-typing-dot" style="animation-delay: 0.4s"></div>
+                    </div>
                 </div>
             `;
-            return container;
-        }
-
-        function createMessage(text, isSent) {
-            const chatArea = document.getElementById('chatArea');
-            const message = document.createElement('div');
-            message.className = `message ${isSent ? 'sent' : 'received'}`;
-
-            if (!isSent) {
-                message.innerHTML = `
-                    <img src="https://i.ibb.co/Jj238NKv/profile-pic.jpg" class="profile-pic" alt="Profile">
-                `;
-            }
-
-            const bubble = document.createElement('div');
-            bubble.className = 'message-bubble';
-            bubble.textContent = text;
-
-            if(isSent) {
-                if(lastSeen) lastSeen.remove();
-                const seen = document.createElement('div');
-                seen.className = 'seen-indicator';
-                seen.textContent = 'Seen just now';
-                bubble.appendChild(seen);
-                lastSeen = seen;
-            }
-
-            message.appendChild(bubble);
-            chatArea.appendChild(message);
+            chatArea.appendChild(typing);
             chatArea.scrollTop = chatArea.scrollHeight;
         }
 
+        function createMessageElement(text, sender) {
+            const chatArea = document.getElementById('chatArea');
+            const messageRow = document.createElement('div');
+            messageRow.className = `ig-message-row ${sender === 'sent' ? 'ig-sent' : 'ig-received'}`;
+
+            const bubble = document.createElement('div');
+            bubble.className = 'ig-message-bubble';
+            bubble.textContent = text;
+
+            if (sender === 'sent') {
+                if (lastSeen) lastSeen.remove();
+                const seen = document.createElement('div');
+                seen.className = 'ig-seen-indicator';
+                seen.textContent = 'Seen just now';
+                bubble.appendChild(seen);
+                lastSeen = seen;
+            } else {
+                const profilePic = document.createElement('img');
+                profilePic.className = 'ig-profile-pic';
+                profilePic.src = 'https://i.ibb.co/Jj238NKv/profile-pic.jpg';
+                messageRow.appendChild(profilePic);
+            }
+
+            messageRow.appendChild(bubble);
+            chatArea.appendChild(messageRow);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        function showOptionsModal() {
+            const overlay = document.getElementById('modalOverlay');
+            overlay.style.display = 'flex';
+            isModalOpen = true;
+        }
+
         function handleAcha() {
-            document.getElementById('optionsBar').style.display = 'none';
-            createMessage('tu bohot acha lagta hai', true);
+            if (!isModalOpen) return;
+            const overlay = document.getElementById('modalOverlay');
+            overlay.style.display = 'none';
+            isModalOpen = false;
+            
+            createMessageElement('tu bohot acha lagta hai', 'sent');
             
             setTimeout(() => {
-                const typing = createTypingIndicator();
-                document.getElementById('chatArea').appendChild(typing);
-                
+                showTypingIndicator();
                 setTimeout(() => {
-                    typing.remove();
-                    createMessage('tu bhi lagti hai mujh bohot achi', false);
+                    createMessageElement('tu bhi lagti hai mujh bohot achi', 'received');
                 }, 1500);
             }, 800);
         }
@@ -396,6 +413,14 @@
 
         // Start conversation
         setTimeout(showConversationStep, 800);
+
+        // Close modal when clicking outside
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                e.currentTarget.style.display = 'none';
+                isModalOpen = false;
+            }
+        });
     </script>
 </body>
 </html>
