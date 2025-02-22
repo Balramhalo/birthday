@@ -1,263 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram DM Clone</title>
-    <style>
-        /* Reset & Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background-color: #000;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            color: #fff;
-        }
-        /* Container */
-        .container {
-            width: 400px;
-            height: 700px;
-            background-color: #000;
-            border: 1px solid #2f2f2f;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-        }
-        /* Header */
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px;
-            border-bottom: 1px solid #2f2f2f;
-            background-color: #000;
-            flex-shrink: 0;
-        }
-        .header-left {
-            display: flex;
-            align-items: center;
-        }
-        .header img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 10px;
-        }
-        .header .username {
-            font-size: 16px;
-            font-weight: 600;
-        }
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .header-right img {
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-        }
-        /* Chat Area */
-        .chat-area {
-            flex: 1;
-            padding: 10px;
-            overflow-y: auto;
-        }
-        .message-row {
-            display: flex;
-            margin: 10px 0;
-            opacity: 0;
-            animation: fadeIn 0.5s forwards;
-        }
-        .message-row.sent {
-            justify-content: flex-end;
-        }
-        .message-row.received {
-            justify-content: flex-start;
-        }
-        .bubble {
-            max-width: 70%;
-            padding: 10px 14px;
-            border-radius: 16px;
-            font-size: 14px;
-            line-height: 1.4;
-            position: relative;
-            word-wrap: break-word;
-        }
-        .message-row.sent .bubble {
-            background-color: #0095f6;
-            color: #fff;
-            border-bottom-right-radius: 4px;
-        }
-        .message-row.received .bubble {
-            background-color: #262626;
-            border-bottom-left-radius: 4px;
-        }
-        .seen-indicator {
-            font-size: 11px;
-            color: #a8a8a8;
-            margin-top: 4px;
-            text-align: right;
-            font-style: italic;
-        }
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-        /* Typing Animation */
-        .typing-indicator {
-            display: inline-block;
-            width: 50px;
-            height: 16px;
-            position: relative;
-        }
-        .typing-indicator span {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            margin: 0 2px;
-            background-color: #fff;
-            border-radius: 50%;
-            opacity: 0.4;
-            animation: blink 1.4s infinite both;
-        }
-        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes blink {
-            0%, 80%, 100% { opacity: 0.4; transform: translateY(0); }
-            40% { opacity: 1; transform: translateY(-3px); }
-        }
-        /* Options Bar */
-        .options-bar {
-            display: none;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            padding: 10px;
-            border-top: 1px solid #2f2f2f;
-            background-color: #000;
-            flex-shrink: 0;
-        }
-        .option-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .option-btn.acha {
-            background-color: #3cab5c;
-            color: #fff;
-        }
-        .option-btn.bekar {
-            background-color: #ed4956;
-            color: #fff;
-            position: relative;
-        }
-        .option-btn:hover { opacity: 0.9; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instagram DM Clone</title>
+  <style>
+    /* Reset & Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #000;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+    /* Container */
+    .container {
+      width: 400px;
+      height: 700px;
+      background-color: #000;
+      border: 1px solid #2f2f2f;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      border-bottom: 1px solid #262626;
+      background-color: #000;
+    }
+    .header .username {
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .header .icons {
+      display: flex;
+      gap: 15px;
+    }
+    .icon {
+      font-size: 20px;
+      cursor: pointer;
+    }
+    /* Messages Container */
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scroll-behavior: smooth;
+    }
+    .message {
+      max-width: 75%;
+      padding: 10px;
+      border-radius: 15px;
+      font-size: 14px;
+    }
+    .received {
+      background-color: #262626;
+      align-self: flex-start;
+      border-bottom-left-radius: 5px;
+    }
+    .sent {
+      background-color: #3797f0;
+      align-self: flex-end;
+      border-bottom-right-radius: 5px;
+      position: relative;
+    }
+    /* Seen Indicator */
+    .seen {
+      font-size: 12px;
+      color: #aaa;
+      position: absolute;
+      bottom: -16px;
+      right: 5px;
+    }
+    /* Input Field */
+    .input-container {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-top: 1px solid #262626;
+      background-color: #000;
+    }
+    .input-box {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 20px;
+      background-color: #262626;
+      border: none;
+      outline: none;
+      color: #fff;
+    }
+    .send-btn {
+      margin-left: 10px;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      color: #3797f0;
+      font-size: 18px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-left">
-                <img src="https://i.imgur.com/yDBXR2X.jpg" alt="Profile" onerror="this.src='https://via.placeholder.com/40?text=No+Pic';">
-                <div class="username">Tamar 👾</div>
-            </div>
-            <div class="header-right">
-                <img src="https://image.flaticon.com/icons/png/512/724/724664.png" alt="Call Icon" title="Audio Call">
-                <img src="https://image.flaticon.com/icons/png/512/724/724659.png" alt="Video Call Icon" title="Video Call">
-            </div>
-        </div>
-        <!-- Chat Area -->
-        <div class="chat-area" id="chatArea">
-            <!-- Messages will be added here dynamically -->
-        </div>
-        <!-- Options Bar (appears after final message) -->
-        <div class="options-bar" id="optionsBar">
-            <button class="option-btn acha" onclick="handleAcha()">Acha</button>
-            <button class="option-btn bekar" id="bekarButton" onclick="handleBekar()" onmouseover="moveBekarButton()">Bekar</button>
-        </div>
+
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <span class="username">John Doe</span>
+      <div class="icons">
+        <span class="icon">📞</span>
+        <span class="icon">📹</span>
+      </div>
     </div>
-    <script>
-        // Conversation sequence before final options
-        const conversation = [
-            { sender: 'received', text: 'Then me kyu nhi' },
-            { sender: 'received', text: 'kya kami hai' },
-            { sender: 'sent', text: 'Bas ase hi' },
-            { sender: 'received', text: 'Bat bhi nhi kar rha tu' },
-            { sender: 'sent', text: 'Baat kar to raha hu' },
-            { sender: 'received', text: 'To kese lgta hu?' },
-        ];
 
-        const chatArea = document.getElementById('chatArea');
-        const optionsBar = document.getElementById('optionsBar');
-        const bekarButton = document.getElementById('bekarButton');
+    <!-- Messages Container -->
+    <div class="messages" id="messages">
+      <div class="message received">Hey, how are you?</div>
+      <div class="message sent">I'm good! You?</div>
+    </div>
 
-        function sendMessage(sender, text, delay) {
-            setTimeout(() => {
-                const messageRow = document.createElement('div');
-                messageRow.classList.add('message-row', sender);
-                messageRow.innerHTML = `<div class="bubble">${text}</div>`;
-                chatArea.appendChild(messageRow);
-                chatArea.scrollTop = chatArea.scrollHeight;
-            }, delay);
-        }
+    <!-- Input Field -->
+    <div class="input-container">
+      <input type="text" class="input-box" id="inputBox" placeholder="Message...">
+      <button class="send-btn" id="sendBtn">➤</button>
+    </div>
+  </div>
 
-        function startConversation() {
-            let delay = 500;
-            conversation.forEach((msg, index) => {
-                sendMessage(msg.sender, msg.text, delay);
-                delay += 1500;
-                if (index === conversation.length - 1) {
-                    setTimeout(() => {
-                        optionsBar.style.display = 'flex';
-                    }, delay + 1000);
-                }
-            });
-        }
+  <script>
+    const messagesContainer = document.getElementById("messages");
+    const inputBox = document.getElementById("inputBox");
+    const sendBtn = document.getElementById("sendBtn");
 
-        function handleAcha() {
-            optionsBar.style.display = 'none';
-            sendMessage('sent', 'Acha lgta hai 😊', 500);
-            setTimeout(() => {
-                const seenIndicator = document.createElement('div');
-                seenIndicator.classList.add('seen-indicator');
-                seenIndicator.innerText = 'Seen';
-                chatArea.appendChild(seenIndicator);
-            }, 2000);
-        }
+    sendBtn.addEventListener("click", sendMessage);
+    inputBox.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
 
-        function handleBekar() {
-            optionsBar.style.display = 'none';
-            sendMessage('sent', '😭😂', 500);
-            setTimeout(() => {
-                const seenIndicator = document.createElement('div');
-                seenIndicator.classList.add('seen-indicator');
-                seenIndicator.innerText = 'Seen';
-                chatArea.appendChild(seenIndicator);
-            }, 2000);
-        }
+    function sendMessage() {
+      const text = inputBox.value.trim();
+      if (text === "") return;
 
-        function moveBekarButton() {
-            bekarButton.style.position = 'absolute';
-            bekarButton.style.top = Math.random() * 50 + 'px';
-            bekarButton.style.left = Math.random() * 100 + 'px';
-        }
+      // Remove previous "Seen Just Now" messages
+      const previousSeen = document.querySelectorAll(".seen");
+      previousSeen.forEach((el) => el.remove());
 
-        window.onload = startConversation;
-    </script>
+      // Create sent message
+      const messageDiv = document.createElement("div");
+      messageDiv.classList.add("message", "sent");
+      messageDiv.textContent = text;
+
+      // Create "Seen Just Now" indicator
+      const seenDiv = document.createElement("div");
+      seenDiv.classList.add("seen");
+      seenDiv.textContent = "Seen Just Now";
+
+      messageDiv.appendChild(seenDiv);
+      messagesContainer.appendChild(messageDiv);
+
+      // Scroll to bottom
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+      // Clear input
+      inputBox.value = "";
+    }
+  </script>
+
 </body>
 </html>
