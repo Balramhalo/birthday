@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram DM Replica</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Instagram DM</title>
     <style>
         :root {
             --bg: #000000;
@@ -13,17 +13,19 @@
             --received-bg: #262626;
             --secondary-text: #a8a8a8;
             --online-status: #00cc5b;
+            --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background: var(--bg);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: var(--font-system);
             color: var(--text);
             height: 100vh;
             display: flex;
@@ -32,8 +34,8 @@
         }
 
         .container {
-            width: 450px;
-            height: 800px;
+            width: 375px;
+            height: 667px;
             background: var(--bg);
             border: 1px solid var(--border);
             border-radius: 12px;
@@ -43,7 +45,7 @@
 
         /* Header Styles */
         .header {
-            padding: 12px 16px;
+            padding: 8px 12px;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
@@ -51,12 +53,13 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            height: 44px;
         }
 
         .back-arrow {
             width: 24px;
             height: 24px;
-            margin-right: 15px;
+            margin-right: 12px;
             cursor: pointer;
             position: relative;
         }
@@ -79,7 +82,7 @@
             border-radius: 50%;
             object-fit: cover;
             position: relative;
-            margin-right: 12px;
+            margin-right: 8px;
         }
 
         .online-status {
@@ -99,13 +102,14 @@
 
         .username {
             font-weight: 600;
-            font-size: 14px;
+            font-size: 16px;
+            line-height: 1.2;
         }
 
         .active-status {
             color: var(--secondary-text);
             font-size: 11px;
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
         .header-icons {
@@ -119,7 +123,7 @@
             border: none;
             color: var(--text);
             cursor: pointer;
-            padding: 8px;
+            padding: 6px;
             display: flex;
             align-items: center;
         }
@@ -132,23 +136,24 @@
 
         /* Chat Area */
         .chat-area {
-            padding: 16px;
-            padding-bottom: 80px;
-            height: calc(100% - 120px);
+            padding: 8px 12px;
+            padding-bottom: 60px;
+            height: calc(100% - 104px);
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .message {
             display: flex;
             gap: 8px;
-            margin: 16px 0;
+            margin: 12px 0;
             align-items: flex-end;
             opacity: 0;
-            animation: messageFade 0.3s ease-in forwards;
+            animation: messageFade 0.25s ease-out forwards;
         }
 
         @keyframes messageFade {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -162,7 +167,7 @@
 
         .message-bubble {
             max-width: 75%;
-            padding: 12px 16px;
+            padding: 8px 12px;
             border-radius: 18px;
             font-size: 14px;
             line-height: 1.4;
@@ -171,12 +176,12 @@
 
         .received .message-bubble {
             background: var(--received-bg);
-            border-radius: 0 18px 18px 18px;
+            border-radius: 0 18px 18px 4px;
         }
 
         .sent .message-bubble {
             background: var(--sent-bg);
-            border-radius: 18px 0 18px 18px;
+            border-radius: 18px 4px 4px 18px;
             color: white;
         }
 
@@ -184,11 +189,11 @@
             font-size: 11px;
             color: var(--secondary-text);
             position: absolute;
-            right: 12px;
-            bottom: -18px;
+            right: 8px;
+            bottom: -16px;
             opacity: 0;
-            animation: seenFade 0.3s ease-in forwards;
-            animation-delay: 0.5s;
+            animation: seenFade 0.2s ease-in forwards;
+            animation-delay: 0.3s;
         }
 
         @keyframes seenFade {
@@ -208,8 +213,8 @@
         }
 
         .typing-dot {
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
             background: var(--text);
             border-radius: 50%;
             opacity: 0.4;
@@ -225,20 +230,23 @@
         .options-bar {
             display: none;
             justify-content: center;
-            gap: 20px;
-            padding: 10px;
+            gap: 16px;
+            padding: 12px;
             border-top: 1px solid var(--border);
             background: var(--bg);
+            position: sticky;
+            bottom: 0;
         }
 
         .option-btn {
-            padding: 10px 20px;
+            padding: 8px 20px;
             border: none;
             border-radius: 20px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: transform 0.2s;
+            font-family: var(--font-system);
         }
 
         .acha {
@@ -285,10 +293,10 @@
 
     <script>
         const conversation = [
-            { type: 'typing', duration: 1000 },
+            { type: 'typing', duration: 1200 },
             { text: 'Oyeeee sun', sender: 'received' },
             { text: 'Hn bol rhe', sender: 'sent' },
-            { type: 'typing', duration: 1500 },
+            { type: 'typing', duration: 1800 },
             { text: 'me kesa lagta hu tujhe???', sender: 'received' }
         ];
 
@@ -317,7 +325,7 @@
             } else {
                 createMessage(step.text, step.sender === 'sent');
                 currentStep++;
-                setTimeout(showConversationStep, 1000);
+                setTimeout(showConversationStep, 800);
             }
         }
 
@@ -376,7 +384,7 @@
                     typing.remove();
                     createMessage('tu bhi lagti hai mujh bohot achi', false);
                 }, 1500);
-            }, 1000);
+            }, 800);
         }
 
         function handleBekar() {
@@ -387,7 +395,7 @@
         }
 
         // Start conversation
-        setTimeout(showConversationStep, 1000);
+        setTimeout(showConversationStep, 800);
     </script>
 </body>
 </html>
