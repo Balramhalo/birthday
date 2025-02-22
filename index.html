@@ -1,277 +1,263 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Instagram DM Clone</title>
-  <style>
-    /* Reset & Base Styles */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background-color: #000;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: #fff;
-    }
-    /* Container */
-    .container {
-      width: 400px;
-      height: 700px;
-      background-color: #000;
-      border: 1px solid #2f2f2f;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      position: relative;
-    }
-    /* Header */
-    .header {
-      display: flex;
-      align-items: center;
-      padding: 10px;
-      border-bottom: 1px solid #2f2f2f;
-      background-color: #000;
-      flex-shrink: 0;
-    }
-    .header img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-right: 10px;
-    }
-    .header .username {
-      font-size: 16px;
-      font-weight: 600;
-    }
-    /* Chat Area */
-    .chat-area {
-      flex: 1;
-      padding: 10px;
-      overflow-y: auto;
-    }
-    .message-row {
-      display: flex;
-      margin: 10px 0;
-      opacity: 0;
-      animation: fadeIn 0.5s forwards;
-    }
-    .message-row.sent {
-      justify-content: flex-end;
-    }
-    .message-row.received {
-      justify-content: flex-start;
-    }
-    .bubble {
-      max-width: 70%;
-      padding: 10px 14px;
-      border-radius: 16px;
-      font-size: 14px;
-      line-height: 1.4;
-      position: relative;
-      background-color: #262626;
-      word-wrap: break-word;
-    }
-    .message-row.sent .bubble {
-      background-color: #0095f6;
-      color: #fff;
-      border-bottom-right-radius: 4px;
-    }
-    .message-row.received .bubble {
-      background-color: #262626;
-      border-bottom-left-radius: 4px;
-    }
-    .seen-indicator {
-      font-size: 11px;
-      color: #a8a8a8;
-      margin-top: 4px;
-      text-align: right;
-      font-style: italic;
-      /* You can also add a check icon if you wish, e.g.: content: '✔ Seen'; */
-    }
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-    /* Typing Animation (only for received messages) */
-    .typing-indicator {
-      display: inline-block;
-      width: 50px;
-      height: 16px;
-      position: relative;
-    }
-    .typing-indicator span {
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      margin: 0 2px;
-      background-color: #fff;
-      border-radius: 50%;
-      opacity: 0.4;
-      animation: blink 1.4s infinite both;
-    }
-    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes blink {
-      0%, 80%, 100% { opacity: 0.4; transform: translateY(0); }
-      40% { opacity: 1; transform: translateY(-3px); }
-    }
-    /* Options Bar */
-    .options-bar {
-      display: none;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      padding: 10px;
-      border-top: 1px solid #2f2f2f;
-      background-color: #000;
-      flex-shrink: 0;
-    }
-    .option-btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .option-btn.acha {
-      background-color: #3cab5c;
-      color: #fff;
-    }
-    .option-btn.bekar {
-      background-color: #ed4956;
-      color: #fff;
-      position: relative;
-    }
-    .option-btn:hover { opacity: 0.9; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram DM Clone</title>
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+        /* Container */
+        .container {
+            width: 400px;
+            height: 700px;
+            background-color: #000;
+            border: 1px solid #2f2f2f;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #2f2f2f;
+            background-color: #000;
+            flex-shrink: 0;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        .header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        .header .username {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .header-right img {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+        /* Chat Area */
+        .chat-area {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        .message-row {
+            display: flex;
+            margin: 10px 0;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+        .message-row.sent {
+            justify-content: flex-end;
+        }
+        .message-row.received {
+            justify-content: flex-start;
+        }
+        .bubble {
+            max-width: 70%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.4;
+            position: relative;
+            word-wrap: break-word;
+        }
+        .message-row.sent .bubble {
+            background-color: #0095f6;
+            color: #fff;
+            border-bottom-right-radius: 4px;
+        }
+        .message-row.received .bubble {
+            background-color: #262626;
+            border-bottom-left-radius: 4px;
+        }
+        .seen-indicator {
+            font-size: 11px;
+            color: #a8a8a8;
+            margin-top: 4px;
+            text-align: right;
+            font-style: italic;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        /* Typing Animation */
+        .typing-indicator {
+            display: inline-block;
+            width: 50px;
+            height: 16px;
+            position: relative;
+        }
+        .typing-indicator span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            margin: 0 2px;
+            background-color: #fff;
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: blink 1.4s infinite both;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink {
+            0%, 80%, 100% { opacity: 0.4; transform: translateY(0); }
+            40% { opacity: 1; transform: translateY(-3px); }
+        }
+        /* Options Bar */
+        .options-bar {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 10px;
+            border-top: 1px solid #2f2f2f;
+            background-color: #000;
+            flex-shrink: 0;
+        }
+        .option-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .option-btn.acha {
+            background-color: #3cab5c;
+            color: #fff;
+        }
+        .option-btn.bekar {
+            background-color: #ed4956;
+            color: #fff;
+            position: relative;
+        }
+        .option-btn:hover { opacity: 0.9; }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Header -->
-    <div class="header">
-      <img src="https://i.imgur.com/yDBXR2X.jpg" alt="Profile" onerror="this.src='https://via.placeholder.com/40?text=No+Pic';">
-      <div class="username">Tamar 👾</div>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <img src="https://i.imgur.com/yDBXR2X.jpg" alt="Profile" onerror="this.src='https://via.placeholder.com/40?text=No+Pic';">
+                <div class="username">Tamar 👾</div>
+            </div>
+            <div class="header-right">
+                <img src="https://image.flaticon.com/icons/png/512/724/724664.png" alt="Call Icon" title="Audio Call">
+                <img src="https://image.flaticon.com/icons/png/512/724/724659.png" alt="Video Call Icon" title="Video Call">
+            </div>
+        </div>
+        <!-- Chat Area -->
+        <div class="chat-area" id="chatArea">
+            <!-- Messages will be added here dynamically -->
+        </div>
+        <!-- Options Bar (appears after final message) -->
+        <div class="options-bar" id="optionsBar">
+            <button class="option-btn acha" onclick="handleAcha()">Acha</button>
+            <button class="option-btn bekar" id="bekarButton" onclick="handleBekar()" onmouseover="moveBekarButton()">Bekar</button>
+        </div>
     </div>
-    <!-- Chat Area -->
-    <div class="chat-area" id="chatArea">
-      <!-- Messages will be added here dynamically -->
-    </div>
-    <!-- Options Bar (appears after final message) -->
-    <div class="options-bar" id="optionsBar">
-      <button class="option-btn acha" onclick="handleAcha()">Acha</button>
-      <button class="option-btn bekar" id="bekarButton" onclick="handleBekar()" onmouseover="moveBekarButton()">Bekar</button>
-    </div>
-  </div>
-  <script>
-    // Conversation sequence before final options
-    const conversation = [
-      { sender: 'received', text: 'Then me kyu nhi' },
-      { sender: 'received', text: 'kya kami hai' },
-      { sender: 'sent', text: 'Jb bnana hi nhi tko to' },
-      { sender: 'received', text: 'kya kami hai mere me' },
-      { sender: 'received', text: 'Me kesa lagta tujhe?' }
-    ];
-    let currentIndex = 0;
-    const chatArea = document.getElementById('chatArea');
-    const optionsBar = document.getElementById('optionsBar');
+    <script>
+        // Conversation sequence before final options
+        const conversation = [
+            { sender: 'received', text: 'Then me kyu nhi' },
+            { sender: 'received', text: 'kya kami hai' },
+            { sender: 'sent', text: 'Bas ase hi' },
+            { sender: 'received', text: 'Bat bhi nhi kar rha tu' },
+            { sender: 'sent', text: 'Baat kar to raha hu' },
+            { sender: 'received', text: 'To kese lgta hu?' },
+        ];
 
-    // Append a message bubble to chat area
-    function appendMessage(sender, text) {
-      const row = document.createElement('div');
-      row.classList.add('message-row', sender);
-      
-      const bubble = document.createElement('div');
-      bubble.classList.add('bubble');
-      bubble.textContent = text;
-      
-      // For sent messages, add a cooler "Seen" indicator
-      if (sender === 'sent') {
-        const seen = document.createElement('div');
-        seen.className = 'seen-indicator';
-        seen.textContent = '✔ Seen';
-        bubble.appendChild(document.createElement('br'));
-        bubble.appendChild(seen);
-      }
-      
-      row.appendChild(bubble);
-      chatArea.appendChild(row);
-      chatArea.scrollTop = chatArea.scrollHeight;
-    }
+        const chatArea = document.getElementById('chatArea');
+        const optionsBar = document.getElementById('optionsBar');
+        const bekarButton = document.getElementById('bekarButton');
 
-    // Display a received message with typing animation
-    function showTyping(sender, callback) {
-      const row = document.createElement('div');
-      row.classList.add('message-row', sender);
-      const bubble = document.createElement('div');
-      bubble.classList.add('bubble');
-      bubble.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
-      row.appendChild(bubble);
-      chatArea.appendChild(row);
-      chatArea.scrollTop = chatArea.scrollHeight;
-      setTimeout(() => {
-        row.remove();
-        callback();
-      }, 1200);
-    }
+        function sendMessage(sender, text, delay) {
+            setTimeout(() => {
+                const messageRow = document.createElement('div');
+                messageRow.classList.add('message-row', sender);
+                messageRow.innerHTML = `<div class="bubble">${text}</div>`;
+                chatArea.appendChild(messageRow);
+                chatArea.scrollTop = chatArea.scrollHeight;
+            }, delay);
+        }
 
-    // Process the conversation messages one by one
-    function processConversation() {
-      if (currentIndex >= conversation.length) {
-        // After all messages, show options bar
-        optionsBar.style.display = 'flex';
-        return;
-      }
-      const msg = conversation[currentIndex];
-      if (msg.sender === 'received') {
-        showTyping(msg.sender, () => {
-          appendMessage(msg.sender, msg.text);
-          currentIndex++;
-          setTimeout(processConversation, 600);
-        });
-      } else {
-        // Sent messages appear immediately
-        appendMessage(msg.sender, msg.text);
-        currentIndex++;
-        setTimeout(processConversation, 600);
-      }
-    }
+        function startConversation() {
+            let delay = 500;
+            conversation.forEach((msg, index) => {
+                sendMessage(msg.sender, msg.text, delay);
+                delay += 1500;
+                if (index === conversation.length - 1) {
+                    setTimeout(() => {
+                        optionsBar.style.display = 'flex';
+                    }, delay + 1000);
+                }
+            });
+        }
 
-    // Option button handlers
-    function handleAcha() {
-      // Hide options bar
-      optionsBar.style.display = 'none';
-      // Append sent message "Acha"
-      appendMessage('sent', 'Acha');
-      // After a delay, simulate received reply with typing animation
-      setTimeout(() => {
-        showTyping('received', () => {
-          appendMessage('received', 'Aww yaar sahi me thank you!!!!!');
-        });
-      }, 800);
-    }
-    function handleBekar() {
-      // If Bekar is pressed, remove the Bekar button (only Acha remains)
-      const bekarBtn = document.querySelector('.option-btn.bekar');
-      if (bekarBtn) {
-        bekarBtn.remove();
-      }
-    }
-    function moveBekarButton() {
-      // Randomly reposition the Bekar button within the options bar area
-      const x = Math.random() * 50 - 25;
-      const y = Math.random() * 20 - 10;
-      const bekarBtn = document.querySelector('.option-btn.bekar');
-      bekarBtn.style.transform = `translate(${x}px, ${y}px)`;
-    }
-    
-    // Start the conversation on page load
-    window.onload = processConversation;
-  </script>
+        function handleAcha() {
+            optionsBar.style.display = 'none';
+            sendMessage('sent', 'Acha lgta hai 😊', 500);
+            setTimeout(() => {
+                const seenIndicator = document.createElement('div');
+                seenIndicator.classList.add('seen-indicator');
+                seenIndicator.innerText = 'Seen';
+                chatArea.appendChild(seenIndicator);
+            }, 2000);
+        }
+
+        function handleBekar() {
+            optionsBar.style.display = 'none';
+            sendMessage('sent', '😭😂', 500);
+            setTimeout(() => {
+                const seenIndicator = document.createElement('div');
+                seenIndicator.classList.add('seen-indicator');
+                seenIndicator.innerText = 'Seen';
+                chatArea.appendChild(seenIndicator);
+            }, 2000);
+        }
+
+        function moveBekarButton() {
+            bekarButton.style.position = 'absolute';
+            bekarButton.style.top = Math.random() * 50 + 'px';
+            bekarButton.style.left = Math.random() * 100 + 'px';
+        }
+
+        window.onload = startConversation;
+    </script>
 </body>
 </html>
