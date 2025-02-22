@@ -1,1468 +1,212 @@
-
-
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram DM Clone</title>
+    <style>
+        :root {
+            --bg: #000000;
+            --text: #ffffff;
+            --border: #262626;
+            --sent-bg: #0095f6;
+            --received-bg: #262626;
+            --secondary-text: #a8a8a8;
+        }
 
-<meta charset="UTF-8" />
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
 
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        .container {
+            max-width: 450px;
+            margin: 0 auto;
+            height: 100vh;
+            position: relative;
+        }
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        .header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            background: var(--bg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-<title>INSTAGRAM</title>
+        .profile-pic {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            margin-right: 12px;
+            object-fit: cover;
+        }
 
-<link rel="stylesheet" href="instagram.css" />
+        .user-info {
+            flex-grow: 1;
+        }
 
-<link
+        .username {
+            font-weight: 600;
+            font-size: 15px;
+        }
 
-rel="stylesheet"
+        .active-status {
+            color: var(--secondary-text);
+            font-size: 12px;
+            margin-top: 2px;
+        }
 
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        .chat-area {
+            padding: 16px;
+            padding-bottom: 80px;
+        }
 
-integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+        .message {
+            display: flex;
+            gap: 8px;
+            margin: 16px 0;
+            align-items: flex-end;
+        }
 
-crossorigin="anonymous"
+        .received {
+            flex-direction: row;
+        }
 
-referrerpolicy="no-referrer"
+        .sent {
+            flex-direction: row-reverse;
+        }
 
-/>
+        .message-bubble {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 22px;
+            font-size: 15px;
+            line-height: 1.4;
+        }
 
+        .received .message-bubble {
+            background: var(--received-bg);
+            border-radius: 0 22px 22px 22px;
+        }
 
-<link rel="icon" href="images/Instagram_logo_2022.svg" />
+        .sent .message-bubble {
+            background: var(--sent-bg);
+            border-radius: 22px 0 22px 22px;
+            color: white;
+        }
 
+        .time-stamp {
+            color: var(--secondary-text);
+            font-size: 11px;
+            margin: 4px 8px;
+        }
+
+        .input-area {
+            position: fixed;
+            bottom: 0;
+            width: 450px;
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .message-input {
+            flex-grow: 1;
+            background: var(--received-bg);
+            border: none;
+            border-radius: 22px;
+            padding: 12px 20px;
+            color: var(--text);
+            font-size: 15px;
+        }
+
+        .send-button {
+            background: transparent;
+            color: var(--sent-bg);
+            border: none;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 8px 12px;
+        }
+    </style>
 </head>
-
 <body>
-
-<div class="instagram">
-
-<header>
-
-<div class="instalogo">
-
-<img src="images/instagram.png" alt="**" />
-
-</div>
-
-<div class="search">
-
-<i class="fa-solid fa-magnifying-glass"></i>
-
-<input type="search" placeholder="search" />
-
-</div>
-
-
-<nav>
-
-<ul>
-
-<li>
-
-<a href="#"><i class="fa-solid fa-house"></i></a>
-
-</li>
-
-<li>
-
-<a href="#"><i class="fa-brands fa-facebook-messenger"></i></a>
-
-</li>
-
-<li>
-
-<a href="#"><i class="fa-solid fa-square-plus"></i></a>
-
-</li>
-
-<li>
-
-<a href="#"><i class="fa-solid fa-compass"></i></a>
-
-</li>
-
-<li>
-
-<a href="#"><i class="fa-regular fa-heart"></i></a>
-
-</li>
-
-<li>
-
-<a href="#"> <img src="images/bk.png" alt="bk" /></a>
-
-</li>
-
-</ul>
-
-</nav>
-
-</header>
-
-<section>
-
-<div class="Left-side">
-
-<div class="story">
-
-<div class="stories">
-
-<a href="##">
-
-<img
-
-src="images/download (1).jpeg"
-
-alt="##"
-
-width="60"
-
-height="60"
-
-/></a>
-
-<p>iam_pikachu_bk</p>
-
-</div>
-
-<div class="stories">
-
-<a>
-
-<img
-
-src="images/download (2).jpeg"
-
-alt="##"
-
-width="60"
-
-height="60"
-
-/></a>
-
-<p>surya_singleboy</p>
-
-</div>
-
-<div class="stories">
-
-<a>
-
-<img
-
-src="images/download (3).jpeg"
-
-alt="##"
-
-width="60"
-
-height="60"
-
-/></a>
-
-<p>bk_bharathikannan</p>
-
-</div>
-
-<div class="stories">
-
-<a>
-
-<img
-
-src="images/download (4).jpeg"
-
-alt="##"
-
-width="60"
-
-height="60"
-
-/></a>
-
-<p>tamilvanan</p>
-
-</div>
-
-</div>
-
-
-<div class="posts">
-
-<div class="post-title">
-
-<div class="post-left">
-
-<div class="images">
-
-<img src="images/bk.png " width="32px" height="32px" />
-
-</div>
-
-<div class="details">
-
-<p class="name">bk_bharathikannan</p>
-
-<p class="location">chidambaranathapuram</p>
-
-</div>
-
-</div>
-
-<div class="post-right">
-
-<i class="fa-solid fa-ellipsis"></i>
-
-</div>
-
-</div>
-
-<div class="post-content">
-
-<img
-
-src="images/WhatsApp Image 2022-10-05 at 2.08.04 PM.jpeg"
-
-height="600"
-
-width="600"
-
-/>
-
-</div>
-
-<div class="post-footer">
-
-<div class="like-share-comment">
-
-<i class="fa-regular fa-heart"></i>
-
-<i class="fa-regular fa-comment"></i>
-
-<i class="fa-sharp fa-solid fa-paper-plane"></i>
-
-</div>
-
-<div class="save-icon">
-
-<i class="fa-regular fa-bookmark"></i>
-
-</div>
-
-</div>
-
-<div class="post-footer-content">
-
-<p class="likes">10k likes</p>
-
-<p class="name">
-
-bk_bharathikannan <span>follow for more posts</span>
-
-</p>
-
-<p class="comment">View all 674 comments</p>
-
-<p class="posting-time">1 HOUR AGO</p>
-
-</div>
-
-
-<div class="add-comments">
-
-<div class="left-side">
-
-<i class="fa-regular fa-face-smile"></i>
-
-<input type="text" placeholder="Add a comments..." />
-
-</div>
-
-<div class="right-side">
-
-<p>post</p>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="posts">
-
-<div class="post-title">
-
-<div class="post-left">
-
-<div class="images">
-
-<img
-
-src="images/download (4).jpeg "
-
-width="32px"
-
-height="32px"
-
-/>
-
-</div>
-
-<div class="details">
-
-<p class="name">surya_singleboy</p>
-
-<p class="location">thathuvancherry</p>
-
-</div>
-
-</div>
-
-<div class="post-right">
-
-<i class="fa-solid fa-ellipsis"></i>
-
-</div>
-
-</div>
-
-<div class="post-content">
-
-<img
-
-src="images/WhatsApp Image 2022-10-05 at 2.08.04 PM (1).jpeg"
-
-height="600"
-
-width="600"
-
-/>
-
-</div>
-
-<div class="post-footer">
-
-<div class="like-share-comment">
-
-<i class="fa-regular fa-heart"></i>
-
-
-<i class="fa-regular fa-comment"></i>
-
-<i class="fa-sharp fa-solid fa-paper-plane"></i>
-
-</div>
-
-<div class="save-icon">
-
-<i class="fa-regular fa-bookmark"></i>
-
-</div>
-
-</div>
-
-<div class="post-footer-content">
-
-<p class="likes">7465 likes</p>
-
-<p class="name">surya_singleboy <span>motivation</span></p>
-
-<p class="comment">View all 674 comments</p>
-
-<p class="posting-time">1 HOUR AGO</p>
-
-</div>
-
-
-<div class="add-comments">
-
-<div class="left-side">
-
-<i class="fa-regular fa-face-smile"></i>
-
-<input type="text" placeholder="Add a comments..." />
-
-</div>
-
-<div class="right-side">
-
-<p>post</p>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="posts">
-
-<div class="post-title">
-
-<div class="post-left">
-
-<div class="images">
-
-<img
-
-src="images/download (4).jpeg "
-
-width="32px"
-
-height="32px"
-
-/>
-
-</div>
-
-<div class="details">
-
-<p class="name">crypto_tamil</p>
-
-<p class="location">chidambaranathapuram</p>
-
-</div>
-
-</div>
-
-<div class="post-right">
-
-<i class="fa-solid fa-ellipsis"></i>
-
-</div>
-
-</div>
-
-<div class="post-content">
-
-<img src="images/download (3).jpeg" height="600" width="600" />
-
-</div>
-
-<div class="post-footer">
-
-<div class="like-share-comment">
-
-<i class="fa-regular fa-heart"></i>
-
-<i class="fa-regular fa-comment"></i>
-
-<i class="fa-sharp fa-solid fa-paper-plane"></i>
-
-</div>
-
-<div class="save-icon">
-
-<i class="fa-regular fa-bookmark"></i>
-
-</div>
-
-</div>
-
-<div class="post-footer-content">
-
-<p class="likes">6453 likes</p>
-
-<p class="name">crypto_tamil <span>philo_math</span></p>
-
-<p class="comment">View all 674 comments</p>
-
-<p class="posting-time">8 HOUR AGO</p>
-
-</div>
-
-
-<div class="add-comments">
-
-<div class="left-side">
-
-<i class="fa-regular fa-face-smile"></i>
-
-<input type="text" placeholder="Add a comments..." />
-
-</div>
-
-<div class="right-side">
-
-<p>post</p>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="posts">
-
-<div class="post-title">
-
-<div class="post-left">
-
-<div class="images">
-
-<img src="images/my_photo.jpeg" width="32px" height="32px" />
-
-</div>
-
-<div class="details">
-
-<p class="name">bk_bharathikannan</p>
-
-<p class="location">chidambaranathapuram</p>
-
-</div>
-
-</div>
-
-<div class="post-right">
-
-<i class="fa-solid fa-ellipsis"></i>
-
-</div>
-
-</div>
-
-<div class="post-content">
-
-<img src="images/1200x630wa.png" height="600" width="600" />
-
-</div>
-
-<div class="post-footer">
-
-<div class="like-share-comment">
-
-<i class="fa-regular fa-heart"></i>
-
-
-<i class="fa-regular fa-comment"></i>
-
-<i class="fa-sharp fa-solid fa-paper-plane"></i>
-
-</div>
-
-<div class="save-icon">
-
-<i class="fa-regular fa-bookmark"></i>
-
-</div>
-
-</div>
-
-<div class="post-footer-content">
-
-<p class="likes">
-
-Liked by <span>blacklover_seenu </span>and
-
-<span>2,096,242 others</span>
-
-</p>
-
-<p class="name">
-
-bk_bharathikannan <span>don't trust anyone</span>
-
-</p>
-
-<p class="comment">View all 674 comments</p>
-
-<p class="posting-time">21 MINUTES AGO</p>
-
-</div>
-
-
-<div class="add-comments">
-
-<div class="left-side">
-
-<i class="fa-regular fa-face-smile"></i>
-
-<input type="text" placeholder="Add a comments..." />
-
-</div>
-
-<div class="right-side">
-
-<p>post</p>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="Right-side">
-
-<div class="profile-title">
-
-<div class="profile-left">
-
-<div class="images">
-
-<img src="images/bk.png" width="56" height="56" />
-
-</div>
-
-<div class="details">
-
-<p class="user_name">bk_bharathikannan</p>
-
-<p class="insta_petName">bharathikannan...🦋</p>
-
-</div>
-
-</div>
-
-<div class="profile-right">
-
-<p>Switch</p>
-
-</div>
-
-</div>
-
-
-<div class="suggestion">
-
-<p>Suggestions for you</p>
-
-<p>See All</p>
-
-</div>
-
-<div class="suggest-peoples">
-
-<div class="suggestion-right">
-
-<div class="suggest_image">
-
-<img src="images/download (3).jpeg" height="32" width="32" />
-
-</div>
-
-<div class="people-details">
-
-<div class="user">surya_singleboy</div>
-
-<div class="location">USA</div>
-
-</div>
-
-</div>
-
-
-<div class="suggesstion-left">
-
-<p>follow</p>
-
-</div>
-
-</div>
-
-
-<div class="suggest-peoples">
-
-<div class="suggestion-right">
-
-<div class="suggest_image">
-
-<img src="images/download (2).jpeg" height="32" width="32" />
-
-</div>
-
-<div class="people-details">
-
-<div class="user">iam_pikachu_bk</div>
-
-<div class="location">USA</div>
-
-</div>
-
-</div>
-
-
-<div class="suggesstion-left">
-
-<p>follow</p>
-
-</div>
-
-</div>
-
-
-<div class="suggest-peoples">
-
-<div class="suggestion-right">
-
-<div class="suggest_image">
-
-<img src="images/download (1).jpeg" height="32" width="32" />
-
-</div>
-
-<div class="people-details">
-
-<div class="user">aravind_chaplin</div>
-
-<div class="location">Kumbakonam</div>
-
-</div>
-
-</div>
-
-
-<div class="suggesstion-left">
-
-<p>follow</p>
-
-</div>
-
-</div>
-
-
-<div class="suggest-peoples">
-
-<div class="suggestion-right">
-
-<div class="suggest_image">
-
-<img
-
-src="images/360_F_184527584_KGmcreEQbmy1ecqQXial7ZqPACBCoBSz.jpg"
-
-height="32"
-
-width="32"
-
-/>
-
-</div>
-
-<div class="people-details">
-
-<div class="user">devkumaraguru</div>
-
-<div class="location">USA</div>
-
-</div>
-
-</div>
-
-
-<div class="suggesstion-left">
-
-<p>follow</p>
-
-</div>
-
-</div>
-
-
-<div class="bottom_line1">
-
-<p>About Help Press API Jobs Privacy Terms</p>
-
-<p>Locations Language</p>
-
-</div>
-
-
-<div class="bottom_line2">
-
-<p>© 2022 INSTAGRAM FROM META</p>
-
-</div>
-
-</div>
-
-</section>
-
-</div>
-
+    <div class="container">
+        <div class="header">
+            <img src="IMG_20250222_144135.jpg" class="profile-pic" alt="Profile">
+            <div class="user-info">
+                <div class="username">bridegroom</div>
+                <div class="active-status">Active now</div>
+            </div>
+        </div>
+
+        <div class="chat-area">
+            <!-- Your Message -->
+            <div class="message sent">
+                <div class="message-bubble">
+                    Tu privanshu ke biday ke din bhi nhi aayi
+                </div>
+                <div class="time-stamp">14:19</div>
+            </div>
+
+            <!-- Received Message -->
+            <div class="message received">
+                <img src="IMG_20250222_144135.jpg" class="profile-pic" alt="Sedd">
+                <div class="message-bubble">
+                    Sar dard krha toh<br>Soja
+                </div>
+                <div class="time-stamp">14:20</div>
+            </div>
+
+            <!-- Received Message -->
+            <div class="message received">
+                <img src="IMG_20250222_144135.jpg" class="profile-pic" alt="Kyu">
+                <div class="message-bubble">
+                    ni so skti
+                </div>
+                <div class="time-stamp">14:21</div>
+            </div>
+
+            <!-- Your Reply -->
+            <div class="message sent">
+                <div class="message-bubble">
+                    Kyu<br>geo krni h
+                </div>
+                <div class="time-stamp">14:21</div>
+            </div>
+
+            <!-- Received Message -->
+            <div class="message received">
+                <img src="IMG_20250222_144135.jpg" class="profile-pic" alt="Pranay">
+                <div class="message-bubble">
+                    darling me bhi whi dekh rha<br>Double tap to
+                </div>
+                <div class="time-stamp">14:22</div>
+            </div>
+
+            <!-- New Message -->
+            <div class="message received">
+                <img src="IMG_20250222_144135.jpg" class="profile-pic" alt="User">
+                <div class="message-bubble">
+                    nice nice
+                </div>
+                <div class="time-stamp">14:23</div>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <input type="text" class="message-input" placeholder="Message...">
+            <button class="send-button">Send</button>
+        </div>
+    </div>
 </body>
-
 </html>
-
-
-CSS (Cascading Style Sheets)
-
-
-* {
-
-margin: 0;
-
-padding: 0;
-
-box-sizing: border-box;
-
-font-family: sans-serif;
-
-}
-
-
-header {
-
-display: flex;
-
-justify-content: space-between;
-
-align-items: center;
-
-padding: 10px 18%;
-
-border-bottom: 1px solid rgb(216, 211, 211);
-
-background-color: white;
-
-z-index: 10;
-
-position: sticky;
-
-top: 0;
-
-}
-
-
-.save-icon:hover {
-
-background: black;
-
-}
-
-
-header .instalogo {
-
-height: 29px;
-
-}
-
-header .instalogo img {
-
-height: 100%;
-
-width: 103px;
-
-object-fit: contain;
-
-padding: 0;
-
-}
-
-
-header .search i{
-
-padding-right: 10px;
-
-}
-
-header .search {
-
-width: 250px;
-
-background: #efefef;
-
-display: flex;
-
-align-items: center;
-
-padding: 3px 10px;
-
-border-radius: 5px;
-
-}
-
-
-header .search input {
-
-background: #efefef;
-
-display: flex;
-
-height: 30px;
-
-border: none;
-
-outline: none;
-
-width: 100%;
-
-font-size: 15px;
-
-}
-
-
-header nav ul {
-
-list-style: none;
-
-display: flex;
-
-}
-
-
-header nav ul li {
-
-margin-right: 20px;
-
-}
-
-header nav ul li :last-child {
-
-margin-right: 0;
-
-}
-
-header nav ul li a img {
-
-margin-right: 20px;
-
-border-radius: 50%;
-
-display: flex;
-
-height: 22px;
-
-object-fit: cover;
-
-justify-content: center;
-
-align-items: center;
-
-width: 22px;
-
-}
-
-
-header nav ul li i {
-
-font-size: 22px;
-
-color: rgb(2, 1, 1);
-
-}
-
-
-/* body section */
-
-section {
-
-padding: 30px 18%;
-
-background: #fafafa;
-
-display: flex;
-
-}
-
-
-.Left-side {
-
-width: 60%;
-
-}
-
-
-.story {
-
-display: flex;
-
-padding: 15px;
-
-background: white;
-
-border: 1px solid rgb(216, 211, 211);
-
-border-radius: 5px;
-
-}
-
-
-.stories img {
-
-height: 50;
-
-width: 50;
-
-display: flex;
-
-border-radius: 50%;
-
-border: 2px solid rgb(250, 176, 188);
-
-padding: 1px;
-
-object-fit: cover;
-
-padding: 2px;
-
-}
-
-
-.story p {
-
-width: 90%;
-
-overflow: hidden;
-
-text-overflow: ellipsis;
-
-white-space: nowrap;
-
-color: gray;
-
-}
-
-
-/* posts */
-
-
-.posts {
-
-margin: 25px 0;
-
-background-color: white;
-
-border: 1px solid rgb(219, 219, 219, 1);
-
-border-radius: 10px;
-
-}
-
-
-.post-title {
-
-display: flex;
-
-justify-content: space-between;
-
-align-items: center;
-
-padding: 16px;
-
-}
-
-
-.post-left {
-
-display: flex;
-
-align-items: center;
-
-}
-
-
-.images {
-
-margin-right: 10px;
-
-}
-
-.images img {
-
-border: 2px solid rgb(250, 176, 188);
-
-padding: 1px;
-
-border-radius: 50%;
-
-object-fit: cover;
-
-}
-
-
-.details .name {
-
-padding-bottom: 2px;
-
-font-weight: bold;
-
-}
-
-
-.post-content img {
-
-height: 100%;
-
-width: 100%;
-
-object-fit: cover;
-
-}
-
-
-.post-footer {
-
-display: flex;
-
-justify-content: space-between;
-
-padding: 16px;
-
-}
-
-
-.like-share-comment i {
-
-font-size: 22px;
-
-margin-right: 10px;
-
-}
-
-.save-icon i {
-
-font-size: 22px;
-
-}
-
-
-.post-footer-content {
-
-padding: 0 16px 16px 16px;
-
-}
-
-
-.post-footer-content p {
-
-padding-bottom: 3px;
-
-}
-
-
-.post-footer-content .like {
-
-margin-bottom: 8px;
-
-}
-
-
-.post-footer-content .name {
-
-font-weight: 600;
-
-}
-
-
-.post-footer-content .name span {
-
-font-weight: normal;
-
-margin-left: 7px;
-
-}
-
-
-.post-footer-content .likes span {
-
-font-weight: bold;
-
-}
-
-
-.post-footer-content .comment {
-
-color: rgb(152, 147, 147);
-
-}
-
-.post-footer-content .posting-time {
-
-font-size: small;
-
-padding: 10px 0px 0px 0px;
-
-color: rgb(152, 147, 147);
-
-}
-
-
-.add-comments {
-
-border-top: 1px solid rgb(223, 220, 220);
-
-padding: 16px;
-
-display: flex;
-
-align-items: center;
-
-justify-content: space-between;
-
-}
-
-
-.add-comments .left-side {
-
-display: flex;
-
-align-items: center;
-
-}
-
-
-.add-comments .left-side i {
-
-font-size: 22px;
-
-margin-right: 15px;
-
-}
-
-
-.posts .add-comments .left-side input {
-
-border: none;
-
-outline: none;
-
-width: 100%;
-
-font-size: 14px;
-
-}
-
-
-.right-side
-
-{
-
-color: skyblue;
-
-}
-
-.Right-side {
-
-width: 40%;
-
-position: fixed;
-
-margin-top: 15px;
-
-right: 28px;
-
-padding-left: 20px;
-
-}
-
-
-.profile-title {
-
-display: flex;
-
-align-items: center;
-
-}
-
-
-.profile-left {
-
-display: flex;
-
-align-items: center;
-
-margin-right: 40px;
-
-}
-
-.profile-left .images img {
-
-border-radius: 50%;
-
-margin-right: 15px;
-
-}
-
-.details {
-
-padding-bottom: 3px;
-
-}
-
-.profile-right {
-
-color: rgb(18, 107, 142);
-
-}
-
-
-.suggestion {
-
-display: flex;
-
-margin-top: 25px;
-
-margin-bottom: 15px;
-
-}
-
-.suggestion p {
-
-margin-right: 90px;
-
-}
-
-
-.suggestion :last-child {
-
-margin-right: 0px;
-
-}
-
-
-.suggest-peoples {
-
-display: flex;
-
-align-items: center;
-
-margin-bottom: 15px;
-
-}
-
-
-.suggestion-right {
-
-display: flex;
-
-align-items: center;
-
-margin-right: 60px;
-
-}
-
-.suggestion-right img {
-
-border-radius: 50%;
-
-object-fit: contain;
-
-margin-right: 15px;
-
-}
-
-
-.people-details .user {
-
-padding-bottom: 3px;
-
-}
-
-
-.suggesstion-left {
-
-display: flex;
-
-padding-right: 30px;
-
-color: skyblue;
-
-}
-
-
-.bottom_line1 {
-
-font-size: small;
-
-color: rgb(211, 209, 209);
-
-margin-top: 50px;
-
-}
-
-
-.bottom_line2 {
-
-margin-top: 20px;
-
-font-size: small;
-
-color: rgb(211, 209, 209);
-
-}
-
-
-/* media Queries */
-
-
-@media (max-width: 990px) {
-
-header {
-
-padding: 10px 20px;
-
-}
-
-section .Left-side {
-
-width: 100%;
-
-}
-
-section .Right-side {
-
-display: none;
-
-}
-
-}
-
-
-@media (max-width: 765px) {
-
-header .search {
-
-display: none;
-
-}
-
-
-section {
-
-padding: 30px 20px;
-
-}
-
-}
-
-
-@media (max-width: 574px) {
-
-.story .stories {
-
-width: 25%;
-
-}
-
-
-header nav ul li {
-
-margin-right: 10px;
-
-}
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
