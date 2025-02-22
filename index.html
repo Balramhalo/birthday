@@ -1,183 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Instagram DM Clone</title>
-  <style>
-    /* Reset & Base Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      background-color: #000;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: #fff;
-    }
-    /* Container */
-    .container {
-      width: 400px;
-      height: 700px;
-      background-color: #000;
-      border: 1px solid #2f2f2f;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      position: relative;
-    }
-    /* Header */
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px;
-      border-bottom: 1px solid #262626;
-      background-color: #000;
-    }
-    .header .username {
-      font-weight: bold;
-      font-size: 16px;
-    }
-    .header .icons {
-      display: flex;
-      gap: 15px;
-    }
-    .icon {
-      font-size: 20px;
-      cursor: pointer;
-    }
-    /* Messages Container */
-    .messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      scroll-behavior: smooth;
-    }
-    .message {
-      max-width: 75%;
-      padding: 10px;
-      border-radius: 15px;
-      font-size: 14px;
-    }
-    .received {
-      background-color: #262626;
-      align-self: flex-start;
-      border-bottom-left-radius: 5px;
-    }
-    .sent {
-      background-color: #3797f0;
-      align-self: flex-end;
-      border-bottom-right-radius: 5px;
-      position: relative;
-    }
-    /* Seen Indicator */
-    .seen {
-      font-size: 12px;
-      color: #aaa;
-      position: absolute;
-      bottom: -16px;
-      right: 5px;
-    }
-    /* Input Field */
-    .input-container {
-      display: flex;
-      align-items: center;
-      padding: 10px;
-      border-top: 1px solid #262626;
-      background-color: #000;
-    }
-    .input-box {
-      flex: 1;
-      padding: 8px 12px;
-      border-radius: 20px;
-      background-color: #262626;
-      border: none;
-      outline: none;
-      color: #fff;
-    }
-    .send-btn {
-      margin-left: 10px;
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-      color: #3797f0;
-      font-size: 18px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram DM Clone</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .chat-container {
+            width: 350px;
+            height: 600px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        /* Header */
+        .chat-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: white;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .back-btn {
+            font-size: 20px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        .profile-pic {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: url('https://via.placeholder.com/35') center/cover;
+            margin-right: 10px;
+        }
+
+        .username {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .status {
+            font-size: 12px;
+            color: gray;
+        }
+
+        .icons {
+            font-size: 18px;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        /* Chat messages */
+        .chat-box {
+            flex-grow: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+
+        .chat-box::-webkit-scrollbar {
+            display: none;
+        }
+
+        .message {
+            max-width: 75%;
+            padding: 10px;
+            border-radius: 18px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            display: inline-block;
+            position: relative;
+        }
+
+        .message.sent {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        .message.received {
+            background-color: #efefef;
+            align-self: flex-start;
+        }
+
+        /* Typing indicator */
+        .typing {
+            font-size: 12px;
+            color: gray;
+            margin-left: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .typing.active {
+            opacity: 1;
+        }
+
+        /* Footer */
+        .chat-footer {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            background: white;
+        }
+
+        .emoji-btn {
+            font-size: 22px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .message-input {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            outline: none;
+        }
+
+        .send-btn {
+            font-size: 20px;
+            cursor: pointer;
+            margin-left: 10px;
+            color: #0095f6;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="container">
-    <!-- Header -->
-    <div class="header">
-      <span class="username">John Doe</span>
-      <div class="icons">
-        <span class="icon">📞</span>
-        <span class="icon">📹</span>
-      </div>
+    <div class="chat-container">
+        <!-- Header -->
+        <div class="chat-header">
+            <span class="back-btn">&#8592;</span>
+            <div class="user-info">
+                <div class="profile-pic"></div>
+                <div>
+                    <div class="username">johndoe</div>
+                    <div class="status">Active now</div>
+                </div>
+            </div>
+            <span class="icons">&#8942;</span>
+        </div>
+
+        <!-- Chat Box -->
+        <div class="chat-box">
+            <div class="message received">Hey! How are you?</div>
+            <div class="message sent">I'm good! What about you?</div>
+            <div class="message received">Just chilling. Wanna hang out?</div>
+            <div class="message sent">Sure! Let’s go out.</div>
+            <div class="message received">Awesome! See you soon 😊</div>
+            <div class="typing">Typing...</div>
+            <div id="bottom"></div>
+        </div>
+
+        <!-- Footer -->
+        <div class="chat-footer">
+            <span class="emoji-btn">&#128578;</span>
+            <input type="text" class="message-input" placeholder="Message...">
+            <span class="send-btn">&#9993;</span>
+        </div>
     </div>
 
-    <!-- Messages Container -->
-    <div class="messages" id="messages">
-      <div class="message received">Hey, how are you?</div>
-      <div class="message sent">I'm good! You?</div>
-    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const chatBox = document.querySelector(".chat-box");
+            const inputField = document.querySelector(".message-input");
+            const sendBtn = document.querySelector(".send-btn");
+            const typingIndicator = document.querySelector(".typing");
 
-    <!-- Input Field -->
-    <div class="input-container">
-      <input type="text" class="input-box" id="inputBox" placeholder="Message...">
-      <button class="send-btn" id="sendBtn">➤</button>
-    </div>
-  </div>
+            // Simulate typing indicator
+            inputField.addEventListener("input", function () {
+                if (inputField.value.trim()) {
+                    typingIndicator.classList.add("active");
+                } else {
+                    typingIndicator.classList.remove("active");
+                }
+            });
 
-  <script>
-    const messagesContainer = document.getElementById("messages");
-    const inputBox = document.getElementById("inputBox");
-    const sendBtn = document.getElementById("sendBtn");
+            // Send message on click
+            sendBtn.addEventListener("click", function () {
+                sendMessage();
+            });
 
-    sendBtn.addEventListener("click", sendMessage);
-    inputBox.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") sendMessage();
-    });
+            // Send message on Enter key
+            inputField.addEventListener("keypress", function (e) {
+                if (e.key === "Enter") {
+                    sendMessage();
+                }
+            });
 
-    function sendMessage() {
-      const text = inputBox.value.trim();
-      if (text === "") return;
+            function sendMessage() {
+                const messageText = inputField.value.trim();
+                if (messageText === "") return;
 
-      // Remove previous "Seen Just Now" messages
-      const previousSeen = document.querySelectorAll(".seen");
-      previousSeen.forEach((el) => el.remove());
+                const message = document.createElement("div");
+                message.classList.add("message", "sent");
+                message.textContent = messageText;
+                chatBox.insertBefore(message, typingIndicator);
+                
+                inputField.value = "";
+                typingIndicator.classList.remove("active");
 
-      // Create sent message
-      const messageDiv = document.createElement("div");
-      messageDiv.classList.add("message", "sent");
-      messageDiv.textContent = text;
-
-      // Create "Seen Just Now" indicator
-      const seenDiv = document.createElement("div");
-      seenDiv.classList.add("seen");
-      seenDiv.textContent = "Seen Just Now";
-
-      messageDiv.appendChild(seenDiv);
-      messagesContainer.appendChild(messageDiv);
-
-      // Scroll to bottom
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-      // Clear input
-      inputBox.value = "";
-    }
-  </script>
+                // Auto-scroll to latest message
+                setTimeout(() => {
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }, 100);
+            }
+        });
+    </script>
 
 </body>
 </html>
