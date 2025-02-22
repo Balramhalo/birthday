@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Instagram DM Visualization</title>
   <style>
     /* Reset and Base Styles */
@@ -62,12 +62,13 @@
       margin: 10px 0;
       opacity: 0;
       animation: fadeIn 0.5s forwards;
+      position: relative;
     }
     .message-row.sent {
-      justify-content: flex-end; /* Girl's messages to the right */
+      justify-content: flex-end;  /* Girl's messages (sent) appear on right */
     }
     .message-row.received {
-      justify-content: flex-start; /* Boy's messages to the left */
+      justify-content: flex-start; /* Boy's messages (received) appear on left */
     }
     .bubble {
       max-width: 70%;
@@ -78,22 +79,29 @@
       position: relative;
       word-wrap: break-word;
     }
-    /* Girl (sent) = Blue bubble */
+    /* Girl (sent) message style */
     .message-row.sent .bubble {
-      background-color: #0095f6; /* Instagram's sent color */
+      background-color: #0095f6; /* Instagram's sent message color */
       color: #fff;
       border-bottom-right-radius: 4px;
     }
-    /* Boy (received) = Dark bubble */
+    /* Boy (received) message style */
     .message-row.received .bubble {
-      background-color: #262626;
+      background-color: #262626; /* Instagram's received message color */
       border-bottom-left-radius: 4px;
     }
-    /* Fade-in for messages */
+    /* Seen Indicator styling */
+    .seen-indicator {
+      font-size: 11px;
+      color: #a8a8a8;
+      margin-top: 4px;
+      text-align: right;
+      font-style: italic;
+    }
     @keyframes fadeIn {
       to { opacity: 1; }
     }
-    /* Typing indicator bubble */
+    /* Typing Animation inside a bubble */
     .typing-indicator {
       display: flex;
       align-items: center;
@@ -108,25 +116,13 @@
       opacity: 0.4;
       animation: blink 1.4s infinite both;
     }
-    .typing-indicator span:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-    .typing-indicator span:nth-child(3) {
-      animation-delay: 0.4s;
-    }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
     @keyframes blink {
       0%, 80%, 100% { opacity: 0.4; transform: translateY(0); }
       40% { opacity: 1; transform: translateY(-3px); }
     }
-    /* Seen indicator for sent messages */
-    .seen-indicator {
-      font-size: 11px;
-      color: #a8a8a8;
-      margin-top: 4px;
-      text-align: right;
-      font-style: italic;
-    }
-    /* Options bar at the bottom */
+    /* Options Bar */
     .options-bar {
       display: none;
       justify-content: center;
@@ -156,172 +152,4 @@
       position: relative;
     }
     .option-btn.bekar:hover {
-      transform: translate(
-        calc(-50px + 100px * Math.random()),
-        calc(-50px + 100px * Math.random())
-      );
-    }
-    .option-btn:hover {
-      opacity: 0.9;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <!-- Header with profile pic and username -->
-    <div class="header">
-      <img src="https://i.imgur.com/yDBXR2X.jpg" alt="Profile" onerror="this.src='https://via.placeholder.com/40?text=No+Pic';">
-      <div class="username">Tamar 👾</div>
-    </div>
-
-    <!-- Main chat area -->
-    <div class="chat-area" id="chatArea"></div>
-
-    <!-- Options bar (Bekar teleports, Acha sends new messages) -->
-    <div class="options-bar" id="optionsBar">
-      <button class="option-btn acha" onclick="handleAcha()">Acha</button>
-      <button class="option-btn bekar" id="bekarButton" onclick="handleBekar()">Bekar</button>
-    </div>
-  </div>
-
-  <script>
-    /**
-     * conversation: The full conversation between boy (received) and girl (sent).
-     * boy = 'received', girl = 'sent'
-     */
-    const conversation = [
-      { sender: 'received', text: 'Then me kyu nhi' },
-      { sender: 'received', text: 'kya kami hai' },
-      { sender: 'sent', text: 'Jb bnana hi nhi tko to' },
-      { sender: 'received', text: 'kya kami hai mere me' },
-      { sender: 'received', text: 'Me kesa lagta tujhe?' },
-      { sender: 'sent', text: 'bas dost?' },
-      { sender: 'received', text: 'Acha dost ya bas dost?' },
-      { sender: 'sent', text: 'Bas dost' },
-      { sender: 'received', text: 'Ok' }
-    ];
-
-    let currentIndex = 0;
-
-    /**
-     * Displays messages from conversation array one by one.
-     * If it's from boy (received), show typing bubble first.
-     */
-    function showNextMessage() {
-      if (currentIndex < conversation.length) {
-        const chatArea = document.getElementById("chatArea");
-        const msg = conversation[currentIndex];
-
-        // If from boy => typing animation first
-        if (msg.sender === "received") {
-          const typingRow = document.createElement("div");
-          typingRow.classList.add("message-row", "received");
-          typingRow.innerHTML = `
-            <div class="bubble">
-              <div class="typing-indicator">
-                <span></span><span></span><span></span>
-              </div>
-            </div>
-          `;
-          chatArea.appendChild(typingRow);
-          chatArea.scrollTop = chatArea.scrollHeight;
-
-          setTimeout(() => {
-            chatArea.removeChild(typingRow);
-            addMessage(msg.sender, msg.text);
-            currentIndex++;
-            showNextMessage();
-          }, 1500);
-        } else {
-          // If from girl => directly add
-          addMessage(msg.sender, msg.text);
-          currentIndex++;
-          setTimeout(showNextMessage, 1000);
-        }
-      } else {
-        // Once conversation is done, show the options bar
-        document.getElementById("optionsBar").style.display = "flex";
-      }
-    }
-
-    /**
-     * Adds a single message row to the chat.
-     * If it's from the girl (sent), show "Seen just now" after 0.5s
-     */
-    function addMessage(sender, text) {
-      const chatArea = document.getElementById("chatArea");
-
-      // Create row
-      const row = document.createElement("div");
-      row.classList.add("message-row", sender);
-
-      // Create bubble
-      const bubble = document.createElement("div");
-      bubble.classList.add("bubble");
-      bubble.textContent = text;
-
-      row.appendChild(bubble);
-      chatArea.appendChild(row);
-      chatArea.scrollTop = chatArea.scrollHeight;
-
-      // If from the girl => add "Seen just now" after 0.5s
-      if (sender === "sent") {
-        setTimeout(() => {
-          const seen = document.createElement("div");
-          seen.classList.add("seen-indicator");
-          seen.innerText = "Seen just now";
-          row.appendChild(seen);
-          chatArea.scrollTop = chatArea.scrollHeight;
-        }, 500);
-      }
-    }
-
-    /**
-     * Acha button => Girl (sent) sends "Acha lagta hai"
-     * Then boy (received) replies "Tu bhi bohot achi lagti hai"
-     */
-    function handleAcha() {
-      // Hide options
-      document.getElementById("optionsBar").style.display = "none";
-
-      // Girl sends "Acha lagta hai"
-      addMessage("sent", "Acha lagta hai");
-
-      // After 1.5s => Boy replies "Tu bhi bohot achi lagti hai" with typing bubble
-      setTimeout(() => {
-        const chatArea = document.getElementById("chatArea");
-        // Typing row
-        const typingRow = document.createElement("div");
-        typingRow.classList.add("message-row", "received");
-        typingRow.innerHTML = `
-          <div class="bubble">
-            <div class="typing-indicator">
-              <span></span><span></span><span></span>
-            </div>
-          </div>
-        `;
-        chatArea.appendChild(typingRow);
-        chatArea.scrollTop = chatArea.scrollHeight;
-
-        setTimeout(() => {
-          chatArea.removeChild(typingRow);
-          addMessage("received", "Tu bhi bohot achi lagti hai");
-        }, 1500);
-      }, 1500);
-    }
-
-    /**
-     * Bekar button => teleports randomly
-     */
-    function handleBekar() {
-      const bekarBtn = document.getElementById("bekarButton");
-      const randX = Math.random() * 100 - 50;
-      const randY = Math.random() * 100 - 50;
-      bekarBtn.style.transform = `translate(${randX}px, ${randY}px)`;
-    }
-
-    // Start the conversation
-    showNextMessage();
-  </script>
-</body>
-</html>
+      transform: translate(\n        calc(-50px + 100px * Math.random()),\n        calc(-50px + 100px * Math.random())\n      );\n    }\n    .option-btn:hover { opacity: 0.9; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <img src=\"https://i.imgur.com/yDBXR2X.jpg\" alt=\"Profile\" onerror=\"this.src='https://via.placeholder.com/40?text=No+Pic';\">\n      <div class=\"username\">Tamar 👾</div>\n    </div>\n    <div class=\"chat-area\" id=\"chatArea\"></div>\n    <div class=\"options-bar\" id=\"optionsBar\">\n      <button class=\"option-btn acha\" onclick=\"handleAcha()\">Acha</button>\n      <button class=\"option-btn bekar\" id=\"bekarButton\" onclick=\"handleBekar()\">Bekar</button>\n    </div>\n  </div>\n  <script>\n    // Full conversation between girl (sent) and boy (received)\n    // Girl = sent (our messages), Boy = received (opponent)\n    const conversation = [\n      { sender: 'received', text: 'Then me kyu nhi' },\n      { sender: 'received', text: 'kya kami hai' },\n      { sender: 'sent', text: 'Jb bnana hi nhi tko to' },\n      { sender: 'received', text: 'kya kami hai mere me' },\n      { sender: 'received', text: 'Me kesa lagta tujhe?' }\n    ];\n    let currentIndex = 0;\n\n    // Show messages one by one\n    function showNextMessage() {\n      if (currentIndex < conversation.length) {\n        const chatArea = document.getElementById(\"chatArea\");\n        const msg = conversation[currentIndex];\n\n        if (msg.sender === \"received\") {\n          // For boy's messages, show a typing indicator in a bubble\n          const typingIndicator = document.createElement(\"div\");\n          typingIndicator.classList.add(\"message-row\", \"received\");\n          typingIndicator.innerHTML = `<div class=\"bubble\"><div class=\"typing-indicator\"><span></span><span></span><span></span></div></div>`;\n          chatArea.appendChild(typingIndicator);\n          chatArea.scrollTop = chatArea.scrollHeight;\n\n          setTimeout(() => {\n            chatArea.removeChild(typingIndicator);\n            addMessage(msg.sender, msg.text);\n            currentIndex++;\n            showNextMessage();\n          }, 1500);\n        } else {\n          // For girl's messages, display immediately\n          addMessage(msg.sender, msg.text);\n          currentIndex++;\n          setTimeout(showNextMessage, 1000);\n        }\n      } else {\n        // After conversation, show options\n        document.getElementById(\"optionsBar\").style.display = \"flex\";\n      }\n    }\n\n    // Add a message bubble\n    function addMessage(sender, text) {\n      const chatArea = document.getElementById(\"chatArea\");\n      const messageRow = document.createElement(\"div\");\n      messageRow.classList.add(\"message-row\", sender);\n\n      const messageBubble = document.createElement(\"div\");\n      messageBubble.classList.add(\"bubble\");\n      messageBubble.innerText = text;\n\n      messageRow.appendChild(messageBubble);\n      chatArea.appendChild(messageRow);\n      chatArea.scrollTop = chatArea.scrollHeight;\n\n      // If it's a girl's (sent) message, add the \"Seen just now\" indicator after 0.5 seconds\n      if (sender === \"sent\") {\n        setTimeout(() => {\n          const seenIndicator = document.createElement(\"div\");\n          seenIndicator.classList.add(\"seen-indicator\");\n          seenIndicator.innerText = \"Seen just now\";\n          messageRow.appendChild(seenIndicator);\n          chatArea.scrollTop = chatArea.scrollHeight;\n        }, 500);\n      }\n    }\n\n    // When Acha is pressed\n    function handleAcha() {\n      document.getElementById(\"optionsBar\").style.display = \"none\";\n\n      // Girl sends \"Acha lagta hai\"\n      addMessage(\"sent\", \"Acha lagta hai\");\n\n      // After 1.5s, boy responds with a typing indicator then message\n      setTimeout(() => {\n        const chatArea = document.getElementById(\"chatArea\");\n        const typingIndicator = document.createElement(\"div\");\n        typingIndicator.classList.add(\"message-row\", \"received\");\n        typingIndicator.innerHTML = `<div class=\"bubble\"><div class=\"typing-indicator\"><span></span><span></span><span></span></div></div>`;\n        chatArea.appendChild(typingIndicator);\n        chatArea.scrollTop = chatArea.scrollHeight;\n\n        setTimeout(() => {\n          chatArea.removeChild(typingIndicator);\n          addMessage(\"received\", \"Tu bhi bohot achi lagti hai\");\n        }, 1500);\n      }, 1500);\n    }\n\n    // When Bekar is pressed, the Bekar button teleports randomly\n    function handleBekar() {\n      const bekarBtn = document.getElementById(\"bekarButton\");\n      const randX = Math.random() * 200 - 100;\n      const randY = Math.random() * 200 - 100;\n      bekarBtn.style.transform = `translate(${randX}px, ${randY}px)`;\n    }\n\n    // Start the conversation\n    showNextMessage();\n  </script>\n</body>\n</html>\n"}
