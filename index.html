@@ -3,30 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Chat</title>
+    <title>Instagram DM</title>
     <style>
+        :root {
+            --bg: #000000;
+            --text: #ffffff;
+            --border: #262626;
+            --button-bg: #0095f6;
+            --message-bg: #262626;
+            --reply-bg: #404040;
+        }
+
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f8f8f8;
+            background: var(--bg);
+            color: var(--text);
         }
 
         .container {
             max-width: 450px;
             margin: 0 auto;
-            background: white;
             height: 100vh;
+            position: relative;
         }
 
         .header {
-            padding: 15px;
-            border-bottom: 1px solid #dbdbdb;
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
+            background: var(--bg);
+            position: sticky;
+            top: 0;
         }
 
-        .back-arrow {
-            font-size: 24px;
+        .profile-pic {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
             margin-right: 15px;
         }
 
@@ -36,136 +51,139 @@
 
         .username {
             font-weight: 600;
+            font-size: 14px;
         }
 
         .active-status {
-            color: #8e8e8e;
+            color: #a8a8a8;
             font-size: 12px;
         }
 
         .chat-area {
             padding: 15px;
+            padding-bottom: 70px;
         }
 
-        .message-thread {
-            margin-bottom: 20px;
-        }
-
-        .message-header {
+        .message {
             display: flex;
-            align-items: center;
-            margin-bottom: 8px;
+            gap: 10px;
+            margin: 15px 0;
         }
 
-        .user-bubble {
-            background: #efefef;
-            border-radius: 15px;
-            padding: 10px 15px;
-            margin: 5px 0;
+        .message-content {
             max-width: 70%;
         }
 
-        .user-message {
-            font-size: 14px;
+        .received .message-content {
+            background: var(--message-bg);
+            border-radius: 18px;
+            padding: 10px 15px;
+        }
+
+        .sent {
+            flex-direction: row-reverse;
+        }
+
+        .sent .message-content {
+            background: var(--reply-bg);
+            border-radius: 18px;
+            padding: 10px 15px;
+        }
+
+        .message-text {
             margin: 0;
+            font-size: 14px;
+            line-height: 1.4;
         }
 
-        .time {
-            color: #8e8e8e;
+        .message-time {
+            color: #a8a8a8;
             font-size: 12px;
-            margin-left: 10px;
-        }
-
-        .reply-message {
-            background: #efefef;
-            border-radius: 15px;
-            padding: 10px 15px;
-            margin: 5px 0 5px auto;
-            max-width: 70%;
+            margin-top: 5px;
         }
 
         .input-area {
             position: fixed;
             bottom: 0;
             width: 450px;
-            background: white;
-            border-top: 1px solid #dbdbdb;
+            background: var(--bg);
+            border-top: 1px solid var(--border);
             padding: 15px;
             display: flex;
+            gap: 10px;
         }
 
         .message-input {
             flex-grow: 1;
-            border: 1px solid #dbdbdb;
+            background: var(--message-bg);
+            border: none;
             border-radius: 20px;
-            padding: 10px 15px;
-            margin-right: 10px;
+            padding: 12px 20px;
+            color: var(--text);
+            font-size: 14px;
         }
 
         .send-button {
-            background: #0095f6;
+            background: var(--button-bg);
             color: white;
             border: none;
             border-radius: 20px;
-            padding: 10px 20px;
+            padding: 12px 20px;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div class="back-arrow">←</div>
+            <img src="1000000614.jpg" class="profile-pic" alt="Profile">
             <div class="user-info">
-                <div class="username">xyz</div>
+                <div class="username">bridegroom</div>
                 <div class="active-status">Active now</div>
             </div>
         </div>
 
         <div class="chat-area">
-            <!-- Message Thread 1 -->
-            <div class="message-thread">
-                <div class="message-header">
-                    <div class="username">You</div>
-                    <div class="time">14:19</div>
-                </div>
-                <div class="reply-message">
-                    <p class="user-message">Tu privanshu ke biday ke din bhi nhi aayi</p>
+            <!-- Received Message -->
+            <div class="message received">
+                <img src="1000000614.jpg" class="profile-pic" alt="Sedd">
+                <div class="message-content">
+                    <p class="message-text">Sar dard krha toh<br>Soja</p>
+                    <div class="message-time">14:20</div>
                 </div>
             </div>
 
-            <!-- Message Thread 2 -->
-            <div class="message-thread">
-                <div class="message-header">
-                    <div class="username">Sedd</div>
-                    <div class="time">14:20</div>
-                </div>
-                <div class="user-bubble">
-                    <p class="user-message">Sar dard krha toh<br>Soja</p>
+            <!-- Sent Message -->
+            <div class="message sent">
+                <div class="message-content">
+                    <p class="message-text">Tu privanshu ke biday ke din bhi nhi aayi</p>
+                    <div class="message-time">14:19</div>
                 </div>
             </div>
 
-            <!-- Message Thread 3 -->
-            <div class="message-thread">
-                <div class="message-header">
-                    <div class="username">Kyu</div>
-                    <div class="time">14:21</div>
-                </div>
-                <div class="user-bubble">
-                    <p class="user-message">ni so skti</p>
-                </div>
-                <div class="reply-message">
-                    <p class="user-message">Kyu<br>geo krni h</p>
+            <!-- Received Message -->
+            <div class="message received">
+                <img src="1000000614.jpg" class="profile-pic" alt="Kyu">
+                <div class="message-content">
+                    <p class="message-text">ni so skti</p>
+                    <div class="message-time">14:21</div>
                 </div>
             </div>
 
-            <!-- Message Thread 4 -->
-            <div class="message-thread">
-                <div class="message-header">
-                    <div class="username">pranay bhaiya ki live start hogi</div>
-                    <div class="time">14:22</div>
+            <!-- Sent Message -->
+            <div class="message sent">
+                <div class="message-content">
+                    <p class="message-text">Kyu<br>geo krni h</p>
+                    <div class="message-time">14:21</div>
                 </div>
-                <div class="user-bubble">
-                    <p class="user-message">darling me bhi whi dekh rha<br>Double tap to</p>
+            </div>
+
+            <!-- Received Message -->
+            <div class="message received">
+                <img src="1000000614.jpg" class="profile-pic" alt="Pranay">
+                <div class="message-content">
+                    <p class="message-text">darling me bhi whi dekh rha<br>Double tap to</p>
+                    <div class="message-time">14:22</div>
                 </div>
             </div>
         </div>
