@@ -181,66 +181,69 @@
         const chatArea = document.getElementById("chatArea");
         const msg = conversation[currentIndex];
 
-        // Create a message row
-        const messageRow = document.createElement("div");
-        messageRow.classList.add("message-row", msg.sender);
+        if (msg.sender === "received") {
+          // Show typing indicator before displaying the message
+          const typingIndicator = document.createElement("div");
+          typingIndicator.innerHTML = '<div class="bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div>';
+          chatArea.appendChild(typingIndicator);
+          chatArea.scrollTop = chatArea.scrollHeight;
 
-        // Create a bubble for the text
-        const messageBubble = document.createElement("div");
-        messageBubble.classList.add("bubble");
-        messageBubble.innerText = msg.text;
-
-        messageRow.appendChild(messageBubble);
-        chatArea.appendChild(messageRow);
-        chatArea.scrollTop = chatArea.scrollHeight; // Auto-scroll
-
-        // Show typing indicator before next message
-        currentIndex++;
-        if (currentIndex < conversation.length) {
-          setTimeout(showTypingIndicator, 1000);
-        } else {
           setTimeout(() => {
-            document.getElementById("optionsBar").style.display = "flex"; // Show buttons
-          }, 1000);
+            chatArea.removeChild(typingIndicator);
+            addMessage(msg.sender, msg.text);
+            currentIndex++;
+            showNextMessage();
+          }, 1500); // Delay for typing effect
+        } else {
+          addMessage(msg.sender, msg.text);
+          currentIndex++;
+          setTimeout(showNextMessage, 1000);
         }
+      } else {
+        document.getElementById("optionsBar").style.display = "flex";
       }
     }
 
-    function showTypingIndicator() {
+    function addMessage(sender, text) {
       const chatArea = document.getElementById("chatArea");
-      
-      // Create typing indicator
-      const typingRow = document.createElement("div");
-      typingRow.classList.add("message-row", "received");
-      typingRow.id = "typingIndicator";
+      const messageRow = document.createElement("div");
+      messageRow.classList.add("message-row", sender);
 
-      const typingBubble = document.createElement("div");
-      typingBubble.classList.add("bubble");
+      const messageBubble = document.createElement("div");
+      messageBubble.classList.add("bubble");
+      messageBubble.innerText = text;
 
-      const typingIndicator = document.createElement("div");
-      typingIndicator.classList.add("typing-indicator");
-      typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+      messageRow.appendChild(messageBubble);
+      chatArea.appendChild(messageRow);
+      chatArea.scrollTop = chatArea.scrollHeight;
 
-      typingBubble.appendChild(typingIndicator);
-      typingRow.appendChild(typingBubble);
-      chatArea.appendChild(typingRow);
-      chatArea.scrollTop = chatArea.scrollHeight; // Auto-scroll
-
-      setTimeout(() => {
-        chatArea.removeChild(typingRow);
-        showNextMessage();
-      }, 1500);
+      if (sender === "sent") {
+        setTimeout(() => {
+          const seenIndicator = document.createElement("div");
+          seenIndicator.classList.add("seen-indicator");
+          seenIndicator.innerText = "Seen just now";
+          messageRow.appendChild(seenIndicator);
+        }, 500);
+      }
     }
 
     function handleAcha() {
-      alert("You chose 'Acha'! ✅");
       document.getElementById("optionsBar").style.display = "none";
+
+      setTimeout(() => {
+        addMessage("received", "Acha lagta hai");
+        
+        setTimeout(() => {
+          addMessage("sent", "Awwwww thank you!! Tu bhi bohot achi hai");
+        }, 1500);
+      }, 1000);
     }
 
     function handleBekar() {
-      alert("Bekar nhi bol skta! 😂");
+      alert("Bekar button can't be clicked!");
     }
 
-    // Start the conversation
-    setTimeout(showNextMessage, 1000);
+    showNextMessage();
   </script>
+</body>
+</html>
