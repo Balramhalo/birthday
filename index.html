@@ -1,35 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <!--
-  ================================================================
-  1. META & TITLE
-  ================================================================
-  -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Instagram DM Replica (Highly Documented)</title>
-
-  <!--
-  ================================================================
-  2. CSS STYLES
-  ================================================================
-  -->
   <style>
-    /* 
-    ===============================================================
-    RESET & BASE STYLES
-    - Reset margins, paddings, and box-sizing.
-    - Basic styling for body (black background, white text).
-    ===============================================================
-    */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
     body {
-      background-color: #000; /* Instagram-like dark background */
+      background-color: #000;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       display: flex;
       justify-content: center;
@@ -37,43 +18,23 @@
       height: 100vh;
       color: #fff;
     }
-
-    /*
-    ===============================================================
-    CONTAINER
-    - The main wrapper that holds everything:
-      - Header
-      - Chat area
-      - Options bar
-    ===============================================================
-    */
     .container {
       width: 400px;
       height: 700px;
-      background-color: #000;       /* Matches Instagram's dark theme */
-      border: 1px solid #2f2f2f;    /* Subtle border */
+      background-color: #000;
+      border: 1px solid #2f2f2f;
       border-radius: 10px;
       display: flex;
       flex-direction: column;
-      overflow: hidden;            /* Hide overflow */
+      overflow: hidden;
       position: relative;
     }
-
-    /*
-    ===============================================================
-    HEADER
-    - Profile image
-    - Username
-    - Call & Video call icons
-    ===============================================================
-    */
     .header {
       display: flex;
       align-items: center;
       padding: 10px;
       border-bottom: 1px solid #2f2f2f;
       background-color: #000;
-      flex-shrink: 0; /* Ensure header doesn't shrink */
     }
     .header img {
       width: 40px;
@@ -87,7 +48,7 @@
       font-weight: 600;
     }
     .header-icons {
-      margin-left: auto; /* Push icons to the far right */
+      margin-left: auto;
       display: flex;
       gap: 15px;
     }
@@ -102,46 +63,23 @@
     .icon-btn:hover {
       opacity: 0.7;
     }
-
-    /*
-    ===============================================================
-    CHAT AREA
-    - The scrollable area where messages appear
-    ===============================================================
-    */
     .chat-area {
       flex: 1;
       padding: 10px;
       overflow-y: auto;
     }
-
-    /*
-    ===============================================================
-    MESSAGE-ROW
-    - Each message row can be "sent" (girl) or "received" (boy)
-    - We'll fade them in with an animation
-    ===============================================================
-    */
     .message-row {
       display: flex;
       margin: 10px 0;
       opacity: 0;
       animation: fadeIn 0.5s forwards;
-      position: relative; /* for any positioning if needed */
     }
     .message-row.sent {
-      justify-content: flex-end; /* Girl's messages on the right */
+      justify-content: flex-end;
     }
     .message-row.received {
-      justify-content: flex-start; /* Boy's messages on the left */
+      justify-content: flex-start;
     }
-
-    /*
-    ===============================================================
-    BUBBLE
-    - The actual message bubble
-    ===============================================================
-    */
     .bubble {
       max-width: 70%;
       padding: 10px 14px;
@@ -150,82 +88,15 @@
       line-height: 1.4;
       word-wrap: break-word;
     }
-    /* Girl's bubble (sent) = Blue bubble */
     .message-row.sent .bubble {
-      background-color: #0095f6;  /* Instagram-like blue for sent messages */
+      background-color: #0095f6;
       color: #fff;
       border-bottom-right-radius: 4px;
     }
-    /* Boy's bubble (received) = Dark bubble */
     .message-row.received .bubble {
       background-color: #262626;
       border-bottom-left-radius: 4px;
     }
-
-    /*
-    ===============================================================
-    SEEN-INDICATOR
-    - Appears under the latest girl's message
-    ===============================================================
-    */
-    .seen-indicator {
-      font-size: 11px;
-      color: #a8a8a8;
-      margin-top: 4px;
-      text-align: right;
-      font-style: italic;
-    }
-
-    /*
-    ===============================================================
-    FADE-IN KEYFRAME
-    - For the messages
-    ===============================================================
-    */
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-
-    /*
-    ===============================================================
-    TYPING INDICATOR
-    - For the boy's (received) messages only
-    ===============================================================
-    */
-    .typing-indicator {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-    }
-    .typing-indicator span {
-      width: 6px;
-      height: 6px;
-      background-color: #fff;
-      border-radius: 50%;
-      opacity: 0.4;
-      animation: blink 1.4s infinite both;
-    }
-    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-
-    /*
-    ===============================================================
-    BLINK KEYFRAME
-    - For the three dots
-    ===============================================================
-    */
-    @keyframes blink {
-      0%, 80%, 100% { opacity: 0.4; transform: translateY(0); }
-      40% { opacity: 1; transform: translateY(-3px); }
-    }
-
-    /*
-    ===============================================================
-    OPTIONS-BAR
-    - Buttons appear after conversation
-    ===============================================================
-    */
     .options-bar {
       display: none;
       justify-content: center;
@@ -234,7 +105,6 @@
       padding: 10px;
       border-top: 1px solid #2f2f2f;
       background-color: #000;
-      flex-shrink: 0;
     }
     .option-btn {
       padding: 10px 20px;
@@ -243,7 +113,6 @@
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.3s, transform 0.3s;
     }
     .option-btn.acha {
       background-color: #3cab5c;
@@ -252,233 +121,30 @@
     .option-btn.bekar {
       background-color: #ed4956;
       color: #fff;
-      position: relative;
     }
-    .option-btn.bekar:hover {
-      transform: translate(
-        calc(-50px + 100px * Math.random()),
-        calc(-50px + 100px * Math.random())
-      );
-    }
-    .option-btn:hover { opacity: 0.9; }
   </style>
 </head>
 <body>
-  <!--
-  ===============================================================
-  MAIN CONTAINER
-  ===============================================================
-  -->
   <div class="container">
-    <!--
-    =============================================================
-    HEADER
-    =============================================================
-    -->
     <div class="header">
-      <!-- Profile Pic -->
       <img src="https://i.imgur.com/yDBXR2X.jpg" alt="Profile" onerror="this.src='https://via.placeholder.com/40?text=No+Pic';">
-      <!-- Username -->
-      <div class="username">Tamar 👾</div>
-      <!-- Call & Video Call Icons -->
-      <div class="header-icons" style="margin-left:auto; display:flex; gap:15px;">
-        <button class="icon-btn" onclick="handleCall()">📞</button>
-        <button class="icon-btn" onclick="handleVideoCall()">📹</button>
+      <div class="username">Tamar 🤮</div>
+      <div class="header-icons">
+        <button class="icon-btn">📞</button>
+        <button class="icon-btn">📹</button>
       </div>
     </div>
-
-    <!--
-    =============================================================
-    CHAT AREA
-    =============================================================
-    -->
     <div class="chat-area" id="chatArea"></div>
-
-    <!--
-    =============================================================
-    OPTIONS BAR (Appears after conversation)
-    =============================================================
-    -->
     <div class="options-bar" id="optionsBar">
-      <button class="option-btn acha" onclick="handleAcha()">Acha</button>
-      <button class="option-btn bekar" id="bekarButton" onclick="handleBekar()">Bekar</button>
+      <button class="option-btn acha">Acha</button>
+      <button class="option-btn bekar">Bekar</button>
     </div>
   </div>
-
-  <!--
-  ===============================================================
-  JAVASCRIPT
-  ===============================================================
-  -->
   <script>
-    /*
-    ===============================================================
-    1. CONVERSATION DATA
-    - 'sent' => girl (our messages)
-    - 'received' => boy (opponent)
-    ===============================================================
-    */
-    const conversation = [
-      { sender: 'received', text: 'Then me kyu nhi' },
-      { sender: 'received', text: 'kya kami hai' },
-      { sender: 'sent', text: 'Jb bnana hi nhi tko to' },
-      { sender: 'received', text: 'kya kami hai mere me' },
-      { sender: 'received', text: 'Me kesa lagta tujhe?' }
-    ];
-
-    let currentIndex = 0;
-
-    /*
-    ===============================================================
-    2. showNextMessage()
-    - Displays messages one by one from the conversation array.
-    - If message is from boy => show typing indicator first.
-    - If from girl => directly show message & add 'Seen just now'.
-    ===============================================================
-    */
-    function showNextMessage() {
-      if (currentIndex < conversation.length) {
-        const chatArea = document.getElementById("chatArea");
-        const msg = conversation[currentIndex];
-
-        if (msg.sender === "received") {
-          // Boy's message => Show typing indicator first
-          const typingIndicator = document.createElement("div");
-          typingIndicator.classList.add("message-row", "received");
-          typingIndicator.innerHTML = `
-            <div class="bubble">
-              <div class="typing-indicator">
-                <span></span><span></span><span></span>
-              </div>
-            </div>
-          `;
-          chatArea.appendChild(typingIndicator);
-          chatArea.scrollTop = chatArea.scrollHeight;
-
-          setTimeout(() => {
-            // Remove typing bubble, add real message
-            chatArea.removeChild(typingIndicator);
-            addMessage(msg.sender, msg.text);
-            currentIndex++;
-            showNextMessage();
-          }, 1500);
-        } else {
-          // Girl's message => direct
-          addMessage(msg.sender, msg.text);
-          currentIndex++;
-          setTimeout(showNextMessage, 1000);
-        }
-      } else {
-        // Show options bar
-        document.getElementById("optionsBar").style.display = "flex";
-      }
+    function showOptions() {
+      document.getElementById("optionsBar").style.display = "flex";
     }
-
-    /*
-    ===============================================================
-    3. addMessage(sender, text)
-    - Adds a single message bubble to the chat.
-    - If it's from girl => after 0.5s, show 'Seen just now' under it
-      and remove any older 'Seen just now' from previous messages.
-    ===============================================================
-    */
-    function addMessage(sender, text) {
-      const chatArea = document.getElementById("chatArea");
-
-      // Create row
-      const msgRow = document.createElement("div");
-      msgRow.classList.add("message-row", sender);
-
-      // Create bubble
-      const bubble = document.createElement("div");
-      bubble.classList.add("bubble");
-      bubble.textContent = text;
-
-      msgRow.appendChild(bubble);
-      chatArea.appendChild(msgRow);
-      chatArea.scrollTop = chatArea.scrollHeight;
-
-      // If from girl => add 'Seen just now' under it after 0.5s
-      if (sender === "sent") {
-        // Remove any existing seen-indicators from older messages
-        const oldSeen = document.querySelectorAll(".seen-indicator");
-        oldSeen.forEach((seen) => seen.remove());
-
-        setTimeout(() => {
-          const seenIndicator = document.createElement("div");
-          seenIndicator.classList.add("seen-indicator");
-          seenIndicator.innerText = "Seen just now";
-          msgRow.appendChild(seenIndicator);
-          chatArea.scrollTop = chatArea.scrollHeight;
-        }, 500);
-      }
-    }
-
-    /*
-    ===============================================================
-    4. OPTIONS BAR HANDLERS
-    - Acha => Girl sends 'Acha lagta hai', then boy types & sends
-              'Tu bhi bohot achi lagti hai'
-    - Bekar => Button teleports randomly
-    ===============================================================
-    */
-    function handleAcha() {
-      // Hide options
-      document.getElementById("optionsBar").style.display = "none";
-
-      // Girl => 'Acha lagta hai'
-      addMessage("sent", "Acha lagta hai");
-
-      // After 1.5s => Boy => typing => 'Tu bhi bohot achi lagti hai'
-      setTimeout(() => {
-        const chatArea = document.getElementById("chatArea");
-        // Show boy typing
-        const typingBubble = document.createElement("div");
-        typingBubble.classList.add("message-row", "received");
-        typingBubble.innerHTML = `
-          <div class="bubble">
-            <div class="typing-indicator">
-              <span></span><span></span><span></span>
-            </div>
-          </div>
-        `;
-        chatArea.appendChild(typingBubble);
-        chatArea.scrollTop = chatArea.scrollHeight;
-
-        setTimeout(() => {
-          chatArea.removeChild(typingBubble);
-          addMessage("received", "Tu bhi bohot achi lagti hai");
-        }, 1500);
-      }, 1500);
-    }
-
-    function handleBekar() {
-      const bekarBtn = document.getElementById("bekarButton");
-      const randX = Math.random() * 200 - 100;
-      const randY = Math.random() * 200 - 100;
-      bekarBtn.style.transform = `translate(${randX}px, ${randY}px)`;
-    }
-
-    /*
-    ===============================================================
-    5. Extra Icon Button Handlers
-    - handleCall() => Just alert for now
-    - handleVideoCall() => Also just alert
-    ===============================================================
-    */
-    function handleCall() {
-      alert("Calling... (not really) 📞");
-    }
-    function handleVideoCall() {
-      alert("Video calling... (not really) 📹");
-    }
-
-    /*
-    ===============================================================
-    6. START THE CONVERSATION
-    ===============================================================
-    */
-    showNextMessage();
+    setTimeout(showOptions, 3000);
   </script>
 </body>
 </html>
