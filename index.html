@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Instagram DM Visualization</title>
+  <title>Instagram DM Replica</title>
   <style>
-    /* Reset and Base Styles */
     * {
       margin: 0;
       padding: 0;
@@ -31,14 +30,12 @@
       overflow: hidden;
       position: relative;
     }
-    /* Header */
     .header {
       display: flex;
       align-items: center;
       padding: 10px;
       border-bottom: 1px solid #2f2f2f;
       background-color: #000;
-      flex-shrink: 0;
     }
     .header img {
       width: 40px;
@@ -51,7 +48,6 @@
       font-size: 16px;
       font-weight: 600;
     }
-    /* Chat Area */
     .chat-area {
       flex: 1;
       padding: 10px;
@@ -65,10 +61,10 @@
       position: relative;
     }
     .message-row.sent {
-      justify-content: flex-end;  /* Girl's messages (sent) appear on right */
+      justify-content: flex-end;
     }
     .message-row.received {
-      justify-content: flex-start; /* Boy's messages (received) appear on left */
+      justify-content: flex-start;
     }
     .bubble {
       max-width: 70%;
@@ -79,18 +75,15 @@
       position: relative;
       word-wrap: break-word;
     }
-    /* Girl (sent) message style */
     .message-row.sent .bubble {
-      background-color: #0095f6; /* Instagram's sent message color */
+      background-color: #0095f6;
       color: #fff;
       border-bottom-right-radius: 4px;
     }
-    /* Boy (received) message style */
     .message-row.received .bubble {
-      background-color: #262626; /* Instagram's received message color */
+      background-color: #262626;
       border-bottom-left-radius: 4px;
     }
-    /* Seen Indicator styling */
     .seen-indicator {
       font-size: 11px;
       color: #a8a8a8;
@@ -101,7 +94,6 @@
     @keyframes fadeIn {
       to { opacity: 1; }
     }
-    /* Typing Animation inside a bubble */
     .typing-indicator {
       display: flex;
       align-items: center;
@@ -109,6 +101,7 @@
       gap: 4px;
     }
     .typing-indicator span {
+      display: inline-block;
       width: 6px;
       height: 6px;
       background-color: #fff;
@@ -122,7 +115,6 @@
       0%, 80%, 100% { opacity: 0.4; transform: translateY(0); }
       40% { opacity: 1; transform: translateY(-3px); }
     }
-    /* Options Bar */
     .options-bar {
       display: none;
       justify-content: center;
@@ -131,7 +123,6 @@
       padding: 10px;
       border-top: 1px solid #2f2f2f;
       background-color: #000;
-      flex-shrink: 0;
     }
     .option-btn {
       padding: 10px 20px;
@@ -152,4 +143,94 @@
       position: relative;
     }
     .option-btn.bekar:hover {
-      transform: translate(\n        calc(-50px + 100px * Math.random()),\n        calc(-50px + 100px * Math.random())\n      );\n    }\n    .option-btn:hover { opacity: 0.9; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <img src=\"https://i.imgur.com/yDBXR2X.jpg\" alt=\"Profile\" onerror=\"this.src='https://via.placeholder.com/40?text=No+Pic';\">\n      <div class=\"username\">Tamar 👾</div>\n    </div>\n    <div class=\"chat-area\" id=\"chatArea\"></div>\n    <div class=\"options-bar\" id=\"optionsBar\">\n      <button class=\"option-btn acha\" onclick=\"handleAcha()\">Acha</button>\n      <button class=\"option-btn bekar\" id=\"bekarButton\" onclick=\"handleBekar()\">Bekar</button>\n    </div>\n  </div>\n  <script>\n    // Full conversation between girl (sent) and boy (received)\n    // Girl = sent (our messages), Boy = received (opponent)\n    const conversation = [\n      { sender: 'received', text: 'Then me kyu nhi' },\n      { sender: 'received', text: 'kya kami hai' },\n      { sender: 'sent', text: 'Jb bnana hi nhi tko to' },\n      { sender: 'received', text: 'kya kami hai mere me' },\n      { sender: 'received', text: 'Me kesa lagta tujhe?' }\n    ];\n    let currentIndex = 0;\n\n    // Show messages one by one\n    function showNextMessage() {\n      if (currentIndex < conversation.length) {\n        const chatArea = document.getElementById(\"chatArea\");\n        const msg = conversation[currentIndex];\n\n        if (msg.sender === \"received\") {\n          // For boy's messages, show a typing indicator in a bubble\n          const typingIndicator = document.createElement(\"div\");\n          typingIndicator.classList.add(\"message-row\", \"received\");\n          typingIndicator.innerHTML = `<div class=\"bubble\"><div class=\"typing-indicator\"><span></span><span></span><span></span></div></div>`;\n          chatArea.appendChild(typingIndicator);\n          chatArea.scrollTop = chatArea.scrollHeight;\n\n          setTimeout(() => {\n            chatArea.removeChild(typingIndicator);\n            addMessage(msg.sender, msg.text);\n            currentIndex++;\n            showNextMessage();\n          }, 1500);\n        } else {\n          // For girl's messages, display immediately\n          addMessage(msg.sender, msg.text);\n          currentIndex++;\n          setTimeout(showNextMessage, 1000);\n        }\n      } else {\n        // After conversation, show options\n        document.getElementById(\"optionsBar\").style.display = \"flex\";\n      }\n    }\n\n    // Add a message bubble\n    function addMessage(sender, text) {\n      const chatArea = document.getElementById(\"chatArea\");\n      const messageRow = document.createElement(\"div\");\n      messageRow.classList.add(\"message-row\", sender);\n\n      const messageBubble = document.createElement(\"div\");\n      messageBubble.classList.add(\"bubble\");\n      messageBubble.innerText = text;\n\n      messageRow.appendChild(messageBubble);\n      chatArea.appendChild(messageRow);\n      chatArea.scrollTop = chatArea.scrollHeight;\n\n      // If it's a girl's (sent) message, add the \"Seen just now\" indicator after 0.5 seconds\n      if (sender === \"sent\") {\n        setTimeout(() => {\n          const seenIndicator = document.createElement(\"div\");\n          seenIndicator.classList.add(\"seen-indicator\");\n          seenIndicator.innerText = \"Seen just now\";\n          messageRow.appendChild(seenIndicator);\n          chatArea.scrollTop = chatArea.scrollHeight;\n        }, 500);\n      }\n    }\n\n    // When Acha is pressed\n    function handleAcha() {\n      document.getElementById(\"optionsBar\").style.display = \"none\";\n\n      // Girl sends \"Acha lagta hai\"\n      addMessage(\"sent\", \"Acha lagta hai\");\n\n      // After 1.5s, boy responds with a typing indicator then message\n      setTimeout(() => {\n        const chatArea = document.getElementById(\"chatArea\");\n        const typingIndicator = document.createElement(\"div\");\n        typingIndicator.classList.add(\"message-row\", \"received\");\n        typingIndicator.innerHTML = `<div class=\"bubble\"><div class=\"typing-indicator\"><span></span><span></span><span></span></div></div>`;\n        chatArea.appendChild(typingIndicator);\n        chatArea.scrollTop = chatArea.scrollHeight;\n\n        setTimeout(() => {\n          chatArea.removeChild(typingIndicator);\n          addMessage(\"received\", \"Tu bhi bohot achi lagti hai\");\n        }, 1500);\n      }, 1500);\n    }\n\n    // When Bekar is pressed, the Bekar button teleports randomly\n    function handleBekar() {\n      const bekarBtn = document.getElementById(\"bekarButton\");\n      const randX = Math.random() * 200 - 100;\n      const randY = Math.random() * 200 - 100;\n      bekarBtn.style.transform = `translate(${randX}px, ${randY}px)`;\n    }\n\n    // Start the conversation\n    showNextMessage();\n  </script>\n</body>\n</html>\n"}
+      transform: translate(
+        calc(-50px + 100px * Math.random()),
+        calc(-50px + 100px * Math.random())
+      );
+    }
+    .option-btn:hover { opacity: 0.9; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="https://i.imgur.com/yDBXR2X.jpg" alt="Profile" onerror="this.src='https://via.placeholder.com/40?text=No+Pic';">
+      <div class="username">Tamar 👾</div>
+    </div>
+    <div class="chat-area" id="chatArea"></div>
+    <div class="options-bar" id="optionsBar">
+      <button class="option-btn acha" onclick="handleAcha()">Acha</button>
+      <button class="option-btn bekar" id="bekarButton" onclick="handleBekar()">Bekar</button>
+    </div>
+  </div>
+  <script>
+    const conversation = [
+      { sender: 'received', text: 'Then me kyu nhi' },
+      { sender: 'received', text: 'kya kami hai' },
+      { sender: 'sent', text: 'Jb bnana hi nhi tko to' },
+      { sender: 'received', text: 'kya kami hai mere me' },
+      { sender: 'received', text: 'Me kesa lagta tujhe?' }
+    ];
+    let currentIndex = 0;
+    
+    function showNextMessage() {
+      if (currentIndex < conversation.length) {
+        const chatArea = document.getElementById("chatArea");
+        const msg = conversation[currentIndex];
+    
+        if (msg.sender === "received") {
+          const typingIndicator = document.createElement("div");
+          typingIndicator.classList.add("message-row", "received");
+          typingIndicator.innerHTML = `<div class="bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
+          chatArea.appendChild(typingIndicator);
+          chatArea.scrollTop = chatArea.scrollHeight;
+    
+          setTimeout(() => {
+            chatArea.removeChild(typingIndicator);
+            addMessage(msg.sender, msg.text);
+            currentIndex++;
+            showNextMessage();
+          }, 1500);
+        } else {
+          addMessage(msg.sender, msg.text);
+          currentIndex++;
+          setTimeout(showNextMessage, 1000);
+        }
+      } else {
+        document.getElementById("optionsBar").style.display = "flex";
+      }
+    }
+
+    function addMessage(sender, text) {
+      const chatArea = document.getElementById("chatArea");
+      const msgRow = document.createElement("div");
+      msgRow.classList.add("message-row", sender);
+      msgRow.innerHTML = `<div class="bubble">${text}</div>`;
+      chatArea.appendChild(msgRow);
+      chatArea.scrollTop = chatArea.scrollHeight;
+      
+      if (sender === "sent") {
+        setTimeout(() => {
+          const seenIndicator = document.createElement("div");
+          seenIndicator.classList.add("seen-indicator");
+          seenIndicator.innerText = "Seen just now";
+          msgRow.appendChild(seenIndicator);
+        }, 500);
+      }
+    }
+
+    function handleAcha() {
+      addMessage("sent", "Acha lagta hai");
+      setTimeout(() => {
+        addMessage("received", "Tu bhi bohot achi lagti hai");
+      }, 1500);
+    }
+
+    function handleBekar() {
+      document.getElementById("bekarButton").style.transform = "translate(50px, 50px)";
+    }
+
+    showNextMessage();
+  </script>
+</body>
+</html>
