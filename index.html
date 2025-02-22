@@ -56,9 +56,6 @@
         .username {
             font-weight: 600;
             font-size: 15px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
         .active-status {
@@ -124,24 +121,30 @@
             align-items: center;
         }
 
-        .message-input {
-            flex-grow: 1;
-            background: var(--received-bg);
-            border: none;
-            border-radius: 22px;
-            padding: 12px 20px;
-            color: var(--text);
-            font-size: 15px;
+        .option-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
         }
 
-        .send-button {
-            background: transparent;
-            color: var(--sent-bg);
+        .option-button {
+            padding: 8px 16px;
+            border-radius: 20px;
             border: none;
             font-weight: 600;
-            font-size: 15px;
-            padding: 8px 12px;
             cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .acha-button {
+            background: #0095f6;
+            color: white;
+        }
+
+        .bekar-button {
+            background: #ed4956;
+            color: white;
+            position: absolute;
         }
     </style>
 </head>
@@ -150,92 +153,85 @@
         <div class="header">
             <img src="https://i.imgur.com/yDBXR2X.jpg" class="profile-pic" alt="Profile">
             <div class="user-info">
-                <div class="username">Your Profile 👾</div>
+                <div class="username">Tamatar</div>
                 <div class="active-status">Active now</div>
             </div>
         </div>
 
         <div class="chat-area" id="chatArea">
-            <!-- Received Message (No PFP) -->
+            <!-- Initial Question -->
             <div class="message received">
                 <div class="message-bubble">
-                    Hey there! 👋
-                    <div class="time-stamp">10:30 AM</div>
-                </div>
-            </div>
-
-            <!-- Sent Message -->
-            <div class="message sent">
-                <div class="message-bubble">
-                    What's up? 🚀
-                    <div class="time-stamp">10:31 AM</div>
-                </div>
-            </div>
-
-            <!-- Received Message -->
-            <div class="message received">
-                <div class="message-bubble">
-                    Check this out! 🌟
-                    <div class="time-stamp">10:32 AM</div>
+                    Bhai me kesa lagta hu??
+                    <div class="option-buttons">
+                        <button class="option-button acha-button" onclick="handleAcha()">Acha</button>
+                        <button class="option-button bekar-button" onclick="handleBekar()" 
+                                style="left: 120px; top: 120px;">Bekar</button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="input-area">
-            <input type="text" class="message-input" id="messageInput" placeholder="Message...">
-            <button class="send-button" onclick="sendMessage()">Send</button>
+            <input type="text" class="message-input" placeholder="Message..." disabled>
+            <button class="send-button" disabled>Send</button>
         </div>
     </div>
 
     <script>
-        function sendMessage() {
-            const input = document.getElementById('messageInput');
+        function handleAcha() {
             const chatArea = document.getElementById('chatArea');
             
-            if (input.value.trim()) {
-                // Create sent message
-                const sentMessage = document.createElement('div');
-                sentMessage.className = 'message sent';
-                sentMessage.innerHTML = `
+            // Remove buttons
+            document.querySelector('.option-buttons').remove();
+            
+            // Add sent message
+            const sentMessage = document.createElement('div');
+            sentMessage.className = 'message sent';
+            sentMessage.innerHTML = `
+                <div class="message-bubble">
+                    Acha lagta hai
+                    <div class="time-stamp">${getCurrentTime()}</div>
+                </div>
+            `;
+            chatArea.appendChild(sentMessage);
+            
+            // Add received response
+            setTimeout(() => {
+                const receivedMessage = document.createElement('div');
+                receivedMessage.className = 'message received';
+                receivedMessage.innerHTML = `
                     <div class="message-bubble">
-                        ${input.value}
+                        awww thank you yrr
                         <div class="time-stamp">${getCurrentTime()}</div>
                     </div>
                 `;
-                
-                chatArea.appendChild(sentMessage);
-                
-                // Create auto-reply after 1 second
-                setTimeout(() => {
-                    const receivedMessage = document.createElement('div');
-                    receivedMessage.className = 'message received';
-                    receivedMessage.innerHTML = `
-                        <div class="message-bubble">
-                            Nice message! 😄
-                            <div class="time-stamp">${getCurrentTime()}</div>
-                        </div>
-                    `;
-                    chatArea.appendChild(receivedMessage);
-                    chatArea.scrollTop = chatArea.scrollHeight;
-                }, 1000);
-
-                // Clear input
-                input.value = '';
+                chatArea.appendChild(receivedMessage);
                 chatArea.scrollTop = chatArea.scrollHeight;
-            }
+            }, 800);
+        }
+
+        function handleBekar() {
+            const bekarButton = document.querySelector('.bekar-button');
+            const containerRect = document.querySelector('.container').getBoundingClientRect();
+            
+            // Random position within container
+            const newX = Math.random() * (containerRect.width - 100);
+            const newY = Math.random() * (containerRect.height - 100);
+            
+            bekarButton.style.position = 'absolute';
+            bekarButton.style.left = `${newX}px`;
+            bekarButton.style.top = `${newY}px`;
         }
 
         function getCurrentTime() {
             const now = new Date();
-            return now.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+            return now.toLocaleTimeString('en-US', { 
+                hour: 'numeric', 
+                minute: 'numeric', 
+                hour12: true 
+            }).replace(' AM', '').replace(' PM', '');
         }
-
-        // Send message on Enter key
-        document.getElementById('messageInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
     </script>
 </body>
 </html>
