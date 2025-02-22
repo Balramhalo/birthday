@@ -53,21 +53,26 @@
             z-index: 100;
         }
 
+        .back-arrow {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
         .profile-pic {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             object-fit: cover;
             position: relative;
-            margin-right: 12px;
         }
 
         .online-status {
             position: absolute;
             bottom: 0;
             right: 0;
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             background: var(--online-status);
             border-radius: 50%;
             border: 2px solid var(--bg);
@@ -79,12 +84,12 @@
 
         .username {
             font-weight: 600;
-            font-size: 14px;
+            font-size: 16px;
         }
 
         .active-status {
             color: var(--secondary-text);
-            font-size: 11px;
+            font-size: 12px;
             margin-top: 2px;
         }
 
@@ -98,7 +103,7 @@
             background: none;
             border: none;
             color: var(--text);
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
         }
 
@@ -115,13 +120,6 @@
             gap: 8px;
             margin: 16px 0;
             align-items: flex-end;
-            opacity: 0;
-            animation: messageFade 0.3s ease-in forwards;
-        }
-
-        @keyframes messageFade {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .received {
@@ -136,9 +134,15 @@
             max-width: 75%;
             padding: 12px 16px;
             border-radius: 22px;
-            font-size: 14px;
+            font-size: 15px;
             line-height: 1.4;
             position: relative;
+            animation: messageFade 0.3s ease-in;
+        }
+
+        @keyframes messageFade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .received .message-bubble {
@@ -168,31 +172,6 @@
             to { opacity: 1; }
         }
 
-        /* Typing Indicator */
-        .typing-indicator {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 8px 12px;
-            background: var(--received-bg);
-            border-radius: 22px;
-            width: fit-content;
-        }
-
-        .typing-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--text);
-            border-radius: 50%;
-            opacity: 0.4;
-            animation: typingBlink 1.4s infinite both;
-        }
-
-        @keyframes typingBlink {
-            0%, 80%, 100% { opacity: 0.4; }
-            40% { opacity: 1; }
-        }
-
         /* Input Area */
         .input-area {
             position: fixed;
@@ -213,7 +192,7 @@
             border-radius: 22px;
             padding: 12px 20px;
             color: var(--text);
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .send-button {
@@ -221,7 +200,7 @@
             color: var(--sent-bg);
             border: none;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 15px;
             padding: 8px 12px;
             cursor: pointer;
         }
@@ -232,11 +211,11 @@
         <div class="header">
             <div class="back-arrow">←</div>
             <div style="position: relative;">
-                <img src="https://i.imgur.com/yDBXR2X.jpg" class="profile-pic" alt="Profile">
+                <img src="https://i.ibb.co/Jj238NKv/profile-pic.jpg" class="profile-pic" alt="Tamatar">
                 <div class="online-status"></div>
             </div>
             <div class="user-info">
-                <div class="username">Tamar 👾</div>
+                <div class="username">Tamatar</div>
                 <div class="active-status">Active now</div>
             </div>
             <div class="header-icons">
@@ -256,75 +235,26 @@
     </div>
 
     <script>
-        const conversation = [
-            { sender: 'received', text: 'Hey there! 👋' },
-            { sender: 'sent', text: 'Hi! How are you?' },
-            { sender: 'received', text: 'I'm good, thanks!' },
-            { sender: 'received', text: 'What are you up to?' },
-            { sender: 'sent', text: 'Just coding some cool stuff!' }
-        ];
-
-        let currentIndex = 0;
         let lastSeenIndicator = null;
-
-        function showNextMessage() {
-            if (currentIndex < conversation.length) {
-                const msg = conversation[currentIndex];
-                const chatArea = document.getElementById('chatArea');
-
-                if (msg.sender === 'received') {
-                    // Show typing indicator
-                    const typingIndicator = document.createElement('div');
-                    typingIndicator.className = 'message received';
-                    typingIndicator.innerHTML = `
-                        <div class="typing-indicator">
-                            <div class="typing-dot"></div>
-                            <div class="typing-dot" style="animation-delay: 0.2s"></div>
-                            <div class="typing-dot" style="animation-delay: 0.4s"></div>
-                        </div>
-                    `;
-                    chatArea.appendChild(typingIndicator);
-                    chatArea.scrollTop = chatArea.scrollHeight;
-
-                    // Replace typing indicator with actual message after delay
-                    setTimeout(() => {
-                        chatArea.removeChild(typingIndicator);
-                        createMessage(msg.text, false);
-                        currentIndex++;
-                        showNextMessage();
-                    }, 1500);
-                } else {
-                    createMessage(msg.text, true);
-                    currentIndex++;
-                    setTimeout(showNextMessage, 1000);
-                }
-            }
-        }
-
+        
         function createMessage(text, isSent) {
             const chatArea = document.getElementById('chatArea');
             const message = document.createElement('div');
             message.className = `message ${isSent ? 'sent' : 'received'}`;
-
-            if (!isSent) {
-                message.innerHTML = `
-                    <img src="https://i.imgur.com/yDBXR2X.jpg" class="profile-pic" alt="Profile">
-                `;
-            }
-
+            
             const bubble = document.createElement('div');
             bubble.className = 'message-bubble';
             bubble.textContent = text;
-
+            
             if(isSent) {
                 if(lastSeenIndicator) lastSeenIndicator.remove();
                 const seen = document.createElement('div');
                 seen.className = 'seen-indicator';
-                seen.textContent = 'Seen';
+                seen.textContent = 'Seen just now';
                 bubble.appendChild(seen);
                 lastSeenIndicator = seen;
             }
-
+            
             message.appendChild(bubble);
             chatArea.appendChild(message);
             chatArea.scrollTop = chatArea.scrollHeight;
@@ -338,32 +268,15 @@
                 
                 // Simulate reply after 1 second
                 setTimeout(() => {
-                    const chatArea = document.getElementById('chatArea');
-                    
-                    // Show typing indicator
-                    const typingIndicator = document.createElement('div');
-                    typingIndicator.className = 'message received';
-                    typingIndicator.innerHTML = `
-                        <img src="https://i.imgur.com/yDBXR2X.jpg" class="profile-pic" alt="Profile">
-                        <div class="typing-indicator">
-                            <div class="typing-dot"></div>
-                            <div class="typing-dot" style="animation-delay: 0.2s"></div>
-                            <div class="typing-dot" style="animation-delay: 0.4s"></div>
-                        </div>
-                    `;
-                    chatArea.appendChild(typingIndicator);
-                    chatArea.scrollTop = chatArea.scrollHeight;
-
-                    setTimeout(() => {
-                        chatArea.removeChild(typingIndicator);
-                        createMessage('This is a reply message', false);
-                    }, 1500);
+                    createMessage('This is a reply message', false);
                 }, 1000);
             }
         }
 
-        // Start initial conversation
-        setTimeout(showNextMessage, 500);
+        // Initial messages
+        setTimeout(() => createMessage('Hey there! 👋', false), 500);
+        setTimeout(() => createMessage('Hi! How are you?', true), 1500);
+        setTimeout(() => createMessage('I'm good, thanks!', false), 2500);
     </script>
 </body>
 </html>
