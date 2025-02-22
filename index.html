@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cosmic Rizz Check</title>
+    <title>Coding Rizz (kinda)</title>
     <link rel="icon" type="image/png" href="https://ibb.co/FkDMDxWR">
     <style>
         :root {
@@ -36,25 +36,12 @@
             position: relative;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            width: 200vw;
-            height: 200vh;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 30%),
-                radial-gradient(circle at 80% 20%, rgba(255, 68, 68, 0.1) 0%, transparent 30%);
-            animation: nebulaFlow 40s linear infinite;
-            z-index: 1;
-        }
-
         /* Starfield Background */
         .stars {
             position: fixed;
             width: 100%;
             height: 100%;
             transform: rotate(-45deg);
-            z-index: 2;
         }
 
         .star {
@@ -69,14 +56,6 @@
             50% { opacity: 1; }
         }
 
-        /* Cosmic Debris */
-        .debris {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.05);
-            clip-path: polygon(50% 0%, 80% 10%, 100% 35%, 90% 60%, 50% 100%, 10% 60%, 0% 35%, 20% 10%);
-            animation: float 20s infinite linear, rotate 40s infinite linear;
-        }
-
         /* Shooting Stars */
         .shooting-star {
             position: absolute;
@@ -86,7 +65,18 @@
             border-radius: 999px;
             filter: drop-shadow(0 0 6px var(--accent));
             animation: shooting 2s infinite;
-            z-index: 3;
+        }
+
+        @keyframes shooting {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(-45deg);
+                opacity: 0;
+            }
+            20%, 100% { opacity: 0; }
+            10% {
+                opacity: 1;
+                transform: translateX(0%) translateY(0%) rotate(-45deg);
+            }
         }
 
         .container {
@@ -99,9 +89,8 @@
             width: 95%;
             max-width: 600px;
             position: relative;
-            z-index: 4;
+            z-index: 2;
             backdrop-filter: blur(10px);
-            transform-style: preserve-3d;
         }
 
         h1 {
@@ -113,31 +102,166 @@
             animation: float 3s ease-in-out infinite;
         }
 
-        /* Rest of the original styles remain the same */
-
-        /* New Animations */
-        @keyframes nebulaFlow {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(-50%, -25%) rotate(5deg); }
-            50% { transform: translate(-25%, -50%) rotate(-5deg); }
-            75% { transform: translate(-75%, -25%) rotate(5deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
+        .button-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
         }
 
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .cyber-btn {
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            background: var(--typing-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(0, 255, 136, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .cyber-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .cyber-btn:hover::before {
+            left: 100%;
+        }
+
+        #achaBtn {
+            border-color: var(--primary-color);
+        }
+
+        #bekarBtn {
+            border-color: var(--secondary-color);
+        }
+
+        .message-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(100% - 4rem);
+            background: var(--typing-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            opacity: 0;
+            pointer-events: none;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
+        }
+
+        .message-container.visible {
+            opacity: 1;
+            animation: messageIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 1.4s infinite;
+        }
+
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        .message-text {
+            font-size: 1.4rem;
+            text-align: center;
+            line-height: 1.6;
+            background: linear-gradient(45deg, var(--primary-color), #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .message-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s 0.3s;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        @keyframes messageIn {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .particles {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--accent);
+            pointer-events: none;
+            animation: particle 2s linear infinite;
+        }
+
+        @keyframes particle {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .cyber-btn {
+                padding: 1rem 2rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="stars" id="stars"></div>
-    <div id="debris-container"></div>
     <div class="container">
         <h1>Yeh Bata, Me Kesa Lagta Hu Tujhe? 💫</h1>
         <div class="button-group">
@@ -159,15 +283,12 @@
     </div>
 
     <script>
-        // Initialize cosmic environment
-        function createCosmicElements() {
-            // Starfield
+        // Starfield Initialization
+        function createStarfield() {
             const starsContainer = document.getElementById('stars');
-            const debrisContainer = document.getElementById('debris-container');
-            const elementCount = 200;
+            const starCount = 200;
 
-            for (let i = 0; i < elementCount; i++) {
-                // Create stars
+            for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 star.style.left = Math.random() * 100 + '%';
@@ -176,18 +297,6 @@
                 star.style.height = star.style.width;
                 star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
                 starsContainer.appendChild(star);
-
-                // Create space debris
-                if(i % 10 === 0) {
-                    const debris = document.createElement('div');
-                    debris.className = 'debris';
-                    debris.style.width = Math.random() * 20 + 10 + 'px';
-                    debris.style.height = debris.style.width;
-                    debris.style.left = Math.random() * 100 + '%';
-                    debris.style.top = Math.random() * 100 + '%';
-                    debris.style.animationDelay = Math.random() * 20 + 's';
-                    debrisContainer.appendChild(debris);
-                }
             }
         }
 
@@ -198,17 +307,17 @@
             star.style.top = Math.random() * 100 + '%';
             star.style.left = Math.random() * 100 + '%';
             document.body.appendChild(star);
-
+            
             setTimeout(() => {
                 star.remove();
             }, 2000);
         }
 
-        // Initialize cosmic environment
-        createCosmicElements();
+        // Initialize background effects
+        createStarfield();
         setInterval(createShootingStar, 3000);
 
-        // Original Application Logic remains the same
+        // Original Application Logic
         const achaBtn = document.getElementById('achaBtn');
         const bekarBtn = document.getElementById('bekarBtn');
         const messageContainer = document.getElementById('messageContainer');
