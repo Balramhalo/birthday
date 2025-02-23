@@ -1,54 +1,47 @@
 :root {
-    --bg: #0a0a0a;
-    --neon: #00ff9d;
-    --neon-red: #ff003c;
-    --text: #ffffff;
-    --cyber-border: 2px solid var(--neon);
+    --quantum-void: #000010;
+    --neon-core: #00f3ff;
+    --hologram-aura: rgba(0, 243, 255, 0.1);
+    --cyber-border: 1px solid var(--neon-core);
 }
 
-/* Base Styles */
-.dark-mode {
-    background: var(--bg);
-    color: var(--text);
+[data-theme="cyber"] {
+    background: var(--quantum-void);
+    color: var(--neon-core);
     min-height: 100vh;
-    font-family: 'Courier New', monospace;
+    font-family: 'Quantum', sans-serif;
 }
 
-/* Cyber UI Components */
-.cyber-card {
-    background: rgba(0,0,0,0.8);
-    border: var(--cyber-border);
-    padding: 2rem;
-    max-width: 500px;
-    margin: 2rem auto;
-    position: relative;
+.neon-aura {
+    box-shadow: 0 0 30px var(--hologram-aura);
+    animation: quantum-pulse 2s infinite;
 }
 
-.hologram-btn {
-    background: none;
+@keyframes quantum-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+.quantum-btn {
+    background: transparent;
     border: var(--cyber-border);
-    color: var(--neon);
-    padding: 1rem 2rem;
-    cursor: pointer;
-    transition: all 0.3s;
+    padding: 1.5rem 3rem;
     position: relative;
     overflow: hidden;
+    transition: all 0.3s quantum-ease;
 }
 
-.hologram-btn::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, var(--neon), transparent);
-    animation: hologram 3s infinite linear;
+.hologram-effect {
+    background: linear-gradient(45deg, 
+        var(--neon-core) 25%, 
+        transparent 50%, 
+        var(--neon-core) 75%
+    );
+    background-size: 400% 400%;
+    animation: hologram-flow 3s infinite linear;
 }
 
-@keyframes hologram {
-    0% { transform: rotate(0deg) translate(-25%, -25%); }
-    100% { transform: rotate(360deg) translate(-25%, -25%); }
+@keyframes hologram-flow {
+    0% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
-
-/* Add more cyberpunk styles... */
