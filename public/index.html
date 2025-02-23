@@ -1,37 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ꓭⱥꪟꪊꪑ Language</title>
-    <link rel="stylesheet" href="style.css">
+  <title>Balram Language</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Modern Animations */
+    @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } }
+    .card { animation: slideIn 0.6s ease; }
+    .menu-active { transform: translateX(0)!important; }
+    button:hover { transform: scale(1.05); transition: 0.3s; }
+  </style>
 </head>
 <body>
-    <div id="auth-view" class="view">
-        <div class="cyber-card">
-            <h1 class="neon-text">⨳ Access Protocol</h1>
-            <input type="text" id="username" class="cyber-input" placeholder="Neuroprint ID">
-            <input type="password" id="password" class="cyber-input" placeholder="Cipher Key">
-            <button class="quantum-btn" onclick="handleAuth()">Activate Neural Link</button>
-        </div>
+  <!-- Dynamic Content -->
+  <nav>
+    <div id="menuBtn">☰</div>
+    <div id="menu">
+      <div id="logout">Logout</div>
     </div>
+  </nav>
+  
+  <div id="views">
+    <div id="loginView" class="card"></div>
+    <div id="translatorView" class="card"></div>
+  </div>
 
-    <div id="main-view" class="view hidden">
-        <nav class="cyber-nav">
-            <div class="hamburger" onclick="toggleMenu()">☰</div>
-            <div id="nav-menu" class="hidden">
-                <button onclick="showView('translator')">🧿 Translate</button>
-                <button onclick="showView('vocab')">📜 Vocabulary</button>
-                <button onclick="logout()">⏻ Logout</button>
-            </div>
-        </nav>
+  <script>
+    // State Management
+    let currentUser = null;
+    
+    // UI Controller
+    const UI = {
+      showView(viewId) {
+        document.querySelectorAll('#views > div').forEach(v => v.style.display = 'none');
+        document.getElementById(viewId).style.display = 'block';
+      },
+      
+      async loadTranslator() {
+        const res = await fetch('/translate', { method: 'POST', body: JSON.stringify({ text }) });
+        // Update UI with translation
+      }
+    };
 
-        <div id="translator" class="view-section active">
-            <textarea id="input-text" placeholder="Input phrase..."></textarea>
-            <div id="output-text" class="neon-output"></div>
-        </div>
-    </div>
+    // Auth Controller
+    const Auth = {
+      async login(username, password) {
+        const res = await fetch('/login', { 
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        if (res.ok) {
+          localStorage.setItem('token', (await res.json()).token);
+          UI.showView('translatorView');
+        }
+      }
+    };
 
-    <script src="script.js"></script>
+    // Init
+    window.onload = () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        // Validate token
+        UI.showView('translatorView');
+      }
+    };
+  </script>
 </body>
 </html>
