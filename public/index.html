@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balram Language</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <div id="authSection" class="container">
+        <div class="glass-card">
+            <h1>🔐 Balram Universe</h1>
+            <div class="auth-form">
+                <input type="text" id="username" placeholder="Username">
+                <input type="password" id="password" placeholder="Password">
+                <button class="cyber-button" onclick="handleAuth()">
+                    <span class="glow">ACCESS</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="mainSection" class="hidden">
+        <nav class="cyber-nav">
+            <div class="hamburger" onclick="toggleMenu()">▣▣▣</div>
+            <div class="nav-items">
+                <button class="cyber-button-sm" onclick="showPanel('translator')">🧿 Translate</button>
+                <button class="cyber-button-sm" onclick="showPanel('vocab')">📜 Vocabulary</button>
+                <button class="cyber-button-sm" onclick="logout()">⏻ Logout</button>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <!-- Translator Panel -->
+            <div id="translator" class="panel active">
+                <div class="lang-converter">
+                    <textarea id="inputText" placeholder="Enter text..."></textarea>
+                    <div id="outputText" class="cyber-output"></div>
+                </div>
+            </div>
+
+            <!-- Vocabulary Panel -->
+            <div id="vocab" class="panel">
+                <div class="alphabet-grid"></div>
+                <div class="word-db"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
