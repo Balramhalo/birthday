@@ -1,39 +1,23 @@
-let currentUser = null;
+const toggleMenu = () => {
+    const menu = document.getElementById('menu');
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+};
 
-async function handleAuth() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    
-    const response = await fetch('/api/' + (currentUser ? 'login' : 'register'), {
+const translate = async () => {
+    const text = document.getElementById('inputText').value;
+    const response = await fetch('/api/translator/translate', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('token')
+        },
+        body: JSON.stringify({ text })
     });
-    
-    if (response.ok) {
-        const { token } = await response.json();
-        localStorage.setItem('jwt', token);
-        loadMainInterface();
-    }
-}
+    const data = await response.json();
+    document.getElementById('output').innerText = data.translatedText;
+};
 
-function generateBalramTranslation(text) {
-    // Client-side fallback
-    return text.split(' ').map(word => 
-        [...word].reverse().join('') + '🎯' + String.fromCodePoint(0x1F600 + Math.random() * 80)
-    ).join(' ');
-}
-
-function loadMainInterface() {
-    document.getElementById('auth-view').classList.add('hidden');
-    document.getElementById('main-view').classList.remove('hidden');
-    document.getElementById('input-text').addEventListener('input', function(e) {
-        document.getElementById('output-text').textContent = generateBalramTranslation(e.target.value);
-    });
-}
-
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    const token = localStorage.getItem('jwt');
-    if (token) loadMainInterface();
-});
+const logout = () => {
+    localStorage.removeItem('token');
+    window.location.reload();
+};
