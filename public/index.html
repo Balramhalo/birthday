@@ -1,209 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Balram Language</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #000;
-      color: #fff;
-      overflow-x: hidden;
-    }
-    .container { display: none; padding: 20px; }
-    .auth-page { display: flex; flex-direction: column; align-items: center; height: 100vh; justify-content: center; }
-    input, button { padding: 10px; margin: 10px; border: none; border-radius: 5px; background: #333; color: #fff; }
-    button { cursor: pointer; transition: transform 0.3s; }
-    button:hover { transform: scale(1.05); }
-    nav { position: fixed; top: 0; width: 100%; background: #111; padding: 10px; display: flex; justify-content: space-between; align-items: center; }
-    .hamburger { font-size: 24px; cursor: pointer; }
-    .menu { display: none; position: absolute; top: 50px; right: 10px; background: #222; padding: 10px; border-radius: 5px; }
-    .menu.active { display: block; animation: slideIn 0.3s; }
-    .menu a { display: block; padding: 10px; color: #fff; text-decoration: none; }
-    .menu a:hover { background: #333; }
-    .page { padding-top: 60px; }
-    @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ꓭⱥꪟꪊꪑ Language</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Auth Pages -->
-  <div id="login" class="auth-page">
-    <h1>Login</h1>
-    <input id="login-username" placeholder="Username" />
-    <input id="login-password" type="password" placeholder="Password" />
-    <button onclick="login()">Login</button>
-    <button onclick="showRegister()">Register</button>
-  </div>
-  <div id="register" class="auth-page" style="display: none;">
-    <h1>Register</h1>
-    <input id="reg-username" placeholder="Username" />
-    <input id="reg-password" type="password" placeholder="Password" />
-    <button onclick="register()">Register</button>
-    <button onclick="showLogin()">Back to Login</button>
-  </div>
-
-  <!-- Main App -->
-  <nav id="nav" style="display: none;">
-    <h2>Balram Language</h2>
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
-    <div id="menu" class="menu">
-      <a href="#" onclick="showPage('translator')">Translator</a>
-      <a href="#" onclick="showPage('vocabulary')">Vocabulary</a>
-      <a href="#" onclick="showPage('history')">History</a>
-      <a href="#" onclick="showPage('owner')">Owner</a>
-      <a href="#" onclick="logout()">Logout</a>
+    <div id="auth-view" class="view">
+        <div class="cyber-card">
+            <h1 class="neon-text">⨳ Access Protocol</h1>
+            <input type="text" id="username" class="cyber-input" placeholder="Neuroprint ID">
+            <input type="password" id="password" class="cyber-input" placeholder="Cipher Key">
+            <button class="quantum-btn" onclick="handleAuth()">Activate Neural Link</button>
+        </div>
     </div>
-  </nav>
 
-  <div id="translator" class="container page">
-    <h1>Translator</h1>
-    <input id="translate-input" placeholder="Enter text to translate" />
-    <button onclick="translate()">Translate</button>
-    <div id="translate-output"></div>
-  </div>
-  <div id="vocabulary" class="container page" style="display: none;">
-    <h1>Vocabulary</h1>
-    <div id="vocab-content"></div>
-  </div>
-  <div id="history" class="container page" style="display: none;">
-    <h1>History</h1>
-    <div id="history-content"></div>
-  </div>
-  <div id="owner" class="container page" style="display: none;">
-    <h1>Owner</h1>
-    <p>Created by [Your Name]. Inspired by Gen Z, Hindi, and more!</p>
-  </div>
+    <div id="main-view" class="view hidden">
+        <nav class="cyber-nav">
+            <div class="hamburger" onclick="toggleMenu()">☰</div>
+            <div id="nav-menu" class="hidden">
+                <button onclick="showView('translator')">🧿 Translate</button>
+                <button onclick="showView('vocab')">📜 Vocabulary</button>
+                <button onclick="logout()">⏻ Logout</button>
+            </div>
+        </nav>
 
-  <script>
-    const API_URL = 'http://localhost:3000'; // Replace with Vercel URL after deployment
-    let token = localStorage.getItem('token');
-    let userId = localStorage.getItem('userId');
+        <div id="translator" class="view-section active">
+            <textarea id="input-text" placeholder="Input phrase..."></textarea>
+            <div id="output-text" class="neon-output"></div>
+        </div>
+    </div>
 
-    // Auth Functions
-    async function register() {
-      const username = document.getElementById('reg-username').value;
-      const password = document.getElementById('reg-password').value;
-      const res = await fetch(`${API_URL}/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
-      });
-      const data = await res.json();
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('userId', data.userId);
-        token = data.token;
-        userId = data.userId;
-        showApp();
-      } else alert(data.message);
-    }
-
-    async function login() {
-      const username = document.getElementById('login-username').value;
-      const password = document.getElementById('login-password').value;
-      const res = await fetch(`${API_URL}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
-      });
-      const data = await res.json();
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('userId', data.userId);
-        token = data.token;
-        userId = data.userId;
-        showApp();
-      } else alert(data.message);
-    }
-
-    function logout() {
-      localStorage.removeItem('token');
-      localStorage.removeItem('userId');
-      token = null;
-      userId = null;
-      showLogin();
-    }
-
-    // UI Functions
-    function showLogin() {
-      document.getElementById('login').style.display = 'flex';
-      document.getElementById('register').style.display = 'none';
-      document.getElementById('nav').style.display = 'none';
-      hidePages();
-    }
-
-    function showRegister() {
-      document.getElementById('login').style.display = 'none';
-      document.getElementById('register').style.display = 'flex';
-    }
-
-    function showApp() {
-      document.getElementById('login').style.display = 'none';
-      document.getElementById('register').style.display = 'none';
-      document.getElementById('nav').style.display = 'flex';
-      showPage('translator');
-    }
-
-    function toggleMenu() {
-      document.getElementById('menu').classList.toggle('active');
-    }
-
-    function hidePages() {
-      document.querySelectorAll('.container').forEach(page => page.style.display = 'none');
-    }
-
-    function showPage(pageId) {
-      hidePages();
-      document.getElementById(pageId).style.display = 'block';
-      if (pageId === 'vocabulary') loadVocabulary();
-      if (pageId === 'history') loadHistory();
-      toggleMenu();
-    }
-
-    // Translator & Data Functions
-    async function translate() {
-      const input = document.getElementById('translate-input').value;
-      const res = await fetch(`${API_URL}/translate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ input }),
-      });
-      const data = await res.json();
-      document.getElementById('translate-output').innerHTML = `
-        <p>Translation: ${data.translation.word}</p>
-        <p>Pronunciation: ${data.translation.pronunciation}</p>
-        <p>Emoji: ${data.translation.emoji}</p>
-      `;
-    }
-
-    async function loadVocabulary() {
-      const res = await fetch(`${API_URL}/vocabulary`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
-      const data = await res.json();
-      document.getElementById('vocab-content').innerHTML = `
-        <h2>Alphabet</h2>
-        <p>${data.alphabet.map(a => `${a.letter} (${a.pronunciation})`).join(', ')}</p>
-        <h2>Words</h2>
-        <ul>${data.words.map(w => `<li>${w.word} (from "${w.input}") - ${w.emoji}</li>`).join('')}</ul>
-      `;
-    }
-
-    async function loadHistory() {
-      const res = await fetch(`${API_URL}/history`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
-      const data = await res.json();
-      document.getElementById('history-content').innerHTML = `
-        <ul>${data.map(t => `<li>${t.input} → ${t.output} (${new Date(t.timestamp).toLocaleString()})</li>`).join('')}</ul>
-      `;
-    }
-
-    // Initial Load
-    if (token) showApp();
-    else showLogin();
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
