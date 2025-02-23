@@ -1,71 +1,233 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="cyber">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ꓭⱥꪟꪊꪑ Language Matrix</title>
-    <link rel="stylesheet" href="neon.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Balram Language</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      transition: opacity 0.5s ease;
+    }
+    .hidden { opacity: 0; display: none; }
+    .hamburger {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      cursor: pointer;
+      font-size: 30px;
+      transition: transform 0.3s ease;
+    }
+    .hamburger:hover { transform: rotate(90deg); }
+    .menu {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: #333;
+      padding: 20px;
+      border-radius: 10px;
+      display: none;
+      transition: all 0.3s ease;
+    }
+    .menu.open { display: block; }
+    .menu-item {
+      margin: 10px 0;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .menu-item:hover { color: #00ffcc; }
+    button {
+      padding: 10px 20px;
+      background: #00ffcc;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+    button:hover { transform: scale(1.1); background: #00cc99; }
+    input {
+      padding: 10px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #333;
+      color: #fff;
+    }
+    .content { text-align: center; }
+    .alphabet { font-size: 24px; margin: 20px; }
+  </style>
 </head>
 <body>
-    <div id="quantum-gate">
-        <!-- Auth Interface -->
-        <div class="holo-card" id="auth-ui">
-            <h1 class="neon-pulse">⨳ Access Protocol</h1>
-            <input type="text" class="neon-input" id="nexus-id" 
-                   placeholder="Neuroprint ID" data-cyber="username">
-            <input type="password" class="neon-input" id="cipher-key" 
-                   placeholder="Cipher Sequence" data-cyber="password">
-            <button class="quantum-btn" onclick="initiateNeuroscan()">
-                <span class="hologram-effect">Activate Neural Link</span>
-            </button>
-        </div>
+  <div class="hamburger">☰</div>
+  <div class="menu">
+    <div class="menu-item" data-page="vocabulary">Vocabulary</div>
+    <div class="menu-item" data-page="history">History</div>
+    <div class="menu-item" data-page="owner">Owner</div>
+    <div class="menu-item" data-page="admin">Admin</div>
+    <div class="menu-item" data-page="logout">Logout</div>
+  </div>
+  <div id="login" class="container">
+    <h1>Login</h1>
+    <input id="login-username" placeholder="Username">
+    <input id="login-password" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <button onclick="showRegister()">Register</button>
+  </div>
+  <div id="register" class="container hidden">
+    <h1>Register</h1>
+    <input id="reg-username" placeholder="Username">
+    <input id="reg-password" type="password" placeholder="Password">
+    <button onclick="register()">Register</button>
+    <button onclick="showLogin()">Back to Login</button>
+  </div>
+  <div id="main" class="container hidden">
+    <h1>Balram Language Translator</h1>
+    <input id="phrase" placeholder="Enter phrase to translate">
+    <button onclick="translate()">Translate</button>
+    <div id="result" class="content"></div>
+  </div>
+  <div id="vocabulary" class="container hidden">
+    <h1>Vocabulary</h1>
+    <div id="vocab-content" class="content"></div>
+  </div>
+  <div id="history" class="container hidden">
+    <h1>History</h1>
+    <p>Coming soon...</p>
+  </div>
+  <div id="owner" class="container hidden">
+    <h1>Owner</h1>
+    <p>Created by [Your Name]</p>
+  </div>
+  <div id="admin" class="container hidden">
+    <h1>Admin Dashboard</h1>
+    <div id="admin-content" class="content"></div>
+    <button onclick="banUser()">Ban User</button>
+  </div>
 
-        <!-- Main Matrix -->
-        <div id="neuro-core" class="hidden">
-            <!-- Quantum Navigation -->
-            <div class="cyber-console">
-                <div class="hamburger-nexus" onclick="toggleHoloMenu()">
-                    <div class="quantum-bar"></div>
-                    <div class="quantum-bar"></div>
-                    <div class="quantum-bar"></div>
-                </div>
-                <div id="holo-menu" class="hidden">
-                    <button class="menu-item" onclick="shiftReality('translator')">
-                        ྿ Reality Translator
-                    </button>
-                    <button class="menu-item" onclick="shiftReality('vocab')">
-                        ꙮ Lexicon Forge
-                    </button>
-                    <button class="menu-item" onclick="quantumFlux('logout')">
-                        ⏻ Neural Disconnect
-                    </button>
-                </div>
-            </div>
+  <script>
+    let token = localStorage.getItem('token');
+    let isAdmin = false;
+    const dynamicAdminKey = Math.random().toString(36).substring(2, 15);
 
-            <!-- Reality Translator -->
-            <div id="translator-core" class="active-reality">
-                <div class="quantum-split">
-                    <div class="reality-input">
-                        <textarea class="neuro-textarea" id="source-reality"
-                                  placeholder="Input base reality..." 
-                                  oninput="generateQuantumTranslation(this.value)"
-                                  data-lingua="en,hi,ja"></textarea>
-                    </div>
-                    <div class="reality-output neon-aura">
-                        <div id="balram-output" class="hologram-text"></div>
-                        <div id="emoji-manifest"></div>
-                    </div>
-                </div>
-            </div>
+    function showPage(pageId) {
+      document.querySelectorAll('.container').forEach(el => el.classList.add('hidden'));
+      document.getElementById(pageId).classList.remove('hidden');
+      document.querySelector('.menu').classList.remove('open');
+    }
 
-            <!-- Lexicon Forge -->
-            <div id="vocab-core" class="hidden">
-                <div class="alphabet-matrix"></div>
-                <div class="neural-db"></div>
-            </div>
-        </div>
-    </div>
-    
-    <script src="quantum.js"></script>
+    document.querySelector('.hamburger').addEventListener('click', () => {
+      document.querySelector('.menu').classList.toggle('open');
+    });
+
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const page = item.dataset.page;
+        if (page === 'logout') { localStorage.removeItem('token'); showPage('login'); }
+        else if (page === 'admin' && isAdmin) loadAdmin();
+        else showPage(page);
+        if (page === 'vocabulary') loadVocabulary();
+      });
+    });
+
+    function showLogin() { showPage('login'); }
+    function showRegister() { showPage('register'); }
+
+    async function login() {
+      const username = document.getElementById('login-username').value;
+      const password = document.getElementById('login-password').value;
+      const res = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        token = data.token;
+        await fetchUser();
+        showPage('main');
+      } else alert(data.message);
+    }
+
+    async function register() {
+      const username = document.getElementById('reg-username').value;
+      const password = document.getElementById('reg-password').value;
+      const res = await fetch('/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        token = data.token;
+        await fetchUser();
+        showPage('main');
+      } else alert(data.message);
+    }
+
+    async function fetchUser() {
+      const res = await fetch('/user', {
+        headers: { 'Authorization': token }
+      });
+      const data = await res.json();
+      isAdmin = data.isAdmin;
+    }
+
+    async function translate() {
+      const phrase = document.getElementById('phrase').value;
+      const res = await fetch('/translate', {
+        method: 'POST',
+        headers: { 'Authorization': token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phrase })
+      });
+      const data = await res.json();
+      document.getElementById('result').innerHTML = data.translated;
+    }
+
+    async function loadVocabulary() {
+      const res = await fetch('/vocabulary', { headers: { 'Authorization': token } });
+      const vocab = await res.json();
+      const alphabet = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z'.split(' ').map(letter => `${letter} (${letter.toLowerCase()})`).join(' ');
+      document.getElementById('vocab-content').innerHTML = `
+        <div class="alphabet">${alphabet}</div>
+        <ul>${vocab.map(v => `<li>${v.english} -> ${v.balram} (${v.pronunciation}) ${v.emoji}</li>`).join('')}</ul>
+      `;
+    }
+
+    async function loadAdmin() {
+      const res = await fetch(`/admin/${dynamicAdminKey}`, { headers: { 'Authorization': token } });
+      const data = await res.json();
+      document.getElementById('admin-content').innerHTML = `
+        <p>Users: ${data.userCount}</p>
+        <p>Vocabulary: ${data.vocabCount}</p>
+      `;
+      showPage('admin');
+    }
+
+    async function banUser() {
+      const userId = prompt('Enter User ID to ban:');
+      await fetch(`/admin/${dynamicAdminKey}/ban`, {
+        method: 'POST',
+        headers: { 'Authorization': token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId })
+      });
+      loadAdmin();
+    }
+
+    if (token) fetchUser().then(() => showPage('main'));
+  </script>
 </body>
 </html>
