@@ -1,30 +1,82 @@
-// script.js
-const BalramConfig = {
+const Balram = {
     alphabet: {
-        'A': 'α', 'B': 'β', 'C': 'γ', 'D': 'δ',
-        'E': 'ε', 'F': 'ζ', 'G': 'η', 'H': 'θ',
-        'I': 'ι', 'J': 'κ', 'K': 'λ', 'L': 'μ',
-        'M': 'ν', 'N': 'ξ', 'O': 'ο', 'P': 'π'
+        'A': 'α', 'B': 'β', 'C': 'Γ', 'D': 'Δ',
+        'E': 'ε', 'F': 'Φ', 'G': 'γ', 'H': 'η',
+        'I': 'ι', 'J': 'ξ', 'K': 'κ', 'L': 'λ',
+        'M': 'μ', 'N': 'ν', 'O': 'Ω', 'P': 'π',
+        'Q': 'Ψ', 'R': 'ρ', 'S': 'σ', 'T': 'τ',
+        'U': 'υ', 'V': 'ϑ', 'W': 'ω', 'X': 'χ',
+        'Y': 'Υ', 'Z': 'ζ'
     },
     emojis: {
         happy: '😊',
         sad: '😢',
-        angry: '👿',
-        surprise: '✨'
+        angry: '😠',
+        surprise: '😲'
     }
 };
 
-let currentPage = 'home';
+function toggleMenu() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.style.left = sidebar.style.left === '0px' ? '-250px' : '0px';
+}
 
-function initThreeJS() {
-    // Initialize 3D background
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+    });
+    document.getElementById(pageId).classList.add('active');
+    toggleMenu();
+}
+
+function detectEmotion(text) {
+    const emotions = {
+        happy: /\b(happy|joy|love|good)\b/i,
+        sad: /\b(sad|bad|pain|cry)\b/i,
+        angry: /\b(angry|hate|rage|mad)\b/i,
+        surprise: /\b(wow|surprise|amaze)\b/i
+    };
+    
+    for (const [emotion, regex] of Object.entries(emotions)) {
+        if (regex.test(text)) {
+            return Balram.emojis[emotion];
+        }
+    }
+    return '';
+}
+
+function translateText() {
+    const input = document.getElementById('inputText').value;
+    const direction = document.getElementById('direction').value;
+    let output = '';
+    
+    if (direction === 'enToBal') {
+        output = input.toUpperCase().split('').map(char => 
+            Balram.alphabet[char] || char
+        ).join('');
+        const emotion = detectEmotion(input);
+        document.getElementById('emojiOutput').textContent = emotion;
+    } else {
+        const reverseMap = Object.fromEntries(
+            Object.entries(Balram.alphabet).map(([k, v]) => [v, k])
+        );
+        output = input.split('').map(char =>
+            reverseMap[char] || char
+        ).join('').toLowerCase();
+        document.getElementById('emojiOutput').textContent = '';
+    }
+    
+    document.getElementById('outputText').textContent = output;
+}
+
+// Initialize particle background
+function initParticles() {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('particle-canvas').appendChild(renderer.domElement);
+    document.getElementById('particles-js').appendChild(renderer.domElement);
 
-    // Add 3D particles
     const geometry = new THREE.BufferGeometry();
     const vertices = [];
     for (let i = 0; i < 5000; i++) {
@@ -35,7 +87,7 @@ function initThreeJS() {
         );
     }
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-    const material = new THREE.PointsMaterial({ size: 2, color: 0x00ffff });
+    const material = new THREE.PointsMaterial({ size: 1.5, color: 0x00ffff });
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
     camera.position.z = 1000;
@@ -49,63 +101,7 @@ function initThreeJS() {
     animate();
 }
 
-function detectEmotion(text) {
-    const emotions = {
-        happy: /\b(happy|joy|love)\b/i,
-        sad: /\b(sad|sorrow|pain)\b/i,
-        angry: /\b(angry|hate|rage)\b/i,
-        surprise: /\b(surprise|wow|amaze)\b/i
-    };
-    
-    return Object.entries(emotions)
-        .filter(([_, regex]) => regex.test(text))
-        .map(([emotion]) => BalramConfig.emojis[emotion])
-        .join(' ');
-}
-
-function translateText() {
-    const input = document.getElementById('inputText').value;
-    const direction = document.getElementById('langDirection').value;
-    let output = '';
-    
-    if (direction === 'enToBal') {
-        output = input.toUpperCase().split('').map(char => 
-            BalramConfig.alphabet[char] || char
-        ).join('');
-        output += ' ' + detectEmotion(input);
-    } else {
-        const reverseMap = Object.fromEntries(
-            Object.entries(BalramConfig.alphabet).map(([k, v]) => [v, k])
-        );
-        output = input.split('').map(char =>
-            reverseMap[char] || char
-        ).join('');
-    }
-    
-    document.getElementById('outputText').innerHTML = output;
-    animateResult();
-}
-
-function animateResult() {
-    anime({
-        targets: '#outputText',
-        scale: [0.9, 1],
-        opacity: [0, 1],
-        duration: 800,
-        easing: 'easeOutElastic(1, .5)'
-    });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    initThreeJS();
-    // Initialize page transitions
-    anime({
-        targets: '.page.active',
-        opacity: [0, 1],
-        translateY: [50, 0],
-        duration: 800,
-        easing: 'easeOutExpo'
-    });
-});
-
-// Add more interactive features and animations
+window.onload = () => {
+    initParticles();
+    showPage('home');
+};
