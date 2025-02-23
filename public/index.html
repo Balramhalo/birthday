@@ -1,70 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Balram Language</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    /* Modern Animations */
-    @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } }
-    .card { animation: slideIn 0.6s ease; }
-    .menu-active { transform: translateX(0)!important; }
-    button:hover { transform: scale(1.05); transition: 0.3s; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Balram Language Translator</title>
 </head>
 <body>
-  <!-- Dynamic Content -->
-  <nav>
-    <div id="menuBtn">☰</div>
-    <div id="menu">
-      <div id="logout">Logout</div>
+    <div class="navbar">
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+        <div class="menu" id="menu">
+            <a href="#" onclick="logout()">Logout</a>
+            <a href="#">Vocabulary</a>
+            <a href="#">History</a>
+            <a href="#">Owner</a>
+        </div>
     </div>
-  </nav>
-  
-  <div id="views">
-    <div id="loginView" class="card"></div>
-    <div id="translatorView" class="card"></div>
-  </div>
-
-  <script>
-    // State Management
-    let currentUser = null;
-    
-    // UI Controller
-    const UI = {
-      showView(viewId) {
-        document.querySelectorAll('#views > div').forEach(v => v.style.display = 'none');
-        document.getElementById(viewId).style.display = 'block';
-      },
-      
-      async loadTranslator() {
-        const res = await fetch('/translate', { method: 'POST', body: JSON.stringify({ text }) });
-        // Update UI with translation
-      }
-    };
-
-    // Auth Controller
-    const Auth = {
-      async login(username, password) {
-        const res = await fetch('/login', { 
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
-        });
-        if (res.ok) {
-          localStorage.setItem('token', (await res.json()).token);
-          UI.showView('translatorView');
-        }
-      }
-    };
-
-    // Init
-    window.onload = () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        // Validate token
-        UI.showView('translatorView');
-      }
-    };
-  </script>
+    <div class="container">
+        <h1>Balram Language Translator</h1>
+        <input type="text" id="inputText" placeholder="Enter text to translate">
+        <button onclick="translate()">Translate</button>
+        <div id="output"></div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
