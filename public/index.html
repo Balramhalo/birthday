@@ -4,49 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Balram Language</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="balram.css">
 </head>
-<body class="dark-theme">
-    <div id="authSection" class="container">
-        <div class="glass-card">
-            <h1>🔐 Balram Universe</h1>
+<body class="dark-mode">
+    <!-- Auth Section -->
+    <div id="authPanel" class="panel active">
+        <div class="cyber-card">
+            <h1 class="neon-text">🗝️ Balram Gateway</h1>
             <div class="auth-form">
-                <input type="text" id="username" placeholder="Username">
-                <input type="password" id="password" placeholder="Password">
-                <button class="cyber-button" onclick="handleAuth()">
-                    <span class="glow">ACCESS</span>
-                </button>
+                <input type="text" id="authUser" class="cyber-input" placeholder="Username">
+                <input type="password" id="authPass" class="cyber-input" placeholder="Password">
+                <button class="hologram-btn" onclick="handleAuth()">⚡ Access System</button>
+                <div class="form-links">
+                    <span onclick="toggleAuthMode()">Create New Reality</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="mainSection" class="hidden">
+    <!-- Main App -->
+    <div id="mainPanel" class="panel">
+        <!-- Navigation -->
         <nav class="cyber-nav">
             <div class="hamburger" onclick="toggleMenu()">▣▣▣</div>
-            <div class="nav-items">
-                <button class="cyber-button-sm" onclick="showPanel('translator')">🧿 Translate</button>
-                <button class="cyber-button-sm" onclick="showPanel('vocab')">📜 Vocabulary</button>
-                <button class="cyber-button-sm" onclick="logout()">⏻ Logout</button>
+            <div id="navMenu" class="nav-menu">
+                <button class="nav-item" onclick="showSection('translator')">🧿 Translate</button>
+                <button class="nav-item" onclick="showSection('vocab')">📜 Vocabulary</button>
+                <button class="nav-item" onclick="logout()">⏻ Terminate Session</button>
             </div>
         </nav>
 
-        <div class="main-content">
-            <!-- Translator Panel -->
-            <div id="translator" class="panel active">
-                <div class="lang-converter">
-                    <textarea id="inputText" placeholder="Enter text..."></textarea>
-                    <div id="outputText" class="cyber-output"></div>
-                </div>
+        <!-- Translator -->
+        <div id="translator" class="section active">
+            <div class="lang-converter">
+                <textarea id="inputText" class="cyber-textarea" 
+                    placeholder="Enter phrase..." 
+                    oninput="generateTranslation(this.value)"></textarea>
+                <div id="outputText" class="cyber-output neon-border"></div>
             </div>
+        </div>
 
-            <!-- Vocabulary Panel -->
-            <div id="vocab" class="panel">
-                <div class="alphabet-grid"></div>
-                <div class="word-db"></div>
-            </div>
+        <!-- Vocabulary -->
+        <div id="vocab" class="section">
+            <div class="alphabet-grid"></div>
+            <div class="word-db"></div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="balram.js"></script>
 </body>
 </html>
