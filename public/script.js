@@ -1,22 +1,43 @@
-function toggleMenu() {
-    const menu = document.getElementById('nav-menu');
-    menu.classList.toggle('hidden');
-}
+// Initialize 3D scene
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.getElementById('3d-container').appendChild(renderer.domElement);
 
-async function translate() {
-    const phrase = document.getElementById('input-phrase').value;
-    const response = await fetch('/api/translate', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ phrase })
+// Add a simple cube to the scene
+const geometry = new THREE.BoxGeometry();
+const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+const cube = new THREE.Mesh(geometry, material);
+scene.add(cube);
+camera.position.z = 5;
+
+function animate() {
+    requestAnimationFrame(animate);
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
+    renderer.render(scene, camera);
+}
+animate();
+
+// Show selected section
+function showSection(sectionId) {
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        section.style.display = 'none';
     });
-    const result = await response.json();
-    document.getElementById('translation-result').innerText = `Balram Translation: ${result.balramWord} - ${result.emojiMeaning}`;
+    document.getElementById(sectionId).style.display = 'block';
 }
 
-function showPage(page) {
-    // Logic to show different pages (vocabulary, history, owner)
-    alert(`Showing ${page} page!`);
+// Simple translation function
+const dictionary = {
+    "hello": "balram_hello",
+    "world": "balram_world"
+};
+
+function translate() {
+    const input = document.getElementById('englishInput').value.toLower ```javascript
+    case();
+    const result = dictionary[input] || "Translation not found";
+    document.getElementById('translationResult').innerText = result;
 }
