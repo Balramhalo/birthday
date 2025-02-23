@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Console</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="admin-container">
+        <h1>🛠️ Admin Console</h1>
+        <div class="admin-section">
+            <h2>🔧 Language Management</h2>
+            <input type="text" id="newWord" placeholder="New Word">
+            <button onclick="addNewWord()">Add Word</button>
+        </div>
+        <div class="admin-section">
+            <h2>👥 User Management</h2>
+            <div id="userList"></div>
+        </div>
+    </div>
+    <script src="admin.js"></script>
+</body>
+</html>
