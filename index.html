@@ -1,0 +1,96 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balram Nexus</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+<body>
+    <div id="particle-canvas"></div>
+
+    <nav class="neuro-nav">
+        <div class="hamburger" onclick="toggleMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+        <h1 class="logo-glitch">BΛLЯΛM</h1>
+    </nav>
+
+    <div class="sidebar" id="sidebar">
+        <a href="#home" class="nav-link" onclick="showPage('home')"><span class="hologram-effect">🏠 HOME</span></a>
+        <a href="#origin" class="nav-link" onclick="showPage('origin')"><span class="hologram-effect">🌌 ORIGIN</span></a>
+        <a href="#owner" class="nav-link" onclick="showPage('owner')"><span class="hologram-effect">👑 CREATOR</span></a>
+        <a href="#translator" class="nav-link" onclick="showPage('translator')"><span class="hologram-effect">🔀 TRANSLATOR</span></a>
+    </div>
+
+    <main class="content-wrapper">
+        <!-- Home Page -->
+        <section id="home" class="page active">
+            <div class="hero-section">
+                <canvas id="cyber-logo"></canvas>
+                <div class="about-container">
+                    <h2 class="neon-text">The Language of Tomorrow</h2>
+                    <p class="flow-text">Balram is a revolutionary linguistic system combining quantum syntax with emotional resonance. With 14 core characters and 4 fundamental emojis, it bridges communication across dimensions.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Origin Page -->
+        <section id="origin" class="page">
+            <div class="timeline-container">
+                <div class="timeline-beam"></div>
+                <div class="timeline-event" data-year="2023">
+                    <h3>Quantum Discovery</h3>
+                    <p>First vibrational patterns detected in cosmic strings</p>
+                </div>
+                <div class="timeline-event" data-year="2024">
+                    <h3>Syntax Formation</h3>
+                    <p>Alpha-Beta-Gamma matrix stabilized</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Owner Page -->
+        <section id="owner" class="page">
+            <div class="hologram-card">
+                <div class="holo-grid"></div>
+                <div class="creator-info">
+                    <h2>Dr. Vihaan Balram</h2>
+                    <p>Quantum Linguist & Temporal Architect</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Translator Page -->
+        <section id="translator" class="page">
+            <div class="trans-container">
+                <div class="trans-panel">
+                    <textarea id="inputText" placeholder="Enter text..." class="neuro-input"></textarea>
+                    <div class="control-group">
+                        <select id="langDirection" class="cyber-select">
+                            <option value="enToBal">ENGLISH → BALRAM</option>
+                            <option value="balToEn">BALRAM → ENGLISH</option>
+                        </select>
+                        <button onclick="translateText()" class="pulse-button">ENERGIZE</button>
+                    </div>
+                    <div id="outputText" class="output-display"></div>
+                </div>
+                <div class="emoji-key">
+                    <div class="emoji-pair" data-emotion="happy">😊 Harmony</div>
+                    <div class="emoji-pair" data-emotion="sad">😢 Void</div>
+                    <div class="emoji-pair" data-emotion="angry">👿 Chaos</div>
+                    <div class="emoji-pair" data-emotion="surprise">✨ Revelation</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
