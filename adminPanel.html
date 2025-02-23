@@ -1,24 +1,23 @@
+<!-- admin-{randomToken}.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Admin Console</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="dark-theme">
-    <div class="container">
-        <div class="admin-header">
-            <h1>⚙️ Admin Console</h1>
-            <button onclick="logout()">Logout</button>
-        </div>
-
-        <div class="glass-card">
-            <h3>🔧 Language Management</h3>
-            <input type="text" id="newWord" placeholder="New word">
-            <button onclick="addWord()">Add to Dictionary</button>
+<body>
+    <div class="admin-dashboard">
+        <div class="admin-controls">
+            <h1>⚡ Admin Console</h1>
+            <div class="user-management">
+                <!-- User list and controls -->
+            </div>
+            <div class="language-management">
+                <input type="text" id="newWord" class="glass-input">
+                <button class="gradient-btn" onclick="addWord()">Add Word</button>
+            </div>
         </div>
     </div>
-    
     <script src="admin.js"></script>
 </body>
 </html>
