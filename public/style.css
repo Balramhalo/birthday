@@ -1,61 +1,54 @@
 :root {
-    --bg: #0d0d0d;
+    --bg: #0a0a0a;
     --neon: #00ff9d;
-    --cyber-red: #ff003c;
-    --cyber-blue: #00b4ff;
+    --neon-red: #ff003c;
     --text: #ffffff;
+    --cyber-border: 2px solid var(--neon);
 }
 
-.dark-theme {
+/* Base Styles */
+.dark-mode {
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
     font-family: 'Courier New', monospace;
 }
 
-.cyber-nav {
+/* Cyber UI Components */
+.cyber-card {
     background: rgba(0,0,0,0.8);
-    padding: 1rem;
-    border-bottom: 2px solid var(--neon);
-    display: flex;
-    justify-content: space-between;
+    border: var(--cyber-border);
+    padding: 2rem;
+    max-width: 500px;
+    margin: 2rem auto;
+    position: relative;
 }
 
-.cyber-button {
-    background: black;
-    border: 2px solid var(--neon);
+.hologram-btn {
+    background: none;
+    border: var(--cyber-border);
+    color: var(--neon);
     padding: 1rem 2rem;
-    position: relative;
     cursor: pointer;
     transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
 }
 
-.cyber-button .glow {
-    color: var(--neon);
-    text-shadow: 0 0 10px var(--neon);
+.hologram-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, var(--neon), transparent);
+    animation: hologram 3s infinite linear;
 }
 
-.cyber-button:hover {
-    background: rgba(0,255,157,0.1);
-    box-shadow: 0 0 15px var(--neon);
+@keyframes hologram {
+    0% { transform: rotate(0deg) translate(-25%, -25%); }
+    100% { transform: rotate(360deg) translate(-25%, -25%); }
 }
 
-.panel {
-    display: none;
-    border: 2px solid var(--cyber-blue);
-    padding: 2rem;
-    margin: 2rem;
-}
-
-.panel.active {
-    display: block;
-    animation: scanline 2s infinite;
-}
-
-@keyframes scanline {
-    0% { background: transparent; }
-    50% { background: rgba(0,180,255,0.05); }
-    100% { background: transparent; }
-}
-
-/* Add more cyberpunk styles */
+/* Add more cyberpunk styles... */
