@@ -1,0 +1,126 @@
+/* style.css */
+:root {
+    --neon-cyan: #0ff;
+    --void-black: #00010a;
+    --hologram-pink: #ff00ff;
+    --matrix-green: #00ff00;
+    --cyber-purple: #8a2be2;
+}
+
+body {
+    background: var(--void-black);
+    color: #fff;
+    font-family: 'Exo 2', sans-serif;
+    overflow-x: hidden;
+}
+
+.neuro-nav {
+    background: linear-gradient(145deg, #00010a 0%, #001220 100%);
+    padding: 1.5rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+.hamburger .line {
+    width: 35px;
+    height: 3px;
+    background: var(--neon-cyan);
+    margin: 6px 0;
+    transition: 0.4s;
+}
+
+.logo-glitch {
+    font-family: 'Orbitron', sans-serif;
+    animation: glitch 2s infinite;
+}
+
+@keyframes glitch {
+    0% { text-shadow: 3px 0 0 var(--hologram-pink), -3px 0 0 var(--matrix-green); }
+    95% { text-shadow: 3px 0 0 var(--hologram-pink), -3px 0 0 var(--matrix-green); }
+    96% { text-shadow: 10px 0 0 var(--hologram-pink), -10px 0 0 var(--matrix-green); }
+    97% { text-shadow: -5px 0 0 var(--hologram-pink), 5px 0 0 var(--matrix-green); }
+    98% { text-shadow: 15px 0 0 var(--hologram-pink), -15px 0 0 var(--matrix-green); }
+    100% { text-shadow: 3px 0 0 var(--hologram-pink), -3px 0 0 var(--matrix-green); }
+}
+
+.page {
+    position: absolute;
+    width: 100%;
+    min-height: 100vh;
+    padding: 120px 2rem 2rem;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.trans-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--neon-cyan);
+    border-radius: 20px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.neuro-input {
+    background: linear-gradient(145deg, #000428 0%, #001848 100%);
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    padding: 1.5rem;
+    border-radius: 15px;
+    font-size: 1.2em;
+    transition: all 0.3s ease;
+}
+
+.pulse-button {
+    background: var(--cyber-purple);
+    border: none;
+    padding: 1rem 2rem;
+    color: white;
+    border-radius: 50px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(138, 43, 226, 0.5); }
+    70% { box-shadow: 0 0 0 15px rgba(138, 43, 226, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(138, 43, 226, 0); }
+}
+
+.hologram-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--hologram-pink);
+    border-radius: 20px;
+    padding: 2rem;
+    overflow: hidden;
+}
+
+.hologram-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent, var(--matrix-green), 
+        transparent, var(--hologram-pink));
+    animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+    100% { transform: rotate(360deg); }
+}
+
+/* Add more complex animations and styles */
