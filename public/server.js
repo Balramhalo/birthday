@@ -1,55 +1,35 @@
 const express = require('express');
-const fs = require('fs').promises;
-const path = require('path');
+const fs = require('fs');
+const bodyParser = require('body-parser');
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// Load storage.json
-const STORAGE_PATH = path.join(__dirname, 'public', 'storage.json');
+// Load vocabulary from storage.json
+let vocabulary = JSON.parse(fs.readFileSync('./data/storage.json', 'utf8'));
 
-// API to get vocabulary data
-app.get('/api/vocabulary', async (req, res) => {
-  try {
-    const data = await fs.readFile(STORAGE_PATH, 'utf-8');
-    res.json(JSON.parse(data));
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to load vocabulary' });
-  }
+// API endpoint for translation
+app.post('/api/translate', (req, res) => {
+    const { phrase } = req.body;
+    const balramWord = generateBalramWord(phrase);
+    const emojiMeaning = getEmojiMeaning(balramWord);
+    res.json({ balramWord, emojiMeaning });
 });
 
-// API to generate and store new words
-app.post('/api/translate', async (req, res) => {
-  const { input } = req.body;
-  if (!input) return res.status(400).json({ error: 'Input required' });
+// Function to generate Balram word
+function generateBalramWord(phrase) {
+    // Simple transformation logic
+    return phrase.split('').reverse().join('') + 'Bal'; // Example transformation
+}
 
-  const data = JSON.parse(await fs.readFile(STORAGE_PATH, 'utf-8'));
-  const alphabet = data.alphabet;
-  const words = data.words;
+// Function to get emoji meaning
+function getEmojiMeaning(word) {
+    return vocabulary[word] ? vocabulary[word].emoji : '😊'; // Default emoji
+}
 
-  // Self-generating algorithm: Simple consonant-vowel pattern
-  const generateWord = (word) => {
-    let newWord = '';
-    for (let i = 0; i < word.length; i++) {
-      const char = word[i].toLowerCase();
-      newWord += alphabet[Math.floor(Math.random() * alphabet.length)].symbol;
-    }
-    const emoji = ['😊', '🌟', '🚀', '🌍'][Math.floor(Math.random() * 4)];
-    return { word: newWord, meaning: word, emoji };
-  };
-
-  const translated = input.split(' ').map(word => {
-    const existing = words.find(w => w.meaning === word);
-    if (existing) return existing;
-    const newWord = generateWord(word);
-    words.push(newWord);
-    return newWord;
-  });
-
-  await fs.writeFile(STORAGE_PATH, JSON.stringify({ alphabet, words }, null, 2));
-  res.json(translated);
+// Start server
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
