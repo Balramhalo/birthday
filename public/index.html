@@ -1,43 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balram 3D Language</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Balram Language</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <!-- 3D Canvas -->
-    <div id="scene-container"></div>
-
-    <!-- Interactive UI -->
-    <div class="cyber-ui">
-        <div class="hamburger" onclick="toggleMenu()">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-        </div>
-        
-        <div id="nav-menu" class="hidden">
-            <button onclick="showView('translator')">🌀 Translate</button>
-            <button onclick="showView('vocab')">📜 Vocabulary</button>
-            <button onclick="showView('history')">⏳ History</button>
-        </div>
-
-        <!-- Translator -->
-        <div id="translator" class="view">
-            <div class="hologram-input">
-                <input type="text" id="input-text" placeholder="Enter phrase...">
-                <button onclick="generateTranslation()">⚡ Generate</button>
-            </div>
-            <div id="output" class="neon-output"></div>
-        </div>
-
-        <!-- Vocabulary -->
-        <div id="vocab" class="view hidden"></div>
+  <div id="scene-container"></div>
+  <nav class="top-nav">
+    <h1>Balram Language</h1>
+    <div class="hamburger">☰</div>
+    <div class="menu">
+      <a href="#" data-page="translator">Translator</a>
+      <a href="#" data-page="vocabulary">Vocabulary</a>
+      <a href="#" data-page="history">History</a>
+      <a href="#" data-page="owner">Owner</a>
     </div>
-
-    <script src="app.js"></script>
+  </nav>
+  <main id="content">
+    <div id="translator" class="page active">
+      <h2>Translate to Balram</h2>
+      <input type="text" id="input-phrase" placeholder="Enter a phrase...">
+      <button onclick="translate()">Translate</button>
+      <div id="output"></div>
+    </div>
+    <div id="vocabulary" class="page">
+      <h2>Vocabulary</h2>
+      <div id="vocab-list"></div>
+    </div>
+    <div id="history" class="page"><h2>History</h2><p>Loading...</p></div>
+    <div id="owner" class="page"><h2>Owner</h2><p>Loading...</p></div>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="/script.js"></script>
 </body>
 </html>
