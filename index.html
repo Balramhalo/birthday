@@ -3,330 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balram Language Portal</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <title>Balram Language</title>
     <style>
-        :root {
-            --neon-blue: #00f3ff;
-            --space-black: #0a0a12;
-            --star-white: #f0f0ff;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            margin: 0;
-            overflow-x: hidden;
-            background: var(--space-black);
-            color: var(--star-white);
+            background: #1a1a1a;
+            color: #fff;
             font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
         }
 
-        .navbar {
+        /* Hamburger Menu */
+        .hamburger {
             position: fixed;
-            width: 100%;
-            top: 0;
-            background: rgba(10, 10, 18, 0.95);
-            padding: 1rem;
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-        }
-
-        .menu-btn {
+            top: 20px;
+            left: 20px;
+            font-size: 40px;
             cursor: pointer;
-            padding: 10px;
+            z-index: 100;
+            transition: transform 0.5s ease;
         }
+        .hamburger:hover { transform: rotate(180deg) scale(1.2); }
 
-        .bar {
-            width: 35px;
-            height: 3px;
-            background: var(--neon-blue);
-            margin: 6px 0;
-            transition: 0.4s;
-        }
-
-        .sidebar {
+        .menu {
             position: fixed;
-            left: -250px;
             top: 0;
-            height: 100%;
+            left: -250px;
             width: 250px;
-            background: rgba(10, 10, 18, 0.98);
-            padding-top: 60px;
-            transition: 0.5s;
-            z-index: 1001;
+            height: 100%;
+            background: #333;
+            padding: 80px 20px 20px;
+            transition: left 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 99;
         }
-
-        .nav-item {
-            color: var(--star-white);
-            padding: 15px;
-            text-decoration: none;
+        .menu.active { left: 0; }
+        .menu a {
             display: block;
-            font-size: 1.2em;
+            color: #00ffcc;
+            text-decoration: none;
+            font-size: 1.5em;
+            margin: 20px 0;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .menu a:hover {
+            color: #ff00ff;
+            transform: translateX(20px);
         }
 
+        /* Pages */
         .page {
             display: none;
-            padding: 100px 2rem 2rem;
+            padding: 80px 40px;
             min-height: 100vh;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
-
-        .active {
+        .page.active {
             display: block;
-            animation: pageFade 0.5s ease;
+            opacity: 1;
+            animation: slideIn 0.8s ease-out;
         }
 
-        @keyframes pageFade {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Animations */
+        @keyframes slideIn {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateX(0deg); }
+            50% { transform: translateY(-20px) rotateX(10deg); }
+        }
+        @keyframes spin3d {
+            0% { transform: rotateY(0deg) rotateX(0deg); }
+            100% { transform: rotateY(360deg) rotateX(360deg); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
-        .title3d {
-            font-family: 'Orbitron', sans-serif;
-            text-shadow: 0 0 10px var(--neon-blue),
-                         3px 3px 0 #000;
-            transform: perspective(1000px) rotateX(20deg);
-        }
-
-        .trans-box {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2rem;
-            border-radius: 20px;
-            border: 1px solid var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
-        }
-
-        textarea {
-            width: 100%;
-            height: 150px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--neon-blue);
-            color: var(--star-white);
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 10px;
-            resize: vertical;
-        }
-
-        .translate-btn {
-            background: var(--neon-blue);
-            color: var(--space-black);
-            border: none;
-            padding: 1rem 2rem;
-            cursor: pointer;
-            transition: 0.3s;
-            border-radius: 5px;
-        }
-
-        .emoji-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .emoji-card {
-            padding: 1.5rem;
-            border: 2px solid var(--neon-blue);
-            border-radius: 10px;
+        /* Home Page */
+        #home h1 {
+            font-size: 4em;
             text-align: center;
-            animation: glow 2s infinite;
+            text-shadow: 0 0 20px #00ffcc, 0 0 40px #ff00ff;
+            animation: float 3s infinite;
+        }
+        #home p {
+            text-align: center;
+            font-size: 1.5em;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+        .alphabet-3d {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+        .alphabet-3d span {
+            font-size: 2em;
+            padding: 10px;
+            background: #333;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #00ffcc;
+            animation: spin3d 10s infinite linear;
+            transform-style: preserve-3d;
         }
 
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 10px var(--neon-blue); }
-            50% { box-shadow: 0 0 20px var(--neon-blue); }
+        /* History Page */
+        #history .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
         }
-
-        #particles-js {
-            position: fixed;
+        #history .timeline::before {
+            content: '';
+            position: absolute;
             top: 0;
-            left: 0;
-            z-index: -1;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: #00ffcc;
+            animation: grow 2s infinite alternate;
+        }
+        @keyframes grow {
+            0% { height: 0; }
+            100% { height: 100%; }
+        }
+        #history .event {
+            font-size: 1.5em;
+            margin: 20px 0;
+            animation: slideIn 1s ease-out;
+        }
+
+        /* Owner Page */
+        #owner h2 {
+            font-size: 3em;
+            text-align: center;
+            animation: float 2s infinite;
+        }
+        #owner p {
+            font-size: 1.5em;
+            text-align: center;
+            margin: 20px 0;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Translator Page */
+        #translator input, #translator button {
+            display: block;
+            margin: 20px auto;
+            padding: 15px;
+            font-size: 1.2em;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #00ffcc;
+            transition: transform 0.3s;
+        }
+        #translator input:hover, #translator button:hover {
+            transform: scale(1.05);
+        }
+        #translator button { cursor: pointer; }
+        #output {
+            text-align: center;
+            font-size: 2em;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <div id="particles-js"></div>
-    
-    <nav class="navbar">
-        <div class="menu-btn" onclick="toggleMenu()">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-        </div>
-        <h1 class="title3d" style="margin:0">BL</h1>
+    <!-- Hamburger Menu -->
+    <div class="hamburger">☰</div>
+    <nav class="menu">
+        <a href="#home">Home</a>
+        <a href="#history">History</a>
+        <a href="#owner">Owner</a>
+        <a href="#translator">Translator</a>
     </nav>
 
-    <div class="sidebar" id="sidebar">
-        <a href="#home" class="nav-item" onclick="showPage('home')">🏠 Home</a>
-        <a href="#history" class="nav-item" onclick="showPage('history')">📜 History</a>
-        <a href="#owner" class="nav-item" onclick="showPage('owner')">👑 Owner</a>
-        <a href="#translator" class="nav-item" onclick="showPage('translator')">🔤 Translator</a>
-    </div>
-
-    <div id="home" class="page active">
-        <div class="hero">
-            <h1 class="title3d">Balram Language</h1>
-            <div class="about-box">
-                <p>A revolutionary communication system combining quantum syntax with emotional resonance. Features 14 core characters and 4 fundamental emojis.</p>
-                <div class="emoji-grid">
-                    <div class="emoji-card">🌌 Cosmic Unity</div>
-                    <div class="emoji-card">🔥 Energy Flow</div>
-                    <div class="emoji-card">🌀 Eternal Cycle</div>
-                    <div class="emoji-card">⚡ Instant Action</div>
-                </div>
-            </div>
+    <!-- Home Page -->
+    <section id="home" class="page active">
+        <h1>Balram Language</h1>
+        <p>A futuristic language of 14 symbols and emotional resonance.</p>
+        <div class="alphabet-3d">
+            <span>α</span><span>β</span><span>γ</span><span>δ</span><span>ε</span>
+            <span>ζ</span><span>η</span><span>θ</span><span>ι</span><span>κ</span>
+            <span>λ</span><span>μ</span><span>ν</span><span>ξ</span>
         </div>
-    </div>
+    </section>
 
-    <div id="history" class="page">
-        <h2>Origins</h2>
+    <!-- History Page -->
+    <section id="history" class="page">
         <div class="timeline">
-            <div class="timeline-event">
-                <h3>2023 CE</h3>
-                <p>Quantum pattern discovery in cosmic background radiation</p>
-            </div>
-            <div class="timeline-event">
-                <h3>2024 CE</h3>
-                <p>First stable syntax matrix established</p>
-            </div>
+            <div class="event">Year 1: Balram Language conceived in a cosmic dream.</div>
+            <div class="event">Year 5: First 14 symbols etched into reality.</div>
+            <div class="event">Year 10: Emojis added for emotional depth.</div>
         </div>
-    </div>
+    </section>
 
-    <div id="owner" class="page">
-        <div class="owner-card">
-            <div class="hologram" style="width:200px; height:200px; background:rgba(0,255,255,0.1); margin:auto; border-radius:50%"></div>
-            <h2>Creator: Dr. S. Balram</h2>
-            <p>Quantum Linguistic Architect</p>
-        </div>
-    </div>
+    <!-- Owner Page -->
+    <section id="owner" class="page">
+        <h2>The Creator</h2>
+        <p>A visionary from the stars, crafting a language for the future.</p>
+    </section>
 
-    <div id="translator" class="page">
-        <div class="trans-box">
-            <div class="input-group">
-                <textarea id="inputText" placeholder="Enter text..."></textarea>
-                <select id="direction" style="width:100%; padding:10px; margin:10px 0; background:rgba(0,0,0,0.5); color:white; border:1px solid var(--neon-blue); border-radius:5px">
-                    <option value="enToBal">English → Balram</option>
-                    <option value="balToEn">Balram → English</option>
-                </select>
-            </div>
-            <button class="translate-btn" onclick="translateText()">TRANSLATE</button>
-            <div class="output-box" id="outputText" style="margin:20px 0; padding:15px; background:rgba(0,0,0,0.3); border-radius:10px"></div>
-            <div class="emoji-display" id="emojiOutput"></div>
-        </div>
-    </div>
+    <!-- Translator Page -->
+    <section id="translator" class="page">
+        <input type="text" id="input" placeholder="Enter text to translate">
+        <button onclick="translate()">Translate</button>
+        <div id="output"></div>
+    </section>
 
     <script>
-        const BalramSystem = {
-            alphabet: {
-                'A': 'α', 'B': 'β', 'C': 'Γ', 'D': 'Δ',
-                'E': 'ε', 'F': 'Φ', 'G': 'γ', 'H': 'η',
-                'I': 'ι', 'J': 'ξ', 'K': 'κ', 'L': 'λ',
-                'M': 'μ', 'N': 'ν', 'O': 'Ω', 'P': 'π'
-            },
-            emojis: {
-                happy: '😊',
-                sad: '😢',
-                angry: '😠',
-                surprise: '😲'
-            }
+        // Balram Alphabet and Emojis
+        const balramAlphabet = {
+            'a': 'α', 'b': 'α', 'c': 'β', 'd': 'β', 'e': 'γ', 'f': 'γ',
+            'g': 'δ', 'h': 'δ', 'i': 'ε', 'j': 'ε', 'k': 'ζ', 'l': 'ζ',
+            'm': 'η', 'n': 'η', 'o': 'θ', 'p': 'θ', 'q': 'ι', 'r': 'ι',
+            's': 'κ', 't': 'κ', 'u': 'λ', 'v': 'λ', 'w': 'μ', 'x': 'μ',
+            'y': 'ν', 'z': 'ξ'
+        };
+        const emotions = {
+            'happy': '😊', 'sad': '😢', 'angry': '😡', 'surprised': '😮'
+        };
+        const emotionWords = {
+            'love': 'happy', 'cry': 'sad', 'hate': 'angry', 'wow': 'surprised',
+            'great': 'happy', 'loss': 'sad', 'fight': 'angry', 'shock': 'surprised'
         };
 
-        function toggleMenu() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.style.left = sidebar.style.left === '0px' ? '-250px' : '0px';
-        }
+        // Menu Toggle
+        document.querySelector('.hamburger').addEventListener('click', () => {
+            document.querySelector('.menu').classList.toggle('active');
+        });
 
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
+        // Page Navigation
+        document.querySelectorAll('.menu a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = link.getAttribute('href').substring(1);
+                document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+                document.querySelector(`#${pageId}`).classList.add('active');
+                document.querySelector('.menu').classList.remove('active');
             });
-            document.getElementById(pageId).classList.add('active');
-            toggleMenu();
-        }
+        });
 
-        function detectEmotion(text) {
-            const emotionPatterns = {
-                happy: /\b(happy|joy|love|good)\b/i,
-                sad: /\b(sad|bad|pain|cry)\b/i,
-                angry: /\b(angry|hate|rage|mad)\b/i,
-                surprise: /\b(wow|surprise|amaze)\b/i
-            };
-            
-            for (const [emotion, pattern] of Object.entries(emotionPatterns)) {
-                if (pattern.test(text)) {
-                    return BalramSystem.emojis[emotion];
-                }
-            }
-            return '';
-        }
-
-        function translateText() {
-            const input = document.getElementById('inputText').value;
-            const direction = document.getElementById('direction').value;
+        // Translator Logic
+        function translate() {
+            const input = document.getElementById('input').value.toLowerCase();
             let output = '';
-            
-            if (direction === 'enToBal') {
-                output = input.toUpperCase().split('').map(char => 
-                    BalramSystem.alphabet[char] || char
-                ).join('');
-                const emotion = detectEmotion(input);
-                document.getElementById('emojiOutput').textContent = emotion;
-            } else {
+            let isBalram = input.match(/[α-ξ]/); // Check if input contains Balram symbols
+
+            if (isBalram) {
+                // Balram to English (Simplified: reversing symbol to first letter)
                 const reverseMap = Object.fromEntries(
-                    Object.entries(BalramSystem.alphabet).map(([k, v]) => [v, k])
+                    Object.entries(balramAlphabet).reduce((acc, [key, val]) => {
+                        if (!acc[val]) acc[val] = key;
+                        return acc;
+                    }, {})
                 );
-                output = input.split('').map(char =>
-                    reverseMap[char] || char
-                ).join('').toLowerCase();
-                document.getElementById('emojiOutput').textContent = '';
+                output = input.split('').map(char => reverseMap[char] || char).join('');
+                output = output.replace(/[^\w\s]/g, ''); // Clean up emojis
+            } else {
+                // English to Balram
+                const words = input.split(' ');
+                output = words.map(word => {
+                    let translated = word.split('').map(char => balramAlphabet[char] || char).join('');
+                    for (let [key, emotion] of Object.entries(emotionWords)) {
+                        if (word === key) return translated + emotions[emotion];
+                    }
+                    return translated;
+                }).join(' ');
             }
-            
-            document.getElementById('outputText').textContent = output;
-            animateOutput();
+
+            document.getElementById('output').textContent = output;
         }
-
-        function animateOutput() {
-            const output = document.getElementById('outputText');
-            output.style.transform = 'scale(1.05)';
-            setTimeout(() => output.style.transform = 'scale(1)', 200);
-        }
-
-        // Initialize 3D Particle Background
-        function initParticles() {
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('particles-js').appendChild(renderer.domElement);
-
-            const geometry = new THREE.BufferGeometry();
-            const vertices = [];
-            for (let i = 0; i < 2000; i++) {
-                vertices.push(
-                    Math.random() * 2000 - 1000,
-                    Math.random() * 2000 - 1000,
-                    Math.random() * 2000 - 1000
-                );
-            }
-            geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-            const material = new THREE.PointsMaterial({ size: 1.5, color: 0x00ffff });
-            const particles = new THREE.Points(geometry, material);
-            scene.add(particles);
-            camera.position.z = 1000;
-
-            function animate() {
-                requestAnimationFrame(animate);
-                particles.rotation.x += 0.001;
-                particles.rotation.y += 0.002;
-                renderer.render(scene, camera);
-            }
-            animate();
-        }
-
-        window.onload = () => {
-            initParticles();
-            showPage('home');
-        };
     </script>
 </body>
 </html>
