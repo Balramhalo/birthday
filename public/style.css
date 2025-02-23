@@ -1,68 +1,50 @@
 body {
-    margin: 0;
-    color: #0ff;
-    font-family: 'Courier New', monospace;
-    overflow-x: hidden;
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    transition: background-color 0.5s;
 }
 
-#bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1;
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .hamburger {
-    position: fixed;
-    top: 20px;
-    right: 20px;
     cursor: pointer;
-    z-index: 1000;
-}
-
-.line {
-    width: 35px;
-    height: 3px;
-    background: #0ff;
-    margin: 6px 0;
-    transition: 0.4s;
+    font-size: 24px;
 }
 
 nav {
-    position: fixed;
-    top: 0;
-    right: -250px;
-    width: 250px;
-    height: 100vh;
-    background: rgba(0,0,0,0.9);
-    transition: 0.5s;
+    position: absolute;
+    top: 50px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 5px;
+    padding: 10px;
 }
 
-.neon-button {
-    background: none;
-    border: 2px solid #0ff;
-    color: #0ff;
-    padding: 10px 30px;
-    font-size: 1.2em;
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav li {
     cursor: pointer;
-    transition: 0.3s;
-    text-shadow: 0 0 5px #0ff;
+    padding: 5px 10px;
 }
 
-.translator-box {
-    background: rgba(0,0,0,0.7);
-    padding: 2rem;
-    border-radius: 10px;
-    border: 1px solid #0ff;
-    box-shadow: 0 0 20px #0ff;
+.hidden {
+    display: none;
 }
 
-.glow {
-    text-shadow: 0 0 10px #0ff;
-    animation: glow 2s infinite;
-}
-
-@keyframes glow {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+#translation-result {
+    margin-top: 20px;
 }
