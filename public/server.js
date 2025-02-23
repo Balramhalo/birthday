@@ -1,91 +1,103 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const JwtStrategy = require('passport-jwt').Strategy;
+const cors = require('cors');
+const app = express();
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
-// Models
-const User = mongoose.model('User', new mongoose.Schema({
-    username: { type: String, unique: true },
-    password: String,
-    userId: Number,
-    isAdmin: Boolean,
-    translations: [{
-        input: String,
-        output: String,
-        timestamp: Date
-    }]
-}));
+// Schemas
+const UserSchema = new mongoose.Schema({
+  username: { type: String, unique: true },
+  password: String,
+  userId: Number,
+  isAdmin: Boolean,
+  translations: [Object],
+  createdAt: { type: Date, default: Date.now }
+});
 
-const app = express();
+const AdminTokenSchema = new mongoose.Schema({
+  token: String,
+  expires: Date
+});
+
+const User = mongoose.model('User', UserSchema);
+const AdminToken = mongoose.model('AdminToken', AdminTokenSchema);
+
+// Middleware
+app.use(cors());
 app.use(express.json());
-app.use(passport.initialize());
-
-// Passport Strategies
-passport.use(new LocalStrategy(async (username, password, done) => {
+app.use(async (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (token) {
     try {
-        const user = await User.findOne({ username });
-        if (!user || !bcrypt.compareSync(password, user.password)) return done(null, false);
-        return done(null, user);
-    } catch (err) { return done(err); }
-}));
-
-passport.use(new JwtStrategy({
-    jwtFromRequest: req => req.cookies?.jwt,
-    secretOrKey: process.env.JWT_SECRET
-}, (payload, done) => done(null, payload)));
-
-// Routes
-app.post('/api/register', async (req, res) => {
-    try {
-        const count = await User.countDocuments();
-        const user = new User({
-            username: req.body.username,
-            password: bcrypt.hashSync(req.body.password, 10),
-            userId: count + 1,
-            isAdmin: count === 0
-        });
-        await user.save();
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-        res.json({ token });
-    } catch (err) { res.status(400).json({ error: err.message }); }
+      req.user = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (e) {}
+  }
+  next();
 });
 
-app.post('/api/login', passport.authenticate('local', { session: false }), (req, res) => {
-    const token = jwt.sign({ id: req.user.id }, process.env.JWT_SECRET);
+// Auth Routes
+app.post('/register', async (req, res) => {
+  try {
+    const hashedPass = await bcrypt.hash(req.body.password, 10);
+    const count = await User.countDocuments();
+    const user = new User({
+      username: req.body.username,
+      password: hashedPass,
+      userId: count + 1,
+      isAdmin: count === 0
+    });
+    await user.save();
+    const token = jwt.sign({ userId: user.userId }, process.env.JWT_SECRET, { expiresIn: '30d' });
     res.json({ token });
+  } catch (err) {
+    res.status(500).json({ error: 'Registration failed' });
+  }
 });
 
-app.get('/api/translate', passport.authenticate('jwt', { session: false }), (req, res) => {
-    const translation = generateBalramTranslation(req.query.text);
-    res.json({ translation });
+app.post('/login', async (req, res) => {
+  const user = await User.findOne({ username: req.body.username });
+  if (user && await bcrypt.compare(req.body.password, user.password)) {
+    const token = jwt.sign({ userId: user.userId }, process.env.JWT_SECRET, { expiresIn: '30d' });
+    res.json({ token });
+  } else {
+    res.status(401).json({ error: 'Invalid credentials' });
+  }
+});
+
+// Translator Logic
+const generateBalramWord = (input) => {
+  // Custom algorithm combining multiple language elements
+  const syllables = input.match(/[aeiouy]+|[^aeiouy]+/gi) || [];
+  return syllables.map(s => 
+    s.replace(/th/gi, 'ð')
+     .replace(/sh/gi, 'š')
+     .slice(0, 3)
+  ).join('') + '🦋';
+};
+
+app.post('/translate', async (req, res) => {
+  if (!req.user) return res.status(401).send();
+  const translation = {
+    input: req.body.text,
+    output: generateBalramWord(req.body.text),
+    timestamp: new Date()
+  };
+  await User.updateOne({ userId: req.user.userId }, { $push: { translations: translation } });
+  res.json(translation);
 });
 
 // Admin Routes
-app.get('/api/admin', passport.authenticate('jwt', { session: false }), (req, res) => {
-    if (!req.user.isAdmin) return res.status(403).json({ error: 'Unauthorized' });
-    res.json({ adminToken: generateDynamicAdminToken() });
+app.get('/admin-url', async (req, res) => {
+  if (!req.user?.isAdmin) return res.status(403).send();
+  const newToken = Math.random().toString(36).slice(2);
+  await AdminToken.deleteMany();
+  await new AdminToken({ token: newToken, expires: new Date(Date.now() + 3600000) }).save();
+  res.json({ url: `/admin-${newToken}` });
 });
 
-function generateBalramTranslation(text) {
-    // Combine Gen Z slang, Morse code, and multilingual patterns
-    return text.split(' ').map(word => {
-        const morphed = word.split('').reverse().join('')
-            .replace(/a/gi, 'ꪖ').replace(/i/gi, '᛫').replace(/s/gi, 'ϟ')
-            + String.fromCodePoint(0x1F600 + Math.floor(Math.random() * 80));
-        return { original: word, translated: morphed };
-    });
-}
-
-function generateDynamicAdminToken() {
-    return Buffer.from(Date.now().toString()).toString('base64') + '-' + 
-           crypto.randomBytes(16).toString('hex');
-}
-
-app.listen(process.env.PORT, () => console.log(`Server running on ${process.env.PORT}`));
+app.listen(process.env.PORT, () => console.log('Server running'));
