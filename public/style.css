@@ -1,93 +1,110 @@
 body {
   margin: 0;
+  padding: 0;
   background: #000;
   color: #fff;
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
   overflow: hidden;
 }
 
-#scene-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-}
-
-.top-nav {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background: rgba(0, 0, 0, 0.8);
-  z-index: 10;
+.container {
+  position: relative;
+  height: 100vh;
+  perspective: 1000px;
 }
 
 .hamburger {
-  font-size: 24px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 30px;
   cursor: pointer;
+  z-index: 10;
+  transition: transform 0.3s ease;
+}
+
+.hamburger:hover {
+  transform: rotate(90deg) scale(1.2);
 }
 
 .menu {
-  display: none;
   position: absolute;
-  top: 50px;
+  top: 60px;
   right: 20px;
   background: rgba(0, 0, 0, 0.9);
-  padding: 10px;
-  border-radius: 5px;
+  padding: 20px;
+  border-radius: 10px;
+  transform: translateX(100%);
+  transition: transform 0.5s ease;
+  z-index: 9;
 }
 
-.menu.active {
-  display: block;
-  animation: slideIn 0.3s ease-in-out;
+.menu.open {
+  transform: translateX(0);
 }
 
 .menu a {
   display: block;
   color: #fff;
   text-decoration: none;
-  padding: 5px 0;
+  margin: 10px 0;
+  transition: transform 0.3s ease;
 }
 
-main {
-  padding: 60px 20px;
+.menu a:hover {
+  transform: translateX(10px);
+}
+
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 800px;
   text-align: center;
 }
 
 .page {
   display: none;
+  transform: translateZ(-100px);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  opacity: 0;
 }
 
 .page.active {
   display: block;
-  animation: fadeIn 0.5s ease-in-out;
+  transform: translateZ(0);
+  opacity: 1;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  animation: glow 2s infinite alternate;
 }
 
 input, button {
   padding: 10px;
-  margin: 5px;
+  margin: 10px;
   border: none;
   border-radius: 5px;
-  background: #333;
+  background: #222;
   color: #fff;
+  font-size: 1em;
+  transition: transform 0.3s ease;
 }
 
 button:hover {
-  background: #555;
-  transition: background 0.3s;
+  transform: scale(1.1);
 }
 
-@keyframes slideIn {
-  from { transform: translateY(-10px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+#output, #vocab-output {
+  margin-top: 20px;
+  font-size: 1.2em;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes glow {
+  from { text-shadow: 0 0 10px #fff, 0 0 20px #00f; }
+  to { text-shadow: 0 0 20px #fff, 0 0 30px #00f; }
 }
