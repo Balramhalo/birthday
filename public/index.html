@@ -1,38 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Balram Language</title>
-  <link rel="stylesheet" href="/styles.css">
-</head>
-<body>
-  <div id="scene-container"></div>
-  <nav class="top-nav">
-    <h1>Balram Language</h1>
-    <div class="hamburger">☰</div>
-    <div class="menu">
-      <a href="#" data-page="translator">Translator</a>
-      <a href="#" data-page="vocabulary">Vocabulary</a>
-      <a href="#" data-page="history">History</a>
-      <a href="#" data-page="owner">Owner</a>
-    </div>
-  </nav>
-  <main id="content">
-    <div id="translator" class="page active">
-      <h2>Translate to Balram</h2>
-      <input type="text" id="input-phrase" placeholder="Enter a phrase...">
-      <button onclick="translate()">Translate</button>
-      <div id="output"></div>
-    </div>
-    <div id="vocabulary" class="page">
-      <h2>Vocabulary</h2>
-      <div id="vocab-list"></div>
-    </div>
-    <div id="history" class="page"><h2>History</h2><p>Loading...</p></div>
-    <div id="owner" class="page"><h2>Owner</h2><p>Loading...</p></div>
-  </main>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-  <script src="/script.js"></script>
-</body>
-</html>
+const express = require('express');
+const fs = require('fs').promises;
+const path = require('path');
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.use(express.json());
+app.use(express.static('public'));
+
+// Balram Alphabet
+const alphabet = [
+    { char: 'Al', pronunciation: 'ahl' },
+    { char: 'Ba', pronunciation: 'bah' },
+    { char: 'Ga', pronunciation: 'gah' },
+    { char: 'Ma', pronunciation: 'mah' },
+    { char: 'Ra', pronunciation: 'rah' }
+];
+
+// Load or initialize vocabulary
+const vocabFile = path.join(__dirname, 'data', 'vocabulary.json');
+async function loadVocabulary() {
+    try {
+        const data = await fs.readFile(vocabFile, 'utf8');
+        return JSON.parse(data);
+    } catch (error) {
+        return { alphabet, words: [] };
+    }
+}
+
+async function saveVocabulary(data) {
+    await fs.writeFile(vocabFile, JSON.stringify(data, null, 2));
+}
+
+// Self-generating word algorithm
+function generateWord(phrase) {
+    const vowels = ['a', 'e', 'i', 'o', 'u'];
+    let word = '';
+    const words = phrase.toLowerCase().split(' ');
+    for (let w of words) {
+        let newWord = '';
+        for (let i = 0; i < w.length; i += 2) {
+            const randChar = alphabet[Math.floor(Math.random() * alphabet.length)].char;
+            newWord += randChar + (vowels.includes(w[i]) ? 'm' : 'l');
+        }
+        word += newWord + ' ';
+    }
+    return word.trim();
+}
+
+// Emoji mapping
+const emojiMap = {
+    happy: '😊',
+    sad: '😢',
+    love: '❤️',
+    default: '✨'
+};
+
+app.post('/translate', async (req, res) => {
+    const { phrase } = req.body;
+    const vocab = await loadVocabulary();
+    const translation = generateWord(phrase);
+    const emoji = emojiMap[phrase.toLowerCase()] || emojiMap.default;
+    const breakdown = `Generated from "${phrase}" using Balram alphabet`;
+
+    vocab.words.push({ word: translation, meaning: phrase, emoji });
+    await saveVocabulary(vocab);
+
+    res.json({ translation, breakdown, emoji });
+});
+
+app.get('/vocabulary', async (req, res) => {
+    const vocab = await loadVocabulary();
+    res.json(vocab);
+});
+
+app.listen(port, () => console.log(`Server running on port ${port}`));
