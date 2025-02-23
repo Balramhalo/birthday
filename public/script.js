@@ -1,80 +1,71 @@
-// Initialize 3D Scene
+// 3D Scene Setup
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById('scene-container').appendChild(renderer.domElement);
 
-// Add 3D Stars
-const stars = new THREE.BufferGeometry();
-const starVertices = [];
-for(let i = 0; i < 10000; i++) {
-    starVertices.push(
-        Math.random() * 2000 - 1000,
-        Math.random() * 2000 - 1000,
-        Math.random() * 2000 - 1000
-    );
-}
-stars.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
-const starMaterial = new THREE.PointsMaterial({ color: 0xFFFFFF, size: 0.7 });
-const starField = new THREE.Points(stars, starMaterial);
-scene.add(starField);
+const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
+const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+const torusKnot = new THREE.Mesh(geometry, material);
+scene.add(torusKnot);
 
-camera.position.z = 5;
+camera.position.z = 30;
 
-// Animation Loop
 function animate() {
-    requestAnimationFrame(animate);
-    starField.rotation.x += 0.0005;
-    starField.rotation.y += 0.0005;
-    renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+  torusKnot.rotation.x += 0.01;
+  torusKnot.rotation.y += 0.01;
+  renderer.render(scene, camera);
 }
 animate();
 
-// Language Functions
-async function generateTranslation() {
-    const input = document.getElementById('input-text').value;
-    const response = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ input })
-    });
-    
-    const data = await response.json();
-    document.getElementById('output').innerHTML = `
-        <div class="word-breakdown">
-            <h3>${data.symbol}</h3>
-            <p>Pronunciation: ${data.pronunciation}</p>
-            <p>Emoji Meaning: ${data.emoji}</p>
-            <p>Generated from: ${data.generatedFrom}</p>
-        </div>
-    `;
+// Hamburger Menu
+const hamburger = document.querySelector('.hamburger');
+const menu = document.querySelector('.menu');
+hamburger.addEventListener('click', () => menu.classList.toggle('active'));
+
+// Page Navigation
+const pages = document.querySelectorAll('.page');
+document.querySelectorAll('.menu a').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    pages.forEach(page => page.classList.remove('active'));
+    document.getElementById(link.dataset.page).classList.add('active');
+    menu.classList.remove('active');
+    loadPageContent(link.dataset.page);
+  });
+});
+
+// API Interactions
+async function translate() {
+  const phrase = document.getElementById('input-phrase').value;
+  const res = await fetch('/api/translate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ phrase })
+  });
+  const data = await res.json();
+  document.getElementById('output').innerHTML = `
+    <h3>Translated: ${data.translated}</h3>
+    <pre>${JSON.stringify(data.details, null, 2)}</pre>
+  `;
 }
 
-// UI Controls
-function toggleMenu() {
-    document.getElementById('nav-menu').classList.toggle('hidden');
-}
-
-function showView(viewId) {
-    document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
-    document.getElementById(viewId).classList.remove('hidden');
-    toggleMenu();
-}
-
-// Initialize Vocabulary
-async function loadVocabulary() {
-    const response = await fetch('/api/vocabulary');
-    const words = await response.json();
-    const vocabDiv = document.getElementById('vocab');
-    vocabDiv.innerHTML = words.map(word => `
-        <div class="word-card">
-            <h3>${word.symbol}</h3>
-            <p>${word.pronunciation}</p>
-            <p>${word.emoji}</p>
-            <small>From: ${word.generatedFrom}</small>
-        </div>
+async function loadPageContent(page) {
+  if (page === 'vocabulary') {
+    const res = await fetch('/api/vocabulary');
+    const vocab = await res.json();
+    document.getElementById('vocab-list').innerHTML = vocab.map(v => `
+      <p><strong>${v.original}</strong> → ${v.balram}<br>
+      Breakdown: ${JSON.stringify(v.breakdown)}</p>
     `).join('');
+  } else if (page === 'history' || page === 'owner') {
+    const res = await fetch(`/api/${page}`);
+    const data = await res.json();
+    document.getElementById(page).innerHTML = `<h2>${page.charAt(0).toUpperCase() + page.slice(1)}</h2><p>${data.content}</p>`;
+  }
 }
 
-window.onload = loadVocabulary;
+// Initial Load
+loadPageContent('translator');
