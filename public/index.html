@@ -1,56 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="cyber">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balram Language</title>
-    <link rel="stylesheet" href="balram.css">
+    <title>ꓭⱥꪟꪊꪑ Language Matrix</title>
+    <link rel="stylesheet" href="neon.css">
 </head>
-<body class="dark-mode">
-    <!-- Auth Section -->
-    <div id="authPanel" class="panel active">
-        <div class="cyber-card">
-            <h1 class="neon-text">🗝️ Balram Gateway</h1>
-            <div class="auth-form">
-                <input type="text" id="authUser" class="cyber-input" placeholder="Username">
-                <input type="password" id="authPass" class="cyber-input" placeholder="Password">
-                <button class="hologram-btn" onclick="handleAuth()">⚡ Access System</button>
-                <div class="form-links">
-                    <span onclick="toggleAuthMode()">Create New Reality</span>
+<body>
+    <div id="quantum-gate">
+        <!-- Auth Interface -->
+        <div class="holo-card" id="auth-ui">
+            <h1 class="neon-pulse">⨳ Access Protocol</h1>
+            <input type="text" class="neon-input" id="nexus-id" 
+                   placeholder="Neuroprint ID" data-cyber="username">
+            <input type="password" class="neon-input" id="cipher-key" 
+                   placeholder="Cipher Sequence" data-cyber="password">
+            <button class="quantum-btn" onclick="initiateNeuroscan()">
+                <span class="hologram-effect">Activate Neural Link</span>
+            </button>
+        </div>
+
+        <!-- Main Matrix -->
+        <div id="neuro-core" class="hidden">
+            <!-- Quantum Navigation -->
+            <div class="cyber-console">
+                <div class="hamburger-nexus" onclick="toggleHoloMenu()">
+                    <div class="quantum-bar"></div>
+                    <div class="quantum-bar"></div>
+                    <div class="quantum-bar"></div>
+                </div>
+                <div id="holo-menu" class="hidden">
+                    <button class="menu-item" onclick="shiftReality('translator')">
+                        ྿ Reality Translator
+                    </button>
+                    <button class="menu-item" onclick="shiftReality('vocab')">
+                        ꙮ Lexicon Forge
+                    </button>
+                    <button class="menu-item" onclick="quantumFlux('logout')">
+                        ⏻ Neural Disconnect
+                    </button>
                 </div>
             </div>
+
+            <!-- Reality Translator -->
+            <div id="translator-core" class="active-reality">
+                <div class="quantum-split">
+                    <div class="reality-input">
+                        <textarea class="neuro-textarea" id="source-reality"
+                                  placeholder="Input base reality..." 
+                                  oninput="generateQuantumTranslation(this.value)"
+                                  data-lingua="en,hi,ja"></textarea>
+                    </div>
+                    <div class="reality-output neon-aura">
+                        <div id="balram-output" class="hologram-text"></div>
+                        <div id="emoji-manifest"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lexicon Forge -->
+            <div id="vocab-core" class="hidden">
+                <div class="alphabet-matrix"></div>
+                <div class="neural-db"></div>
+            </div>
         </div>
     </div>
-
-    <!-- Main App -->
-    <div id="mainPanel" class="panel">
-        <!-- Navigation -->
-        <nav class="cyber-nav">
-            <div class="hamburger" onclick="toggleMenu()">▣▣▣</div>
-            <div id="navMenu" class="nav-menu">
-                <button class="nav-item" onclick="showSection('translator')">🧿 Translate</button>
-                <button class="nav-item" onclick="showSection('vocab')">📜 Vocabulary</button>
-                <button class="nav-item" onclick="logout()">⏻ Terminate Session</button>
-            </div>
-        </nav>
-
-        <!-- Translator -->
-        <div id="translator" class="section active">
-            <div class="lang-converter">
-                <textarea id="inputText" class="cyber-textarea" 
-                    placeholder="Enter phrase..." 
-                    oninput="generateTranslation(this.value)"></textarea>
-                <div id="outputText" class="cyber-output neon-border"></div>
-            </div>
-        </div>
-
-        <!-- Vocabulary -->
-        <div id="vocab" class="section">
-            <div class="alphabet-grid"></div>
-            <div class="word-db"></div>
-        </div>
-    </div>
-
-    <script src="balram.js"></script>
+    
+    <script src="quantum.js"></script>
 </body>
 </html>
