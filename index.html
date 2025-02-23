@@ -4,246 +4,141 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Balram Language Interface</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        :root {
-            --gradient-1: #1a1a2e;
-            --gradient-2: #16213e;
-            --accent: #e94560;
-            --text: #ffffff;
-            --glass: rgba(255, 255, 255, 0.05);
+        .emoji-picker {
+            height: 300px;
+            overflow-y: auto;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Segoe UI', system-ui;
-            background: linear-gradient(45deg, var(--gradient-1), var(--gradient-2));
-            color: var(--text);
-            min-height: 100vh;
-            padding: 2rem;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            padding: 2rem;
-            background: var(--glass);
+        .translation-card {
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        .panel {
-            background: var(--glass);
-            padding: 2rem;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .emoji-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .emoji-card {
-            padding: 1.5rem;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            transition: transform 0.2s;
-        }
-
-        .emoji-card:hover {
-            transform: translateY(-5px);
-        }
-
-        textarea {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.3);
-            border: none;
-            border-radius: 10px;
-            color: var(--text);
-            font-size: 1.1rem;
-            margin: 1rem 0;
-            min-height: 150px;
-        }
-
-        button {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            font-weight: bold;
-        }
-
-        .history-item {
-            padding: 1rem;
-            margin: 0.5rem 0;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-        }
-
-        .balram-char {
-            font-family: 'Noto Sans Brahmi', sans-serif;
-            font-size: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header class="header">
-            <h1>🪷 The Balram Language Interface</h1>
-            <p>Where Ancient Script Meets Modern Memes 🌌</p>
+<body class="bg-gray-900 text-white">
+    <!-- Auth Modals -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden">
+        <div class="modal-content bg-gray-800 p-6 rounded-lg max-w-md mx-auto mt-20">
+            <!-- Login/Register Form -->
+        </div>
+    </div>
+
+    <div class="container mx-auto p-4">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold">🦚 Balram Translator</h1>
+            <div id="profileSection" class="hidden">
+                <img id="userPfp" class="w-10 h-10 rounded-full cursor-pointer">
+            </div>
         </header>
 
-        <div class="grid">
-            <!-- Translator Panel -->
-            <div class="panel">
-                <h2>🔀 Real-time Translator</h2>
-                <textarea id="input" placeholder="Type English/meme text here..."></textarea>
-                <div id="output" class="panel" style="min-height: 100px">
-                    <div class="balram-char">𑀩𑀮𑀭𑀫</div>
+        <!-- Translation Interface -->
+        <div class="translation-card rounded-lg p-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <textarea id="inputText" 
+                          class="w-full bg-gray-800 rounded-lg p-4"
+                          placeholder="Type here..." 
+                          rows="4"></textarea>
+                </div>
+                <div>
+                    <div id="outputText" 
+                       class="bg-gray-800 rounded-lg p-4 h-full">
+                    </div>
                 </div>
             </div>
-
-            <!-- Dictionary Panel -->
-            <div class="panel">
-                <h2>📖 Meme Lexicon</h2>
-                <div class="emoji-grid">
-                    <div class="emoji-card">
-                        <div class="emoji">🐸</div>
-                        <h3>LMAO Modifier</h3>
-                        <p>Indicates humorous intent</p>
-                    </div>
-                    <div class="emoji-card">
-                        <div class="emoji">🤡</div>
-                        <h3>Fool Marker</h3>
-                        <p>Denotes foolish action</p>
-                    </div>
-                    <div class="emoji-card">
-                        <div class="emoji">😭</div>
-                        <h3>Funny Intensifier</h3>
-                        <p>Amplifies humor</p>
-                    </div>
-                    <div class="emoji-card">
-                        <div class="emoji">🐛</div>
-                        <h3>Bruh Moment</h3>
-                        <p>Signals disbelief</p>
-                    </div>
-                    <div class="emoji-card">
-                        <div class="emoji">🧒</div>
-                        <h3>Okay Validator</h3>
-                        <p>Confirms understanding</p>
-                    </div>
+            
+            <!-- Emoji Picker -->
+            <div class="emoji-picker mt-4 bg-gray-800 rounded-lg p-4">
+                <div class="grid grid-cols-6 gap-2">
+                    <button class="emoji-btn p-2 hover:bg-gray-700 rounded" 
+                            data-emoji="🐸">🐸</button>
+                    <!-- Add more emojis -->
                 </div>
             </div>
         </div>
 
-        <!-- Storage Management -->
-        <div class="panel" style="margin-top: 2rem">
-            <h2>💾 Language Storage System</h2>
-            <div id="storage-status">Loading storage.json...</div>
-            <button onclick="saveDictionary()" style="margin-top: 1rem">💾 Save Progress</button>
+        <!-- User Profile Section -->
+        <div id="profileContent" class="hidden">
+            <!-- Profile Details -->
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="hidden">
+            <!-- User Management -->
         </div>
     </div>
 
     <script>
-        // Virtual File System
-        let storage = {
-            dictionary: {
-                "hello": "𑀩𑀮",
-                "goodbye": "𑀭𑀫",
-                "bruh": "𑀖🐛",
-                "lmao": "𑀓🐸",
-                "okay": "𑀁🧒"
-            },
-            translations: [],
-            progress: {}
+        // MongoDB Connection
+        const MONGODB_URI = "mongodb+srv://codex-in1:codex-in1@codex-in1.1bgxp.mongodb.net/?retryWrites=true&w=majority";
+        
+        // Translation Engine
+        const translationMap = {
+            'hello': { balram: 'नमस्ते', emoji: '🖐' },
+            'thank you': { balram: 'धन्यवाद', emoji: '🙏' },
+            '🐸': { balram: 'लमाओ', type: 'meme' }
         };
 
-        // Emoji Semantic Engine
-        const emojiMeanings = {
-            '🐸': { meaning: 'lmao', effect: 'humor' },
-            '🤡': { meaning: 'fool', effect: 'mockery' },
-            '😭': { meaning: 'funny', effect: 'intensity' },
-            '🐛': { meaning: 'bruh', effect: 'disbelief' },
-            '🧒': { meaning: 'okay', effect: 'confirmation' }
-        };
-
-        // Translation Matrix
-        const balramChars = {
-            'a': '𑀁', 'ka': '𑀓', 'cha': '𑀔', 'ta': '𑀖',
-            'ba': '𑀩', 'la': '𑀮', 'ra': '𑀭', 'ma': '𑀫'
-        };
-
-        // Core Translator
-        document.getElementById('input').addEventListener('input', function(e) {
-            const input = e.target.value.toLowerCase();
-            let output = [];
-            
-            input.split(' ').forEach(word => {
-                // Split words and emojis
-                const [textPart, ...emojis] = word.match(/(:[^:]+:|\p{Emoji}|[a-z]+)/gu) || [];
-                
-                // Base translation
-                let translated = storage.dictionary[textPart] || 
-                    textPart.split('').map(c => balramChars[c] || c).join('');
-                
-                // Add emoji meanings
-                emojis.forEach(emoji => {
-                    translated += emojiMeanings[emoji]?.meaning 
-                        ? `[${emojiMeanings[emoji].meaning}]` 
-                        : emoji;
-                });
-
-                output.push(translated);
-            });
-
-            document.getElementById('output').textContent = output.join(' ');
-            storage.translations.push({ input, output: output.join(' ') });
+        // Real-time Translation
+        document.getElementById('inputText').addEventListener('input', async (e) => {
+            const text = e.target.value;
+            const translated = await translateText(text);
+            document.getElementById('outputText').innerText = translated;
         });
 
-        // Storage Management
-        function saveDictionary() {
-            const data = JSON.stringify(storage, null, 2);
-            const blob = new Blob([data], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'balram-storage.json';
-            a.click();
-            
-            URL.revokeObjectURL(url);
-            document.getElementById('storage-status').textContent = 
-                '💾 Storage saved successfully!';
+        async function translateText(text) {
+            // Add MongoDB integration for dynamic translations
+            return text.split(' ').map(word => {
+                return translationMap[word.toLowerCase()]?.balram || word;
+            }).join(' ');
+        }
+
+        // Auth System
+        class AuthSystem {
+            constructor() {
+                this.currentUser = null;
+            }
+
+            async login(email, password) {
+                // MongoDB integration
+                return { success: true, user: {} };
+            }
+
+            async register(username, password) {
+                // Check username availability
+                return { success: true };
+            }
+        }
+
+        // Admin System
+        class AdminSystem {
+            constructor() {
+                this.adminActions = {
+                    manageUsers: async () => { /* MongoDB operations */ },
+                    editDictionary: async () => { /* Dictionary updates */ }
+                };
+            }
         }
 
         // Initialize
-        document.getElementById('storage-status').textContent = 
-            `📦 Storage loaded: ${Object.keys(storage.dictionary).length} words`;
+        const auth = new AuthSystem();
+        const admin = new AdminSystem();
+        
+        // Check existing session
+        if(localStorage.getItem('authToken')) {
+            // Validate token with MongoDB
+            auth.currentUser = JSON.parse(localStorage.getItem('user'));
+            showAuthedUI();
+        }
+
+        function showAuthedUI() {
+            document.getElementById('profileSection').classList.remove('hidden');
+            if(auth.currentUser?.isAdmin) {
+                document.getElementById('adminPanel').classList.remove('hidden');
+            }
+        }
     </script>
 </body>
 </html>
