@@ -1,33 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Balram Language - Admin Panel</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <title>Admin Console</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <header>
-    <h1>Balram Language - Admin Panel</h1>
-  </header>
+<body class="dark-theme">
+    <div class="container">
+        <div class="admin-header">
+            <h1>⚙️ Admin Console</h1>
+            <button onclick="logout()">Logout</button>
+        </div>
 
-  <main>
-    <section>
-      <p>Welcome, Admin! Manage users below:</p>
-      <button id="btn-logout">Logout</button>
-    </section>
-
-    <section id="admin-controls">
-      <h2>User List</h2>
-      <div id="user-list"></div>
-      <h3>Ban a user (demo):</h3>
-      <input type="text" id="ban-username" placeholder="Username to ban"/>
-      <button id="ban-btn">Ban</button>
-      <p id="ban-result"></p>
-    </section>
-  </main>
-
-  <script src="user.js"></script>
-  <script src="script.js"></script>
+        <div class="glass-card">
+            <h3>🔧 Language Management</h3>
+            <input type="text" id="newWord" placeholder="New word">
+            <button onclick="addWord()">Add to Dictionary</button>
+        </div>
+    </div>
+    
+    <script src="admin.js"></script>
 </body>
 </html>
