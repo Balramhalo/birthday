@@ -1,48 +1,31 @@
-:root {
-    --cyber-void: #000;
-    --neon-core: #0ff;
-    --hologram-aura: rgba(0, 255, 255, 0.1);
-}
-
 body {
-    background: var(--cyber-void);
-    color: var(--neon-core);
-    font-family: 'Courier New', monospace;
+  background: #000;
+  color: #fff;
+  font-family: 'Arial', sans-serif;
 }
 
-.cyber-card {
-    background: rgba(0, 0, 0, 0.8);
-    border: 2px solid var(--neon-core);
-    padding: 2rem;
-    max-width: 500px;
-    margin: 2rem auto;
+.card {
+  background: #111;
+  border-radius: 15px;
+  padding: 2rem;
+  margin: 1rem;
+  box-shadow: 0 0 20px rgba(0,255,200,0.1);
 }
 
-.quantum-btn {
-    background: none;
-    border: 2px solid var(--neon-core);
-    color: var(--neon-core);
-    padding: 1rem 2rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
+button {
+  background: linear-gradient(45deg, #00ff88, #00ffee);
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-.quantum-btn:hover {
-    background: var(--hologram-aura);
-    box-shadow: 0 0 15px var(--neon-core);
-}
-
-.neon-output {
-    border: 1px solid var(--neon-core);
-    padding: 1rem;
-    margin: 1rem 0;
-    min-height: 100px;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.8; }
+#menu {
+  position: fixed;
+  right: -250px;
+  top: 0;
+  width: 250px;
+  height: 100vh;
+  background: #222;
+  transition: 0.3s;
 }
