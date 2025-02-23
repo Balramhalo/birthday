@@ -1,16 +1,32 @@
-const express = require('express');
-const router = express.Router();
+const { readFile, writeFile } = require('fs/promises');
 
-// Dummy translation function
-const translateToBalram = (text) => {
-    // Implement your translation logic here
-    return text.split('').map(char => String.fromCharCode(char.charCodeAt(0) + 1)).join('');
+const alphabet = {
+    a: 'Alpha', b: 'Beta', c: 'Gamma', // Complete mapping
 };
 
-router.post('/translate', (req, res) => {
-    const { text } = req.body;
-    const translatedText = translateToBalram(text);
-    res.json({ translatedText });
-});
+const emojiMap = {
+    happy: '😊', cool: '🔥', // Your custom mappings
+};
 
-module.exports = router;
+export default async (req, res) => {
+    try {
+        const { text } = req.body;
+        
+        // Transformation Rules
+        const translated = 'Bal-' + text.split('').reverse().join('') + '-ram';
+        
+        // Emoji Assignment
+        const emojis = Object.entries(emojiMap)
+            .filter(([key]) => text.toLowerCase().includes(key))
+            .map(([meaning, emoji]) => ({ emoji, meaning }));
+
+        // Save to storage
+        const storage = JSON.parse(await readFile('storage.json'));
+        storage.translations.push({ original: text, translated, emojis });
+        await writeFile('storage.json', JSON.stringify(storage));
+
+        res.status(200).json({ original: text, translated, emojis });
+    } catch (error) {
+        res.status(500).json({ error: 'Translation failed' });
+    }
+};
