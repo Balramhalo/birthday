@@ -1,0 +1,61 @@
+:root {
+    --bg: #0d0d0d;
+    --neon: #00ff9d;
+    --cyber-red: #ff003c;
+    --cyber-blue: #00b4ff;
+    --text: #ffffff;
+}
+
+.dark-theme {
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-family: 'Courier New', monospace;
+}
+
+.cyber-nav {
+    background: rgba(0,0,0,0.8);
+    padding: 1rem;
+    border-bottom: 2px solid var(--neon);
+    display: flex;
+    justify-content: space-between;
+}
+
+.cyber-button {
+    background: black;
+    border: 2px solid var(--neon);
+    padding: 1rem 2rem;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.cyber-button .glow {
+    color: var(--neon);
+    text-shadow: 0 0 10px var(--neon);
+}
+
+.cyber-button:hover {
+    background: rgba(0,255,157,0.1);
+    box-shadow: 0 0 15px var(--neon);
+}
+
+.panel {
+    display: none;
+    border: 2px solid var(--cyber-blue);
+    padding: 2rem;
+    margin: 2rem;
+}
+
+.panel.active {
+    display: block;
+    animation: scanline 2s infinite;
+}
+
+@keyframes scanline {
+    0% { background: transparent; }
+    50% { background: rgba(0,180,255,0.05); }
+    100% { background: transparent; }
+}
+
+/* Add more cyberpunk styles */
