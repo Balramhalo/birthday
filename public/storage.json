@@ -1,12 +1,11 @@
 {
-  "alphabet": [
-    { "symbol": "Al", "pronunciation": "Ahl" },
-    { "symbol": "Ba", "pronunciation": "Bah" },
-    { "symbol": "Ga", "pronunciation": "Gah" },
-    { "symbol": "Ma", "pronunciation": "Mah" }
-  ],
-  "words": [
-    { "word": "AlBa", "meaning": "Hello", "emoji": "😊" },
-    { "word": "GaMa", "meaning": "World", "emoji": "🌍" }
-  ]
+    "translations": [],
+    "alphabet": {
+        "a": {"symbol": "α", "pronunciation": "al-fah"},
+        "b": {"symbol": "β", "pronunciation": "bay-tah"}
+    },
+    "emojiMeanings": {
+        "😊": "Happy/Positive",
+        "🔥": "Cool/Impressive"
+    }
 }
