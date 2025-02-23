@@ -1,23 +1,38 @@
-// Core System
-const BalramSystem = {
-    users: JSON.parse(localStorage.getItem('users')) || [],
-    dictionary: JSON.parse(localStorage.getItem('dictionary')) || [],
-    currentUser: null,
-    adminToken: null,
+// Balram Language Engine
+class BalramGenerator {
+    static vowels = ['a', 'e', 'i', 'o', 'u'];
+    static consonants = ['b', 'd', 'g', 'k', 'm', 'n', 'r'];
+    static emojiMap = new Map([
+        ['happy', '😭'], ['sad', '🤡'], ['angry', '💥']
+    ]);
 
-    init() {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if(this.currentUser) this.handleSession();
-    },
+    static generateWord(input) {
+        return input.split('').reverse().join('')
+            .replace(/a/gi, 'ꪖ')
+            .replace(/i/gi, '᛫')
+            .replace(/s/gi, 'ϟ')
+            + this.getEmoji(input);
+    }
 
-    handleAuth() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+    static getEmoji(word) {
+        const key = word.toLowerCase();
+        return this.emojiMap.get(key) || '🔮';
+    }
+}
 
+// Auth System
+class BalramAuth {
+    static users = JSON.parse(localStorage.getItem('users')) || [];
+    static currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    static handleAuth() {
+        const username = document.getElementById('authUser').value;
+        const password = document.getElementById('authPass').value;
+        
         const user = this.users.find(u => u.username === username);
         if(user) {
             if(user.password === password) this.login(user);
-            else this.showError('AUTH_FAILURE');
+            else this.showError('Access Denied');
             return;
         }
 
@@ -32,79 +47,34 @@ const BalramSystem = {
         this.users.push(newUser);
         localStorage.setItem('users', JSON.stringify(this.users));
         this.login(newUser);
-    },
+    }
 
-    login(user) {
-        this.currentUser = user;
+    static login(user) {
         localStorage.setItem('currentUser', JSON.stringify(user));
-        
         if(user.isAdmin) {
-            this.adminToken = `admin-${Date.now()}-${crypto.randomUUID()}`;
-            window.location.href = `admin.html?token=${this.adminToken}`;
+            const adminToken = btoa(Date.now() + user.id + crypto.randomUUID());
+            window.location.href = `admin.html?token=${adminToken}`;
         } else {
-            document.getElementById('authSection').classList.add('hidden');
-            document.getElementById('mainSection').classList.remove('hidden');
-            this.initTranslator();
+            document.getElementById('authPanel').classList.remove('active');
+            document.getElementById('mainPanel').classList.add('active');
         }
-    },
+    }
+}
 
-    initTranslator() {
-        document.getElementById('inputText').addEventListener('input', (e) => {
-            const output = this.translate(e.target.value);
-            document.getElementById('outputText').innerHTML = output;
-        });
-    },
-
-    translate(input) {
-        return input.split(' ').map(word => {
-            const exists = this.dictionary.find(d => d.word === word.toLowerCase());
-            if(exists) return `${exists.balram}${exists.emoji}`;
-            
-            // Generate new word
-            const newWord = {
-                word: word.toLowerCase(),
-                balram: this.generateBalramWord(word),
-                emoji: this.getEmoji(word),
-                createdBy: this.currentUser.id
-            };
-            
-            this.dictionary.push(newWord);
-            localStorage.setItem('dictionary', JSON.stringify(this.dictionary));
-            return `${newWord.balram}${newWord.emoji}`;
-        }).join(' ');
-    },
-
-    generateBalramWord(word) {
-        // Combine Gen Z slang + multi-language rules
-        return word.split('').reverse().join('')
-            .replace(/a/gi, 'ꪖ')
-            .replace(/i/gi, '᛫')
-            .replace(/o/gi, 'ᴑ')
-            + '🎯';
-    },
-
-    getEmoji(word) {
-        const emojiDB = {
-            happy: '😭', 
-            sad: '🤡',
-            love: '🦋',
-            angry: '💥',
-            friend: '🧑💻'
-        };
-        return emojiDB[word.toLowerCase()] || '🔮';
-    },
-
-    // Admin functions
-    forgeWord() {
-        const input = document.getElementById('newWord').value;
-        // Add admin word creation logic
+// Initialize
+window.onload = () => {
+    if(location.pathname.includes('admin.html')) {
+        if(!validateAdminToken()) location.href = '/';
+        else initializeAdminConsole();
+    } else if(BalramAuth.currentUser) {
+        document.getElementById('authPanel').classList.remove('active');
+        document.getElementById('mainPanel').classList.add('active');
     }
 };
 
-// Initialize
-window.onload = () => BalramSystem.init();
-window.handleAuth = () => BalramSystem.handleAuth();
+// Event Bindings
+window.handleAuth = () => BalramAuth.handleAuth();
 window.logout = () => {
     localStorage.removeItem('currentUser');
-    window.location.reload();
+    location.reload();
 };
