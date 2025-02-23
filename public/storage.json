@@ -1,11 +1,5 @@
 {
-    "translations": [],
-    "alphabet": {
-        "a": {"symbol": "α", "pronunciation": "al-fah"},
-        "b": {"symbol": "β", "pronunciation": "bay-tah"}
-    },
-    "emojiMeanings": {
-        "😊": "Happy/Positive",
-        "🔥": "Cool/Impressive"
-    }
+    "hello": { "emoji": "👋" },
+    "world": { "emoji": "🌍" },
+    "balram": { "emoji": "🔥" }
 }
