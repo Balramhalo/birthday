@@ -1,41 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Balram Language</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Balram Language</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
-  <div class="container">
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
-    <nav class="menu" id="menu">
-      <a href="#" onclick="showPage('translator')">Translator</a>
-      <a href="#" onclick="showPage('vocabulary')">Vocabulary</a>
-      <a href="#" onclick="showPage('history')">History</a>
-      <a href="#" onclick="showPage('owner')">Owner</a>
-    </nav>
-    <div class="content" id="content">
-      <div id="translator" class="page active">
-        <h1>Balram Translator</h1>
-        <input type="text" id="input" placeholder="Enter text to translate">
-        <button onclick="translate()">Translate</button>
-        <div id="output"></div>
-      </div>
-      <div id="vocabulary" class="page">
-        <h1>Vocabulary</h1>
-        <div id="vocab-output"></div>
-      </div>
-      <div id="history" class="page">
-        <h1>History</h1>
-        <p>The Balram Language was created to simplify communication with a futuristic twist...</p>
-      </div>
-      <div id="owner" class="page">
-        <h1>Owner</h1>
-        <p>Created by [Your Name], a visionary linguist...</p>
-      </div>
+    <!-- 3D Scene -->
+    <canvas id="bg"></canvas>
+
+    <!-- UI Elements -->
+    <div class="hamburger" onclick="toggleMenu()">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
     </div>
-  </div>
-  <script src="script.js"></script>
+
+    <nav id="menu">
+        <a href="#home" onclick="showSection('home')">Home</a>
+        <a href="#translate" onclick="showSection('translate')">Translator</a>
+        <a href="#vocabulary" onclick="showSection('vocabulary')">Vocabulary</a>
+        <a href="#history" onclick="showSection('history')">History</a>
+        <a href="#owner" onclick="showSection('owner')">Owner</a>
+    </nav>
+
+    <main>
+        <!-- Dynamic Sections -->
+        <section id="home" class="active">
+            <h1 class="glow">Balram Language</h1>
+            <div class="cube-animation"></div>
+            <p>A futuristic blend of cultures and modern communication</p>
+        </section>
+
+        <section id="translate">
+            <div class="translator-box">
+                <textarea id="inputText" placeholder="Enter text to translate..."></textarea>
+                <button onclick="translateText()" class="neon-button">Generate</button>
+                <div id="output" class="result-glow"></div>
+            </div>
+        </section>
+
+        <!-- Other sections similarly structured -->
+    </main>
+
+    <script src="app.js"></script>
 </body>
 </html>
