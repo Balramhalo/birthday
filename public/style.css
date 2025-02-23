@@ -1,43 +1,67 @@
-body {
-    background-color: black;
-    color: white;
-    font-family: Arial, sans-serif;
+:root {
+    --cyber-void: #000;
+    --neon-primary: #0ff;
+    --neon-secondary: #f0f;
+    --hologram-effect: linear-gradient(45deg, 
+        var(--neon-primary), 
+        var(--neon-secondary)
+    );
 }
 
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: #333;
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.cyber-ui {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1000;
 }
 
 .hamburger {
+    position: fixed;
+    top: 20px;
+    right: 20px;
     cursor: pointer;
+    z-index: 1001;
+    transition: transform 0.3s;
 }
 
-.menu {
-    display: none;
+.bar {
+    width: 35px;
+    height: 3px;
+    background: var(--neon-primary);
+    margin: 6px 0;
+    transition: 0.3s;
 }
 
-.menu a {
-    color: white;
-    text-decoration: none;
-    padding: 10px;
+.hologram-input {
+    position: relative;
+    margin: 2rem;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid var(--neon-primary);
+    border-radius: 10px;
+    box-shadow: 0 0 20px var(--neon-primary);
 }
 
-.container {
-    padding: 20px;
-}
-
-input {
-    padding: 10px;
-    width: 300px;
-}
-
-button {
-    padding: 10px;
-    background-color: #555;
-    color: white;
-    border: none;
-    cursor: pointer;
+.neon-output {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--neon-primary);
+    border-radius: 10px;
+    color: var(--neon-primary);
+    font-size: 1.2rem;
+    min-height: 100px;
+    backdrop-filter: blur(10px);
 }
