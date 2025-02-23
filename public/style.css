@@ -1,47 +1,48 @@
 :root {
-    --quantum-void: #000010;
-    --neon-core: #00f3ff;
-    --hologram-aura: rgba(0, 243, 255, 0.1);
-    --cyber-border: 1px solid var(--neon-core);
+    --cyber-void: #000;
+    --neon-core: #0ff;
+    --hologram-aura: rgba(0, 255, 255, 0.1);
 }
 
-[data-theme="cyber"] {
-    background: var(--quantum-void);
+body {
+    background: var(--cyber-void);
     color: var(--neon-core);
-    min-height: 100vh;
-    font-family: 'Quantum', sans-serif;
+    font-family: 'Courier New', monospace;
 }
 
-.neon-aura {
-    box-shadow: 0 0 30px var(--hologram-aura);
-    animation: quantum-pulse 2s infinite;
-}
-
-@keyframes quantum-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.8; }
+.cyber-card {
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid var(--neon-core);
+    padding: 2rem;
+    max-width: 500px;
+    margin: 2rem auto;
 }
 
 .quantum-btn {
-    background: transparent;
-    border: var(--cyber-border);
-    padding: 1.5rem 3rem;
+    background: none;
+    border: 2px solid var(--neon-core);
+    color: var(--neon-core);
+    padding: 1rem 2rem;
+    cursor: pointer;
+    transition: all 0.3s;
     position: relative;
     overflow: hidden;
-    transition: all 0.3s quantum-ease;
 }
 
-.hologram-effect {
-    background: linear-gradient(45deg, 
-        var(--neon-core) 25%, 
-        transparent 50%, 
-        var(--neon-core) 75%
-    );
-    background-size: 400% 400%;
-    animation: hologram-flow 3s infinite linear;
+.quantum-btn:hover {
+    background: var(--hologram-aura);
+    box-shadow: 0 0 15px var(--neon-core);
 }
 
-@keyframes hologram-flow {
-    0% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+.neon-output {
+    border: 1px solid var(--neon-core);
+    padding: 1rem;
+    margin: 1rem 0;
+    min-height: 100px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
 }
