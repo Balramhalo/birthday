@@ -1,42 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Balram Language Translator</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #menu {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        #nav {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .content {
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
-    <div class="navbar">
-        <div class="logo">Balram Language</div>
-        <div class="menu" onclick="toggleMenu()">☰</div>
+    <div id="menu">☰</div>
+    <div id="nav">
+        <p>Vocabulary</p>
+        <p>History</p>
+        <p>Owner</p>
     </div>
-    <div class="sidebar" id="sidebar">
-        <a href="#" onclick="showPage('home')">Home</a>
-        <a href="#" onclick="showPage('history')">History</a>
-        <a href="#" onclick="showPage('owner')">Owner</a>
-        <a href="#" onclick="showPage('translator')">Translator</a>
+    <div class="content">
+        <h1>Balram Language Translator</h1>
+        <textarea id="inputText" placeholder="Enter text to translate..."></textarea>
+        <button onclick="translate()">Translate</button>
+        <p id="output"></p>
     </div>
-    <div class="content" id="content">
-        <div id="home" class="page">
-            <h1>Welcome to Balram Language</h1>
-            <p>Balram Language is a unique language with its own alphabets and emojis.</p>
-        </div>
-        <div id="history" class="page" style="display:none;">
-            <h1>History of Balram Language</h1>
-            <p>The Balram Language was created in 2023...</p>
-        </div>
-        <div id="owner" class="page" style="display:none;">
-            <h1>Owner of Balram Language</h1>
-            <p>The language was developed by [Owner Name].</p>
-        </div>
-        <div id="translator" class="page" style="display:none;">
-            <h1>Translator</h1>
-            <textarea id="inputText" placeholder="Type in English..."></textarea>
-            <button onclick="translateToBalram()">Translate to Balram</button>
-            <div id="outputText"></div>
-        </div>
-    </div>
-    <script src="script.js"></script>
+    <script>
+        const translations = {
+            "hello": "Bal-ollhe 😊",
+            "world": "Bal-dlrow 🔥",
+            "language": "Bal-egaugnal 🌍"
+        };document.getElementById('menu').addEventListener('click', function() {
+        let nav = document.getElementById('nav');
+        nav.style.display = (nav.style.display === 'block') ? 'none' : 'block';
+    });
+
+    function translate() {
+        let input = document.getElementById("inputText").value.toLowerCase();
+        let words = input.split(" ");
+        let translatedWords = words.map(word => translations[word] || `Bal-${word.split('').reverse().join('')} ✨`);
+        document.getElementById("output").innerText = translatedWords.join(" ");
+    }
+</script>
+
 </body>
 </html>
