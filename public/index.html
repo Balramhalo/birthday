@@ -5,27 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Balram Language</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="hamburger" onclick="toggleMenu()">☰</div>
-            <nav id="nav-menu" class="hidden">
-                <ul>
-                    <li onclick="showPage('vocabulary')">Vocabulary</li>
-                    <li onclick="showPage('history')">History</li>
-                    <li onclick="showPage('owner')">Owner</li>
-                </ul>
-            </nav>
-        </header>
-        <main id="main-content">
-            <h1>Welcome to Balram Language</h1>
-            <p>Translate your phrases and learn the Balram Language!</p>
-            <input type="text" id="input-phrase" placeholder="Enter phrase here...">
-            <button onclick="translate()">Translate</button>
-            <div id="translation-result"></div>
-        </main>
+    <div id="menu">
+        <button onclick="showSection('history')">History</button>
+        <button onclick="showSection('owner')">Owner</button>
+        <button onclick="showSection('vocabulary')">Vocabulary</button>
+        <button onclick="showSection('translator')">Translator</button>
     </div>
+
+    <div id="3d-container"></div>
+
+    <div id="content">
+        <div id="history" class="section">History of Balram Language...</div>
+        <div id="owner" class="section">Owner of Balram Language...</div>
+        <div id="vocabulary" class="section">
+            <h2>Vocabulary</h2>
+            <ul>
+                <li>Alpha - 🌟</li>
+                <li>Beta - 🚀</li>
+                <li>Gamma - 🌈</li>
+            </ul>
+        </div>
+        <div id="translator" class="section">
+            <h2>Translator</h2>
+            <input type="text" id="englishInput" placeholder="Enter English word">
+            <button onclick="translate()">Translate</button>
+            <p id="translationResult"></p>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
