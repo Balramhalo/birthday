@@ -1,401 +1,156 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Rizz Experience</title>
+    <title>P2P Chess</title>
     <style>
-        :root {
-            --bg-color: #0a0a0a;
-            --text-color: #f5f5f5;
-            --primary-color: #00ff88;
-            --secondary-color: #ff4444;
-            --border-color: #2a2a2a;
-            --typing-bg: #1a1a1a;
-            --accent: #00ff88;
-            --star-color: rgba(255, 255, 255, 0.8);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
         body {
-            min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
-            color: var(--text-color);
-            overflow: hidden;
-            position: relative;
+            font-family: Arial, sans-serif;
         }
-
-        /* Enhanced Starfield */
-        .starfield {
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-        }
-
-        .starfield::before,
-        .starfield::after {
-            content: '';
-            position: absolute;
-            width: 300%;
-            height: 300%;
-            background: 
-                radial-gradient(var(--star-color) 0.5px, transparent 1px) 0 0/30px 30px,
-                radial-gradient(var(--star-color) 0.5px, transparent 1px) 15px 15px/30px 30px;
-            animation: stars 120s linear infinite;
-        }
-
-        .starfield::after {
-            animation-duration: 80s;
-            opacity: 0.6;
-        }
-
-        @keyframes stars {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-50%, -50%); }
-        }
-
-        /* Shooting Stars */
-        @keyframes shooting {
-            0% {
-                transform: translateX(-100vw) translateY(-50vh) rotate(-45deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateX(100vw) translateY(50vh) rotate(-45deg);
-                opacity: 0;
-            }
-        }
-
-        .shooting-star {
-            position: fixed;
-            width: 120px;
-            height: 2px;
-            background: linear-gradient(-45deg, transparent, var(--accent), transparent);
-            filter: drop-shadow(0 0 6px var(--accent));
-            animation: shooting 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-        }
-
-        /* Container Styles */
-        .container {
-            background: rgba(10, 10, 10, 0.95);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 2px solid var(--border-color);
-            box-shadow: 0 0 40px rgba(0, 255, 136, 0.1);
-            width: 95%;
-            max-width: 600px;
-            backdrop-filter: blur(10px);
-            transform-style: preserve-3d;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-            font-size: 2rem;
-            background: linear-gradient(45deg, var(--primary-color), #00ff88);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        /* Enhanced Button Styles */
-        .button-group {
+        #board {
             display: grid;
-            gap: 1.5rem;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(8, 60px);
+            gap: 0;
+            border: 2px solid #333;
+            margin: 20px;
         }
-
-        .cyber-btn {
-            padding: 1.2rem 2rem;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            background: var(--typing-bg);
-            color: var(--text-color);
-            border: 2px solid;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateZ(0);
-        }
-
-        .cyber-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, 
-                transparent 20%, 
-                rgba(0, 255, 136, 0.1) 50%,
-                transparent 80%
-            );
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .cyber-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
-        }
-
-        .cyber-btn:hover::before {
-            opacity: 1;
-        }
-
-        #achaBtn {
-            border-color: var(--primary-color);
-            --glow-color: rgba(0, 255, 136, 0.3);
-        }
-
-        #bekarBtn {
-            border-color: var(--secondary-color);
-            --glow-color: rgba(255, 68, 68, 0.3);
-        }
-
-        /* Message Container Animations */
-        .message-container {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 500px;
-            background: var(--typing-bg);
-            padding: 2rem;
-            border-radius: 15px;
-            opacity: 0;
-            pointer-events: none;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
-            transition: opacity 0.3s;
-        }
-
-        .message-container.visible {
-            opacity: 1;
-            animation: messagePopIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        @keyframes messagePopIn {
-            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-
-        /* Enhanced Typing Animation */
-        .typing-indicator {
+        .square {
+            width: 60px;
+            height: 60px;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            justify-content: center;
+            font-size: 40px;
+            cursor: pointer;
         }
-
-        .typing-dots {
-            display: flex;
-            gap: 8px;
-            height: 24px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: dotBounce 1.4s infinite ease-in-out;
-        }
-
-        @keyframes dotBounce {
-            0%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-        }
-
-        /* Text Reveal Animation */
-        .message-text {
-            font-size: 1.4rem;
-            text-align: center;
-            line-height: 1.6;
-            opacity: 0;
-            transform: translateY(20px);
-            background: linear-gradient(45deg, var(--primary-color), #00ff88);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .message-text.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Particle Effects */
-        .particle {
-            position: absolute;
-            pointer-events: none;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: particleFloat 1.2s ease-out forwards;
-        }
-
-        @keyframes particleFloat {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: 
-                    translate(var(--tx, 0), var(--ty, -100px)) 
-                    rotate(var(--r, 0deg)) 
-                    scale(0.2);
-            }
-        }
-
-        /* Mobile Optimization */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1.5rem;
-            }
-
-            h1 {
-                font-size: 1.6rem;
-            }
-
-            .button-group {
-                grid-template-columns: 1fr;
-            }
-        }
+        .white { background-color: #f0d9b5; }
+        .black { background-color: #b58863; }
+        .selected { background-color: #7fff00; }
+        #status { margin: 10px; font-weight: bold; }
+        #connect { margin: 10px; padding: 5px; }
     </style>
 </head>
 <body>
-    <div class="starfield"></div>
-    <div class="container">
-        <h1>How Do I Look to You? 💫</h1>
-        <div class="button-group">
-            <button id="achaBtn" class="cyber-btn">Awesome 😇</button>
-            <button id="bekarBtn" class="cyber-btn">Nah 😈</button>
-        </div>
+    <div id="status">Disconnected</div>
+    <div id="board"></div>
+    <input id="connect" type="text" placeholder="Enter server URL (ws://...)">
+    <button onclick="connect()">Connect</button>
 
-        <div class="message-container" id="messageContainer">
-            <div class="typing-indicator">
-                <div class="typing-dots">
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                </div>
-                <span>Decoding response...</span>
-            </div>
-            <div class="message-text" id="messageText"></div>
-        </div>
-    </div>
+<script>
+const pieces = {
+    'R': '♜', 'N': '♞', 'B': '♝', 'Q': '♛', 'K': '♚', 'P': '♟',
+    'r': '♖', 'n': '♘', 'b': '♗', 'q': '♕', 'k': '♔', 'p': '♙'
+};
 
-    <script>
-        // Enhanced Shooting Stars
-        function createShootingStar() {
-            const star = document.createElement('div');
-            star.className = 'shooting-star';
-            star.style.top = `${Math.random() * 100}%`;
-            star.style.left = `${Math.random() * 100}%`;
-            star.style.animationDuration = `${Math.random() * 0.8 + 0.5}s`;
-            document.body.appendChild(star);
-            
-            star.addEventListener('animationend', () => star.remove());
+let ws, isWhite, currentTurn = 'white', selectedSquare = null;
+const board = Array(64).fill(null);
+
+function createBoard() {
+    const container = document.getElementById('board');
+    container.innerHTML = '';
+    
+    // Initial board setup
+    const initial = [
+        'R','N','B','Q','K','B','N','R',
+        'P','P','P','P','P','P','P','P',
+        ...Array(32).fill(null),
+        'p','p','p','p','p','p','p','p',
+        'r','n','b','q','k','b','n','r'
+    ];
+
+    initial.forEach((piece, index) => {
+        const square = document.createElement('div');
+        square.className = `square ${(Math.floor(index/8) + index%8) % 2 ? 'white' : 'black'}`;
+        square.dataset.index = index;
+        square.textContent = pieces[piece] || '';
+        square.onclick = () => handleSquareClick(index);
+        container.appendChild(square);
+        board[index] = piece;
+    });
+}
+
+function handleSquareClick(index) {
+    if (!isWhite || currentTurn !== (isWhite ? 'white' : 'black')) return;
+    
+    if (selectedSquare === null) {
+        if (board[index] && (isWhite === (board[index] === board[index].toUpperCase()))) {
+            selectedSquare = index;
+            document.querySelectorAll('.square')[index].classList.add('selected');
         }
+    } else {
+        const from = selectedSquare;
+        const to = index;
+        movePiece(from, to);
+        selectedSquare = null;
+        document.querySelectorAll('.square').forEach(sq => sq.classList.remove('selected'));
+    }
+}
 
-        // Initialize background effects
-        setInterval(createShootingStar, 3000);
+function movePiece(from, to) {
+    if (!isValidMove(from, to)) return;
+    
+    board[to] = board[from];
+    board[from] = null;
+    updateBoard();
+    currentTurn = currentTurn === 'white' ? 'black' : 'white';
+    
+    if (ws) {
+        ws.send(JSON.stringify({ type: 'move', from, to }));
+    }
+}
 
-        // Main Interaction Logic
-        const achaBtn = document.getElementById('achaBtn');
-        const bekarBtn = document.getElementById('bekarBtn');
-        const messageContainer = document.getElementById('messageContainer');
-        const messageText = document.getElementById('messageText');
-        let bekarAttempts = 0;
+function isValidMove(from, to) {
+    // Basic move validation (simplified)
+    const piece = board[from];
+    if (!piece) return false;
+    if (piece === piece.toLowerCase() && currentTurn === 'white') return false;
+    if (piece === piece.toUpperCase() && currentTurn === 'black') return false;
+    return true;
+}
 
-        // Text animation helper
-        const animateText = async (element, text, speed = 40) => {
-            element.textContent = '';
-            for (const char of text) {
-                element.textContent += char;
-                await new Promise(r => setTimeout(r, speed + Math.random() * 20));
-            }
-        };
+function updateBoard() {
+    document.querySelectorAll('.square').forEach((square, index) => {
+        square.textContent = pieces[board[index]] || '';
+    });
+}
 
-        // Particle effect creator
-        const createParticles = (x, y, count = 30) => {
-            for (let i = 0; i < count; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.cssText = `
-                    --tx: ${(Math.random() - 0.5) * 200}px;
-                    --ty: ${-Math.random() * 150 - 50}px;
-                    --r: ${Math.random() * 360}deg;
-                    left: ${x}px;
-                    top: ${y}px;
-                    width: ${Math.random() * 6 + 2}px;
-                    height: ${Math.random() * 6 + 2}px;
-                    background: hsl(${Math.random() * 60 + 160}, 100%, 50%);
-                `;
-                document.body.appendChild(particle);
-                particle.addEventListener('animationend', () => particle.remove());
-            }
-        };
+function connect() {
+    const serverUrl = document.getElementById('connect').value;
+    ws = new WebSocket(serverUrl);
 
-        // Positive response handler
-        achaBtn.addEventListener('click', async (e) => {
-            const rect = achaBtn.getBoundingClientRect();
-            createParticles(rect.left + rect.width/2, rect.top + rect.height/2);
-            
-            document.querySelector('.button-group').style.opacity = '0';
-            messageContainer.classList.add('visible');
-            
-            await animateText(messageText, 'You make my circuits overload! 💖');
-            messageText.classList.add('visible');
-        });
+    ws.onopen = () => {
+        document.getElementById('status').textContent = 'Connected! Waiting for opponent...';
+        ws.send(JSON.stringify({ type: 'join' }));
+    };
 
-        // Evasive response handler
-        bekarBtn.addEventListener('click', (e) => {
-            bekarAttempts++;
-            const btnRect = bekarBtn.getBoundingClientRect();
-            const containerRect = document.querySelector('.container').getBoundingClientRect();
-            
-            createParticles(e.clientX, e.clientY, 15);
-            
-            const maxX = containerRect.width - btnRect.width - 20;
-            const maxY = containerRect.height - btnRect.height - 20;
-            
-            bekarBtn.style.transform = `
-                translate(${Math.random() * maxX}px, ${Math.random() * maxY}px)
-                rotate(${Math.random() * 15 - 7.5}deg)
-                scale(${1 - Math.min(bekarAttempts * 0.05, 0.3)})
-            `;
-            
-            if(bekarAttempts > 3) {
-                bekarBtn.style.filter = `
-                    hue-rotate(${bekarAttempts * 30}deg)
-                    brightness(${1 - bekarAttempts * 0.1})
-                `;
-            }
-        });
+    ws.onmessage = (event) => {
+        const msg = JSON.parse(event.data);
+        switch(msg.type) {
+            case 'color':
+                isWhite = msg.color === 'white';
+                document.getElementById('status').textContent = `You play ${msg.color}`;
+                break;
+            case 'move':
+                board[msg.to] = board[msg.from];
+                board[msg.from] = null;
+                currentTurn = msg.newTurn;
+                updateBoard();
+                break;
+            case 'start':
+                currentTurn = 'white';
+                break;
+        }
+    };
 
-        // Mobile touch support
-        [achaBtn, bekarBtn].forEach(btn => {
-            btn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                btn.style.transform = 'scale(0.95)';
-            });
-            
-            btn.addEventListener('touchend', () => {
-                btn.style.transform = '';
-            });
-        });
-    </script>
+    ws.onclose = () => {
+        document.getElementById('status').textContent = 'Connection lost';
+    };
+}
+
+// Initialize board
+createBoard();
+</script>
 </body>
 </html>
