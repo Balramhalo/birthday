@@ -3,317 +3,398 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balram Language Interface</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <title>Ultimate Rizz Experience</title>
     <style>
         :root {
-            --neon-cyan: #0ff;
-            --void-black: #00010a;
-            --hologram-pink: #ff00ff;
-            --cyber-font: 'Courier New', monospace;
+            --bg-color: #0a0a0a;
+            --text-color: #f5f5f5;
+            --primary-color: #00ff88;
+            --secondary-color: #ff4444;
+            --border-color: #2a2a2a;
+            --typing-bg: #1a1a1a;
+            --accent: #00ff88;
+            --star-color: rgba(255, 255, 255, 0.8);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            background: var(--void-black);
-            color: var(--neon-cyan);
-            font-family: var(--cyber-font);
-            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            color: var(--text-color);
+            overflow: hidden;
+            position: relative;
         }
 
-        /* Particle Canvas */
-        #particle-canvas {
+        /* Enhanced Starfield */
+        .starfield {
             position: fixed;
-            top: 0;
-            left: 0;
+            width: 100vw;
+            height: 100vh;
             z-index: -1;
         }
 
-        /* Navigation */
-        .neuro-nav {
-            position: fixed;
-            width: 100%;
-            padding: 1.5rem;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-        }
-
-        .menu-toggle {
-            cursor: pointer;
-            width: 40px;
-            height: 30px;
-            position: relative;
-        }
-
-        .menu-bar {
+        .starfield::before,
+        .starfield::after {
+            content: '';
             position: absolute;
-            height: 3px;
-            background: var(--neon-cyan);
-            transition: all 0.3s ease;
+            width: 300%;
+            height: 300%;
+            background: 
+                radial-gradient(var(--star-color) 0.5px, transparent 1px) 0 0/30px 30px,
+                radial-gradient(var(--star-color) 0.5px, transparent 1px) 15px 15px/30px 30px;
+            animation: stars 120s linear infinite;
         }
 
-        .menu-bar:nth-child(1) { top: 0; width: 100%; }
-        .menu-bar:nth-child(2) { top: 10px; width: 80%; }
-        .menu-bar:nth-child(3) { top: 20px; width: 60%; }
+        .starfield::after {
+            animation-duration: 80s;
+            opacity: 0.6;
+        }
 
-        /* Side Navigation */
-        .side-nav {
+        @keyframes stars {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50%, -50%); }
+        }
+
+        /* Shooting Stars */
+        @keyframes shooting {
+            0% {
+                transform: translateX(-100vw) translateY(-50vh) rotate(-45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100vw) translateY(50vh) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+
+        .shooting-star {
             position: fixed;
-            left: -300px;
-            top: 0;
-            height: 100vh;
-            width: 300px;
-            background: rgba(0, 0, 0, 0.95);
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(-45deg, transparent, var(--accent), transparent);
+            filter: drop-shadow(0 0 6px var(--accent));
+            animation: shooting 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        /* Container Styles */
+        .container {
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 20px;
             padding: 2rem;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1001;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.1);
+            width: 95%;
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+            transform-style: preserve-3d;
         }
 
-        .nav-item {
-            display: block;
-            color: var(--neon-cyan);
-            padding: 1rem;
-            margin: 1rem 0;
-            text-decoration: none;
-            border-left: 3px solid transparent;
-            transition: all 0.3s ease;
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            background: linear-gradient(45deg, var(--primary-color), #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: float 3s ease-in-out infinite;
         }
 
-        /* Page Content */
-        .page-container {
-            padding: 120px 2rem 2rem;
-            min-height: 100vh;
-        }
-
-        .page {
-            display: none;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: pageEnter 0.6s forwards;
-        }
-
-        @keyframes pageEnter {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .page.active { display: block; }
-
-        /* Translator Interface */
-        .trans-unit {
-            max-width: 800px;
-            margin: 2rem auto;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 2rem;
-            border: 1px solid var(--neon-cyan);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
-        }
-
-        .io-field {
-            width: 100%;
-            min-height: 150px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--neon-cyan);
-            color: var(--neon-cyan);
-            padding: 1rem;
-            font-size: 1.1rem;
-            border-radius: 8px;
-            resize: vertical;
-        }
-
-        .ctrl-group {
-            display: flex;
-            gap: 1rem;
-            margin: 1.5rem 0;
+        /* Enhanced Button Styles */
+        .button-group {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: 1fr 1fr;
         }
 
         .cyber-btn {
-            background: var(--neon-cyan);
-            color: #000;
+            padding: 1.2rem 2rem;
             border: none;
-            padding: 1rem 2rem;
-            font-family: var(--cyber-font);
+            border-radius: 12px;
+            font-size: 1.1rem;
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
+            background: var(--typing-bg);
+            color: var(--text-color);
+            border: 2px solid;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateZ(0);
         }
 
-        /* 3D Effects */
-        .holo-card {
-            transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
-            transition: transform 0.3s ease;
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, 
+                transparent 20%, 
+                rgba(0, 255, 136, 0.1) 50%,
+                transparent 80%
+            );
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
-        .holo-card:hover {
-            transform: perspective(1000px) rotateX(0) rotateY(0);
+        .cyber-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+        }
+
+        .cyber-btn:hover::before {
+            opacity: 1;
+        }
+
+        #achaBtn {
+            border-color: var(--primary-color);
+            --glow-color: rgba(0, 255, 136, 0.3);
+        }
+
+        #bekarBtn {
+            border-color: var(--secondary-color);
+            --glow-color: rgba(255, 68, 68, 0.3);
+        }
+
+        /* Message Container Animations */
+        .message-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 500px;
+            background: var(--typing-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            opacity: 0;
+            pointer-events: none;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+            transition: opacity 0.3s;
+        }
+
+        .message-container.visible {
+            opacity: 1;
+            animation: messagePopIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes messagePopIn {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* Enhanced Typing Animation */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 8px;
+            height: 24px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: dotBounce 1.4s infinite ease-in-out;
+        }
+
+        @keyframes dotBounce {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+        }
+
+        /* Text Reveal Animation */
+        .message-text {
+            font-size: 1.4rem;
+            text-align: center;
+            line-height: 1.6;
+            opacity: 0;
+            transform: translateY(20px);
+            background: linear-gradient(45deg, var(--primary-color), #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .message-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Particle Effects */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: particleFloat 1.2s ease-out forwards;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: 
+                    translate(var(--tx, 0), var(--ty, -100px)) 
+                    rotate(var(--r, 0deg)) 
+                    scale(0.2);
+            }
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="particle-canvas"></div>
-
-    <nav class="neuro-nav">
-        <div class="menu-toggle" onclick="toggleNav()">
-            <div class="menu-bar"></div>
-            <div class="menu-bar"></div>
-            <div class="menu-bar"></div>
+    <div class="starfield"></div>
+    <div class="container">
+        <h1>How Do I Look to You? 💫</h1>
+        <div class="button-group">
+            <button id="achaBtn" class="cyber-btn">Awesome 😇</button>
+            <button id="bekarBtn" class="cyber-btn">Nah 😈</button>
         </div>
-    </nav>
 
-    <nav class="side-nav" id="sideNav">
-        <a class="nav-item" onclick="showPage('home')">🏠 HOME BASE</a>
-        <a class="nav-item" onclick="showPage('history')">📜 ORIGIN MATRIX</a>
-        <a class="nav-item" onclick="showPage('creator')">👑 ARCHITECT PROFILE</a>
-        <a class="nav-item" onclick="showPage('translator')">🔣 LINGUA CORE</a>
-    </nav>
-
-    <main class="page-container">
-        <!-- Home Page -->
-        <section id="home" class="page active holo-card">
-            <h1>BALRAM LINGUA SYSTEM</h1>
-            <div class="about-section">
-                <p>A revolutionary communication protocol combining quantum syntax with emotional resonance algorithms.</p>
-                <div class="emoji-grid">
-                    <div class="emoji-unit">🌌 Cosmic Pattern Recognition</div>
-                    <div class="emoji-unit">🔥 Energy Flow Dynamics</div>
-                    <div class="emoji-unit">🌀 Temporal Loop Syntax</div>
-                    <div class="emoji-unit">⚡ Instantaneous Translation</div>
+        <div class="message-container" id="messageContainer">
+            <div class="typing-indicator">
+                <div class="typing-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
                 </div>
+                <span>Decoding response...</span>
             </div>
-        </section>
-
-        <!-- Translator Page -->
-        <section id="translator" class="page">
-            <div class="trans-unit holo-card">
-                <textarea class="io-field" id="inputField" placeholder="INPUT TEXT..."></textarea>
-                <div class="ctrl-group">
-                    <select class="cyber-btn" id="transMode">
-                        <option value="en2bl">ENGLISH → BALRAM</option>
-                        <option value="bl2en">BALRAM → ENGLISH</option>
-                    </select>
-                    <button class="cyber-btn" onclick="executeTranslation()">ENGAGE</button>
-                </div>
-                <div class="io-field" id="outputField"></div>
-                <div id="emojiOutput"></div>
-            </div>
-        </section>
-
-        <!-- Add other pages similarly -->
-    </main>
+            <div class="message-text" id="messageText"></div>
+        </div>
+    </div>
 
     <script>
-        // Language Configuration
-        const BalramMatrix = {
-            lexicon: {
-                'A': 'α', 'B': 'β', 'C': 'Γ', 'D': 'Δ',
-                'E': 'ε', 'F': 'Φ', 'G': 'γ', 'H': 'η',
-                'I': 'ι', 'J': 'ξ', 'K': 'κ', 'L': 'λ',
-                'M': 'μ', 'N': 'ν', 'O': 'Ω', 'P': 'π'
-            },
-            emojiMap: {
-                joy: '😊',
-                sorrow: '😢',
-                rage: '😠',
-                awe: '😲'
+        // Enhanced Shooting Stars
+        function createShootingStar() {
+            const star = document.createElement('div');
+            star.className = 'shooting-star';
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.animationDuration = `${Math.random() * 0.8 + 0.5}s`;
+            document.body.appendChild(star);
+            
+            star.addEventListener('animationend', () => star.remove());
+        }
+
+        // Initialize background effects
+        setInterval(createShootingStar, 3000);
+
+        // Main Interaction Logic
+        const achaBtn = document.getElementById('achaBtn');
+        const bekarBtn = document.getElementById('bekarBtn');
+        const messageContainer = document.getElementById('messageContainer');
+        const messageText = document.getElementById('messageText');
+        let bekarAttempts = 0;
+
+        // Text animation helper
+        const animateText = async (element, text, speed = 40) => {
+            element.textContent = '';
+            for (const char of text) {
+                element.textContent += char;
+                await new Promise(r => setTimeout(r, speed + Math.random() * 20));
             }
         };
 
-        // Core Functions
-        function toggleNav() {
-            const nav = document.getElementById('sideNav');
-            nav.style.left = nav.style.left === '0px' ? '-300px' : '0px';
-        }
+        // Particle effect creator
+        const createParticles = (x, y, count = 30) => {
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.cssText = `
+                    --tx: ${(Math.random() - 0.5) * 200}px;
+                    --ty: ${-Math.random() * 150 - 50}px;
+                    --r: ${Math.random() * 360}deg;
+                    left: ${x}px;
+                    top: ${y}px;
+                    width: ${Math.random() * 6 + 2}px;
+                    height: ${Math.random() * 6 + 2}px;
+                    background: hsl(${Math.random() * 60 + 160}, 100%, 50%);
+                `;
+                document.body.appendChild(particle);
+                particle.addEventListener('animationend', () => particle.remove());
+            }
+        };
 
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
+        // Positive response handler
+        achaBtn.addEventListener('click', async (e) => {
+            const rect = achaBtn.getBoundingClientRect();
+            createParticles(rect.left + rect.width/2, rect.top + rect.height/2);
+            
+            document.querySelector('.button-group').style.opacity = '0';
+            messageContainer.classList.add('visible');
+            
+            await animateText(messageText, 'You make my circuits overload! 💖');
+            messageText.classList.add('visible');
+        });
+
+        // Evasive response handler
+        bekarBtn.addEventListener('click', (e) => {
+            bekarAttempts++;
+            const btnRect = bekarBtn.getBoundingClientRect();
+            const containerRect = document.querySelector('.container').getBoundingClientRect();
+            
+            createParticles(e.clientX, e.clientY, 15);
+            
+            const maxX = containerRect.width - btnRect.width - 20;
+            const maxY = containerRect.height - btnRect.height - 20;
+            
+            bekarBtn.style.transform = `
+                translate(${Math.random() * maxX}px, ${Math.random() * maxY}px)
+                rotate(${Math.random() * 15 - 7.5}deg)
+                scale(${1 - Math.min(bekarAttempts * 0.05, 0.3)})
+            `;
+            
+            if(bekarAttempts > 3) {
+                bekarBtn.style.filter = `
+                    hue-rotate(${bekarAttempts * 30}deg)
+                    brightness(${1 - bekarAttempts * 0.1})
+                `;
+            }
+        });
+
+        // Mobile touch support
+        [achaBtn, bekarBtn].forEach(btn => {
+            btn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                btn.style.transform = 'scale(0.95)';
             });
-            document.getElementById(pageId).classList.add('active');
-            toggleNav();
-        }
-
-        function detectEmotion(text) {
-            const patterns = {
-                joy: /\b(happy|joy|love)\b/i,
-                sorrow: /\b(sad|pain|loss)\b/i,
-                rage: /\b(angry|hate|rage)\b/i,
-                awe: /\b(awe|wow|amazing)\b/i
-            };
             
-            for (const [emotion, regex] of Object.entries(patterns)) {
-                if (regex.test(text)) return BalramMatrix.emojiMap[emotion];
-            }
-            return '';
-        }
-
-        function executeTranslation() {
-            const input = document.getElementById('inputField').value;
-            const mode = document.getElementById('transMode').value;
-            let output = '';
-            
-            if (mode === 'en2bl') {
-                output = input.toUpperCase().split('').map(char => 
-                    BalramMatrix.lexicon[char] || char
-                ).join('');
-                const emotion = detectEmotion(input);
-                document.getElementById('emojiOutput').textContent = emotion;
-            } else {
-                const reverseLexicon = Object.fromEntries(
-                    Object.entries(BalramMatrix.lexicon).map(([k, v]) => [v, k])
-                );
-                output = input.split('').map(char =>
-                    reverseLexicon[char] || char
-                ).join('').toLowerCase();
-            }
-            
-            document.getElementById('outputField').textContent = output;
-        }
-
-        // Initialize Particle Network
-        function initParticleNetwork() {
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('particle-canvas').appendChild(renderer.domElement);
-
-            // Create particle system
-            const geometry = new THREE.BufferGeometry();
-            const vertices = new Float32Array(5000 * 3);
-            
-            for (let i = 0; i < 15000; i += 3) {
-                vertices[i] = (Math.random() - 0.5) * 2000;
-                vertices[i + 1] = (Math.random() - 0.5) * 2000;
-                vertices[i + 2] = (Math.random() - 0.5) * 2000;
-            }
-
-            geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
-            const material = new THREE.PointsMaterial({ size: 1.5, color: 0x00ffff });
-            const particles = new THREE.Points(geometry, material);
-            scene.add(particles);
-            camera.position.z = 1000;
-
-            // Animation loop
-            function animate() {
-                requestAnimationFrame(animate);
-                particles.rotation.x += 0.001;
-                particles.rotation.y += 0.002;
-                renderer.render(scene, camera);
-            }
-            animate();
-        }
-
-        // Initialize application
-        window.addEventListener('load', () => {
-            initParticleNetwork();
-            showPage('home');
+            btn.addEventListener('touchend', () => {
+                btn.style.transform = '';
+            });
         });
     </script>
 </body>
