@@ -3,62 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Anime Odyssey</title>
+    <title>Anime Chronicles</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
             font-family: 'Arial', sans-serif;
             color: #e0e0e0;
             overflow-x: hidden;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
         .header {
             text-align: center;
             padding: 40px 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.9);
             border-radius: 15px;
             margin-bottom: 30px;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
         }
         .header h1 {
             font-size: 3em;
-            color: #ff4b5c;
+            color: #00bcd4;
             text-transform: uppercase;
             letter-spacing: 5px;
             margin: 0;
-            text-shadow: 2px 2px 10px rgba(255, 75, 92, 0.8);
+            text-shadow: 2px 2px 10px rgba(0, 188, 212, 0.8);
         }
         .header p {
             font-size: 1.2em;
-            color: #56b6c2;
+            color: #cccccc;
         }
-        .anime-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+        .anime-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            animation: fadeIn 1s ease-in;
         }
-        .anime-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 10px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid #ff4b5c;
+        .anime-table th, .anime-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #333333;
         }
-        .anime-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 15px rgba(255, 75, 92, 0.7);
+        .anime-table th {
+            background-color: #1a1a1a;
+            color: #00bcd4;
+            text-transform: uppercase;
         }
-        .anime-card h2 {
-            color: #56b6c2;
-            margin: 0 0 10px;
-            font-size: 1.5em;
-            text-transform: capitalize;
+        .anime-table tr:hover {
+            background-color: rgba(255, 64, 129, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        .anime-table td {
+            color: #e0e0e0;
         }
         footer {
             text-align: center;
@@ -71,57 +72,80 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        .anime-list {
-            animation: fadeIn 1s ease-in;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>My Anime Odyssey</h1>
-            <p>Total Animes Watched: 36</p>
+            <h1>Anime Chronicles</h1>
+            <p id="stats">Total Anime Watched: 0 | Total Seasons: 0 | Total Episodes: 0</p>
         </div>
-        <div class="anime-list">
-            <div class="anime-card"><h2>Baki Hanma</h2></div>
-            <div class="anime-card"><h2>Campfire Cooking in Another World with My Absurd Skill</h2></div>
-            <div class="anime-card"><h2>Chainsaw Man</h2></div>
-            <div class="anime-card"><h2>Classroom of the Elite</h2></div>
-            <div class="anime-card"><h2>Dan Da Dan</h2></div>
-            <div class="anime-card"><h2>Death Note</h2></div>
-            <div class="anime-card"><h2>Demon Slayer</h2></div>
-            <div class="anime-card"><h2>Gods' Game We Play</h2></div>
-            <div class="anime-card"><h2>I Got a Cheat Skill in Another World</h2></div>
-            <div class="anime-card"><h2>I Shall Survive Using Potions!</h2></div>
-            <div class="anime-card"><h2>I Was Reincarnated as the 7th Prince so I Can Take My Time Perfecting My Magical Ability</h2></div>
-            <div class="anime-card"><h2>I'm in Love with the Villainess</h2></div>
-            <div class="anime-card"><h2>Jujutsu Kaisen</h2></div>
-            <div class="anime-card"><h2>Junji Ito Collection</h2></div>
-            <div class="anime-card"><h2>Kaiju No. 8</h2></div>
-            <div class="anime-card"><h2>Lookism</h2></div>
-            <div class="anime-card"><h2>Mashle: Magic and Muscles</h2></div>
-            <div class="anime-card"><h2>Mushoku Tensei: Jobless Reincarnation</h2></div>
-            <div class="anime-card"><h2>My One-Hit Kill Sister</h2></div>
-            <div class="anime-card"><h2>My Unique Skill Makes Me OP Even at Level 1</h2></div>
-            <div class="anime-card"><h2>Naruto</h2></div>
-            <div class="anime-card"><h2>One Punch Man</h2></div>
-            <div class="anime-card"><h2>Reign of the Seven Spellblades</h2></div>
-            <div class="anime-card"><h2>Solo Leveling</h2></div>
-            <div class="anime-card"><h2>Spy x Family</h2></div>
-            <div class="anime-card"><h2>Sword Art Online</h2></div>
-            <div class="anime-card"><h2>That Time I Got Reincarnated as a Slime</h2></div>
-            <div class="anime-card"><h2>The Daily Life of the Immortal King</h2></div>
-            <div class="anime-card"><h2>The Greatest Demon Lord Is Reborn as a Typical Nobody</h2></div>
-            <div class="anime-card"><h2>The Reincarnation of the Strongest Exorcist in Another World</h2></div>
-            <div class="anime-card"><h2>The World's Finest Assassin</h2></div>
-            <div class="anime-card"><h2>Tower of God</h2></div>
-            <div class="anime-card"><h2>Tsukimichi -Moonlit Fantasy-</h2></div>
-            <div class="anime-card"><h2>Vampire Dormitory</h2></div>
-            <div class="anime-card"><h2>Zom 100: Bucket List of the Dead</h2></div>
-        </div>
+        <table class="anime-table">
+            <thead>
+                <tr>
+                    <th>Anime Name</th>
+                    <th>Seasons</th>
+                    <th>Total Episodes</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Baki Hanma</td><td>2</td><td>24</td><td>Season 1 (12 episodes, 2021), Season 2 (12 episodes, 2023)</td></tr>
+                <tr><td>Campfire Cooking in Another World with My Absurd Skill</td><td>1</td><td>12</td><td>Aired from January to March 2023, second season announced for 2025</td></tr>
+                <tr><td>Chainsaw Man</td><td>2</td><td>24</td><td>Season 1 (12 episodes, 2022), Season 2 (12 episodes, 2023), movie in 2025</td></tr>
+                <tr><td>Classroom of the Elite</td><td>2</td><td>36</td><td>Season 1 (12 episodes, 2017), Season 2 (24 episodes, 2022)</td></tr>
+                <tr><td>Dan Da Dan</td><td>1</td><td>12</td><td>Aired from October to December 2024, second season set for July 2025</td></tr>
+                <tr><td>Death Note</td><td>1</td><td>39</td><td>Aired from 2006 to 2007, total 39 episodes</td></tr>
+                <tr><td>Demon Slayer</td><td>3</td><td>61</td><td>Season 1 (26 episodes, 2019), Season 2 (24 episodes, 2021-2022), Season 3 (11 episodes, 2023)</td></tr>
+                <tr><td>Gods' Game We Play</td><td>1</td><td>12</td><td>Aired from April to June 2024</td></tr>
+                <tr><td>I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too</td><td>1</td><td>12</td><td>Aired from April to June 2023</td></tr>
+                <tr><td>I Shall Survive Using Potions!</td><td>1</td><td>12</td><td>Aired from October to December 2023</td></tr>
+                <tr><td>I Was Reincarnated as the 7th Prince so I Can Take My Time Perfecting My Magical Ability</td><td>1</td><td>12</td><td>Aired from April to June 2024, second season set for July 2025</td></tr>
+                <tr><td>I'm in Love with the Villainess</td><td>1</td><td>12</td><td>Aired from October to December 2023</td></tr>
+                <tr><td>Jujutsu Kaisen</td><td>2</td><td>47</td><td>Season 1 (24 episodes, 2020-2021), Season 2 (23 episodes, 2023)</td></tr>
+                <tr><td>Junji Ito Collection</td><td>1</td><td>12</td><td>Aired from January to March 2018</td></tr>
+                <tr><td>Kaiju No. 8</td><td>1</td><td>12</td><td>Aired from April to June 2024, second season set for July 2025</td></tr>
+                <tr><td>Lookism</td><td>1</td><td>8</td><td>Released in December 2022, total 8 episodes</td></tr>
+                <tr><td>Mashle: Magic and Muscles</td><td>2</td><td>36</td><td>Season 1 (12 episodes, 2023), Season 2 (24 episodes, 2024)</td></tr>
+                <tr><td>Mushoku Tensei: Jobless Reincarnation</td><td>2</td><td>47</td><td>Season 1 (23 episodes, 2021), Season 2 (24 episodes, 2023-2024)</td></tr>
+                <tr><td>My One-Hit Kill Sister</td><td>1</td><td>12</td><td>Aired from April to June 2023</td></tr>
+                <tr><td>My Unique Skill Makes Me OP Even at Level 1</td><td>1</td><td>12</td><td>Aired from April to June 2023</td></tr>
+                <tr><td>Naruto</td><td>2</td><td>720</td><td>Naruto (220 episodes, 2002-2007), Naruto: Shippuden (500 episodes, 2007-2017)</td></tr>
+                <tr><td>One Punch Man</td><td>2</td><td>24</td><td>Season 1 (12 episodes, 2015), Season 2 (12 episodes, 2019)</td></tr>
+                <tr><td>Reign of the Seven Spellblades</td><td>1</td><td>12</td><td>Aired from July to October 2023</td></tr>
+                <tr><td>Solo Leveling</td><td>1</td><td>12</td><td>Aired from January to March 2024</td></tr>
+                <tr><td>Spy x Family</td><td>2</td><td>37</td><td>Season 1 (25 episodes, 2022), Season 2 (12 episodes, 2023)</td></tr>
+                <tr><td>Sword Art Online</td><td>4</td><td>85</td><td>Season 1 (25 episodes, 2012-2013), Season 2 (24 episodes, 2014), Season 3 (24 episodes, 2018-2019), Season 4 (12 episodes, 2020-2021)</td></tr>
+                <tr><td>That Time I Got Reincarnated as a Slime</td><td>3</td><td>72</td><td>Season 1 (24 episodes, 2018-2019), Season 2 (24 episodes, 2021), Season 3 (24 episodes, 2024)</td></tr>
+                <tr><td>The Daily Life of the Immortal King</td><td>4</td><td>51</td><td>Season 1 (15 episodes, 2020), Season 2 (12 episodes, 2021), Season 3 (12 episodes, 2022), Season 4 (12 episodes, 2024)</td></tr>
+                <tr><td>The Greatest Demon Lord Is Reborn as a Typical Nobody</td><td>1</td><td>12</td><td>Aired from April to June 2022</td></tr>
+                <tr><td>The Reincarnation of the Strongest Exorcist in Another World</td><td>1</td><td>12</td><td>Aired from January to March 2023</td></tr>
+                <tr><td>The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat</td><td>1</td><td>12</td><td>Aired from October to December 2021</td></tr>
+                <tr><td>Tower of God</td><td>2</td><td>37</td><td>Season 1 (13 episodes, 2020), Season 2 (24 episodes, 2024)</td></tr>
+                <tr><td>Tsukimichi -Moonlit Fantasy-</td><td>2</td><td>36</td><td>Season 1 (12 episodes, 2021), Season 2 (24 episodes, 2024)</td></tr>
+                <tr><td>Vampire Dormitory</td><td>1</td><td>12</td><td>Aired from April to June 2024</td></tr>
+                <tr><td>Zom 100: Bucket List of the Dead</td><td>1</td><td>12</td><td>Aired from July to October 2023</td></tr>
+            </tbody>
+        </table>
         <footer>
-            Created with ❤️ for Anime Lovers | Updated March 04, 2025
+            Curated with Love for Anime Fans | Updated March 04, 2025
         </footer>
     </div>
+    <script>
+        // Calculate totals dynamically
+        const rows = document.querySelectorAll('.anime-table tbody tr');
+        let totalSeasons = 0;
+        let totalEpisodes = 0;
+
+        rows.forEach(row => {
+            const seasonCell = row.cells[1].textContent;
+            const episodeCell = row.cells[2].textContent;
+            totalSeasons += parseInt(seasonCell);
+            totalEpisodes += parseInt(episodeCell);
+        });
+
+        document.getElementById('stats').textContent = 
+            `Total Anime Watched: ${rows.length} | Total Seasons: ${totalSeasons} | Total Episodes: ${totalEpisodes}`;
+    </script>
 </body>
 </html>
