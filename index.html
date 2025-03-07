@@ -49,12 +49,12 @@
             text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
             position: relative;
             z-index: 1;
-            letter-spacing: 2px; /* Adds slight spacing between letters */
+            letter-spacing: 2px;
         }
         .header h1 span {
             display: inline-block;
             opacity: 0;
-            margin-right: 8px; /* Space between words */
+            margin-right: 8px;
         }
         .header p {
             font-size: 1.2em;
@@ -164,6 +164,7 @@
             z-index: 100;
             align-items: center;
             justify-content: center;
+            animation: backdropFadeIn 0.3s ease-out;
         }
         .modal-content {
             background: #1e293b;
@@ -174,7 +175,7 @@
             max-height: 80vh;
             overflow-y: auto;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            animation: modalFadeIn 0.3s ease-out;
+            animation: modalSlideIn 0.4s ease-out;
         }
         .modal-content h2 {
             color: #38bdf8;
@@ -182,17 +183,18 @@
         }
         .modal-content p {
             color: #d1d5db;
-            line-height: 1.5;
+            line-height: 1.6;
         }
         .close-btn {
             float: right;
             font-size: 1.5em;
             color: #94a3b8;
             cursor: pointer;
-            transition: color 0.3s ease;
+            transition: color 0.3s ease, transform 0.3s ease;
         }
         .close-btn:hover {
             color: #f472b6;
+            transform: rotate(90deg);
         }
         @keyframes slideIn {
             from { transform: translateY(-50px); opacity: 0; }
@@ -211,13 +213,17 @@
             from { transform: translateY(20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-        @keyframes popIn {
-            0% { transform: scale(0.8) rotateX(-10deg); opacity: 0; }
-            100% { transform: scale(1) rotateX(0); opacity: 1; }
+        @keyframes rowFadeSlide {
+            0% { transform: translateX(-20px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
         }
-        @keyframes modalFadeIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+        @keyframes backdropFadeIn {
+            from { background: rgba(0, 0, 0, 0); }
+            to { background: rgba(0, 0, 0, 0.8); }
+        }
+        @keyframes modalSlideIn {
+            from { transform: translateY(-30px) scale(0.95); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
         }
     </style>
 </head>
@@ -290,7 +296,7 @@
     </div>
     <div class="modal" id="plot-modal">
         <div class="modal-content">
-            <span class="close-btn" id="close-modal">&times;</span>
+            <span class="close-btn" id="close-modal">×</span>
             <h2 id="modal-title"></h2>
             <p id="modal-plot"></p>
         </div>
@@ -319,72 +325,79 @@
         document.getElementById('stats').textContent =
             `Total Anime Watched: ${rows.length} | Total Seasons: ${totalSeasons} | Total Episodes: ${totalEpisodes}`;
 
-        // Title animation sequence with gaps
-        const initialText = "A N I M E  C H R O N I C L E S";
-        const nextText = "A N I M E  D I A R Y";
+        // Title animation sequence
+        const stages = [
+            "A N I M E  C H R O N I C L E S",
+            "A N I M E  C H R O N I C L E",
+            "A N I M E  C H R O N I C L",
+            "A N I M E  C H R O N I C",
+            "A N I M E  C H R O N",
+            "A N I M E  C H R O",
+            "A N I M E  C H R",
+            "A N I M E  C H",
+            "A N I M E  C",
+            "A N I M E",
+            "A N I M E  D",
+            "A N I M E  D I",
+            "A N I M E  D I A",
+            "A N I M E  D I A R Y"
+        ];
         const finalTitles = ["A N I M E  D I A R Y", "A N I M E  L I S T  W A T C H E D  B Y  B A L R A M"];
-        dynamicTitle.innerHTML = initialText.split('').map(char => `<span>${char}</span>`).join('');
 
-        // Write "ANIME CHRONICLES" letter by letter
-        const spans = dynamicTitle.querySelectorAll('span');
-        spans.forEach((span, index) => {
-            setTimeout(() => {
-                span.style.opacity = 1;
-                span.style.transition = 'opacity 0.2s ease';
-            }, index * 100);
-        });
-
-        // Remove "CHRONICLES" and add "DIARY"
-        setTimeout(() => {
-            const chroniclesStart = 6; // Index after "A N I M E "
-            for (let i = spans.length - 1; i >= chroniclesStart; i--) {
+        let currentStage = 0;
+        function animateTitle() {
+            dynamicTitle.innerHTML = stages[currentStage].split('').map(char => `<span style="opacity: 0">${char}</span>`).join('');
+            const spans = dynamicTitle.querySelectorAll('span');
+            spans.forEach((span, idx) => {
                 setTimeout(() => {
-                    spans[i].style.opacity = 0;
-                    spans[i].style.transition = 'opacity 0.2s ease';
-                    if (i === chroniclesStart) {
+                    span.style.opacity = 1;
+                    span.style.transition = 'opacity 0.2s ease';
+                }, idx * 100);
+            });
+
+            if (currentStage < stages.length - 1) {
+                setTimeout(() => {
+                    spans.forEach((span, idx) => {
                         setTimeout(() => {
-                            dynamicTitle.innerHTML = nextText.split('').map(char => `<span style="opacity: 0">${char}</span>`).join('');
+                            span.style.opacity = 0;
+                        }, idx * 50);
+                    });
+                    setTimeout(() => {
+                        currentStage++;
+                        animateTitle();
+                    }, spans.length * 50 + 200);
+                }, spans.length * 100 + 500);
+            } else {
+                setTimeout(() => {
+                    let titleIndex = 0;
+                    setInterval(() => {
+                        dynamicTitle.style.opacity = 0;
+                        setTimeout(() => {
+                            titleIndex = (titleIndex + 1) % finalTitles.length;
+                            dynamicTitle.innerHTML = finalTitles[titleIndex].split('').map(char => `<span style="opacity: 0">${char}</span>`).join('');
                             const newSpans = dynamicTitle.querySelectorAll('span');
                             newSpans.forEach((span, idx) => {
                                 setTimeout(() => {
                                     span.style.opacity = 1;
                                     span.style.transition = 'opacity 0.2s ease';
-                                }, idx * 100);
+                                }, idx * 50);
                             });
-                        }, 200);
-                    }
-                }, (spans.length - 1 - i) * 100);
+                            dynamicTitle.style.opacity = 1;
+                        }, 300);
+                    }, 4000);
+                }, stages.length * 100 + 1500);
             }
-        }, initialText.length * 100 + 500);
+        }
+        animateTitle();
 
-        // Random title rotation after initial sequence
-        setTimeout(() => {
-            let titleIndex = 0;
-            setInterval(() => {
-                dynamicTitle.style.opacity = 0;
-                setTimeout(() => {
-                    titleIndex = (titleIndex + 1) % finalTitles.length;
-                    dynamicTitle.innerHTML = finalTitles[titleIndex].split('').map(char => `<span style="opacity: 0">${char}</span>`).join('');
-                    const newSpans = dynamicTitle.querySelectorAll('span');
-                    newSpans.forEach((span, idx) => {
-                        setTimeout(() => {
-                            span.style.opacity = 1;
-                            span.style.transition = 'opacity 0.2s ease';
-                        }, idx * 50);
-                    });
-                    dynamicTitle.style.opacity = 1;
-                }, 300);
-            }, 4000);
-        }, initialText.length * 100 + nextText.length * 100 + 1500);
-
-        // Render rows with animation
+        // Render rows with new animation
         function renderRows(filteredRows) {
             tbody.innerHTML = '';
             filteredRows.forEach((row, index) => {
                 setTimeout(() => {
                     tbody.appendChild(row);
-                    row.style.animation = 'popIn 0.6s ease-out forwards';
-                }, index * 150); // Staggered pop-in
+                    row.style.animation = 'rowFadeSlide 0.6s ease-out forwards';
+                }, index * 150); // Staggered slide-in
             });
         }
 
@@ -406,7 +419,7 @@
                 filteredRows.sort((a, b) => {
                     const aEp = parseInt(a.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
                     const bEp = parseInt(b.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
-                    return bEp - aEp; // Total episodes, already correct
+                    return bEp - aEp;
                 });
             } else if (filter === 'low-high') {
                 filteredRows.sort((a, b) => {
@@ -421,45 +434,45 @@
             renderRows(filteredRows);
         }
 
-        // Modal handling
+        // Modal handling with longer summaries
         const plots = {
-            "Baki Hanma": "Baki Hanma trains to surpass his father, the world's strongest fighter, facing brutal martial arts battles and intense rivalries.",
-            "Campfire Cooking in Another World with My Absurd Skill": "A salaryman is transported to another world with a skill that lets him cook divine meals, attracting powerful allies.",
-            "Chainsaw Man": "Denji, a devil hunter, merges with his pet devil Pochita to become Chainsaw Man, battling demons for the Public Safety Bureau.",
-            "Classroom of the Elite": "Students at an elite high school compete using wits and strategy in a system that ranks them by merit.",
-            "Dan Da Dan": "A boy and girl, believers in ghosts and aliens respectively, face supernatural chaos after a dare gone wrong.",
-            "Death Note": "Light Yagami finds a supernatural notebook that allows him to kill anyone by writing their name, sparking a cat-and-mouse game with detective L.",
-            "Demon Slayer": "Tanjiro Kamado becomes a demon slayer to avenge his family and save his demon-turned sister Nezuko.",
-            "Gods' Game We Play": "Humans and gods engage in strategic games to determine fate, blending intellect and divine power.",
-            "I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too": "A boy gains a cheat skill in another world, using it to become unstoppable in both realms.",
-            "I Shall Survive Using Potions!": "A girl reincarnates with the ability to create potions, using them to survive and thrive in a new world.",
-            "I Was Reincarnated as the 7th Prince so I Can Take My Time Perfecting My Magical Ability": "A mage reincarnates as a prince, focusing on mastering magic at his own pace.",
-            "I'm in Love with the Villainess": "A girl reincarnates into an otome game, pursuing the villainess instead of the heroes.",
-            "Jujutsu Kaisen": "Yuji Itadori swallows a cursed finger to save a friend, becoming a vessel for a powerful curse and joining jujutsu sorcerers.",
-            "Junji Ito Collection": "A series of horror stories exploring the macabre and unsettling, adapted from Junji Ito’s works.",
-            "Kaiju No. 8": "Kafka Hibino transforms into a kaiju while working to exterminate them, balancing his dual life.",
-            "Lookism": "A boy switches bodies between an unattractive and handsome version of himself, navigating social hierarchies.",
-            "Mashle: Magic and Muscles": "In a magic-dominated world, Mash uses brute strength to succeed at a wizarding school.",
-            "Mushoku Tensei: Jobless Reincarnation": "A man reincarnates into a fantasy world, determined to live a fulfilling life with his past knowledge.",
-            "My One-Hit Kill Sister": "A boy’s overpowered sister protects him in a new world, often overshadowing his own journey.",
-            "My Unique Skill Makes Me OP Even at Level 1": "A hero’s unique skill makes him overwhelmingly powerful despite being at the lowest level.",
-            "Naruto": "Naruto Uzumaki, a young ninja, seeks recognition and dreams of becoming the Hokage, facing countless challenges.",
-            "One Punch Man": "Saitama, a hero who can defeat any opponent with one punch, searches for a worthy challenge.",
-            "Record of Ragnarok": "Gods and humans battle in a tournament to decide humanity’s fate, with epic showdowns.",
-            "Reign of the Seven Spellblades": "Students at a magic academy uncover dark secrets while mastering deadly spellblades.",
-            "Solo Leveling": "Jinwoo Sung rises from the weakest hunter to a powerhouse in a world of dungeons and monsters.",
-            "Spy x Family": "A spy, assassin, and telepath form a fake family to maintain peace, hiding their true identities.",
-            "Sword Art Online": "Players trapped in a virtual reality MMORPG fight to survive and escape.",
-            "That Time I Got Reincarnated as a Slime": "A man reincarnates as a slime in a fantasy world, building a nation of monsters.",
-            "The Daily Life of the Immortal King": "A teenage immortal navigates high school while concealing his overwhelming power.",
-            "The Greatest Demon Lord Is Reborn as a Typical Nobody": "A demon lord reincarnates as an ordinary boy, hiding his past strength.",
-            "The Reincarnation of the Strongest Exorcist in Another World": "An exorcist reincarnates, using his skills to dominate a new world.",
-            "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat": "An assassin reincarnates to fulfill a divine mission with his deadly skills.",
-            "Tower of God": "Bam climbs a mysterious tower to find his friend, facing trials and betrayals.",
-            "Tsukimichi -Moonlit Fantasy-": "Makoto Misumi, rejected by a goddess, builds his own path in a harsh fantasy world.",
-            "Vampire Dormitory": "A girl disguises herself as a boy in a vampire-run dormitory, uncovering secrets.",
-            "Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord": "A girl reincarnates as a villainess, accidentally becoming overpowered.",
-            "Zom 100: Bucket List of the Dead": "Akira completes his bucket list during a zombie apocalypse, finding joy in chaos."
+            "Baki Hanma": "Baki Hanma, the son of the world’s strongest fighter, Yujiro Hanma, embarks on an intense journey to surpass his father’s legendary prowess. After surviving brutal underground martial arts tournaments and facing off against some of the deadliest combatants imaginable, Baki trains relentlessly, honing his body and mind to a razor’s edge. Along the way, he encounters fierce rivals and allies alike, each pushing him to new limits in a world where strength and survival are paramount.",
+            "Campfire Cooking in Another World with My Absurd Skill": "Tsuyoshi Mukoda, an ordinary salaryman, is unexpectedly transported to a fantasy world during a summoning ritual meant for heroes. However, instead of combat skills, he arrives with an absurd ability: 'Online Supermarket,' allowing him to order modern groceries from Earth. Using this quirky skill, Mukoda whips up delectable dishes that captivate powerful beings like the wolf-like Fenrir, who becomes his loyal companion. Together, they explore the realm, cooking their way through adventures.",
+            "Chainsaw Man": "Denji, a down-on-his-luck teenager drowning in debt, merges with his pet devil Pochita, transforming into Chainsaw Man—a hybrid with chainsaws erupting from his body. Recruited by the Public Safety Devil Hunters, Denji battles grotesque devils in a gritty, chaotic world. Driven by simple desires like food and affection, he navigates treacherous missions, forming bonds with quirky allies like Power and Aki, while facing betrayal and heartbreak in a relentless fight for survival.",
+            "Classroom of the Elite": "At the prestigious Tokyo Metropolitan Advanced Nurturing High School, students are pitted against each other in a merit-based system that determines their societal worth. Kiyotaka Ayanokoji, a seemingly average student with a hidden intellect, manipulates situations from the shadows. Alongside peers like the cold Suzune Horikita and cheerful Kikyo Kushida, he unravels the school’s dark underbelly, where psychological warfare and cunning strategies dictate success in a cutthroat academic battleground.",
+            "Dan Da Dan": "Momo Ayase, a high school girl who believes in ghosts, and Ken Takakura, a boy obsessed with aliens, clash over their supernatural beliefs. After a dare sends them to haunted sites, they awaken latent powers and stumble into a whirlwind of paranormal chaos—ghosts, aliens, and yokai galore. As their rivalry turns into reluctant teamwork, they confront bizarre entities and unravel cosmic mysteries, blending humor, action, and unexpected tenderness in a wild adventure.",
+            "Death Note": "Light Yagami, a brilliant but bored high school student, discovers the Death Note, a supernatural notebook dropped by the shinigami Ryuk. With the power to kill anyone by writing their name while picturing their face, Light embarks on a mission to eliminate criminals and create a 'perfect' world as the god-like Kira. His actions draw the attention of L, a genius detective determined to stop him, sparking an intricate psychological duel of wits and morality.",
+            "Demon Slayer": "Tanjiro Kamado’s peaceful life shatters when demons slaughter his family, leaving his sister Nezuko as a demon with remnants of humanity. Joining the Demon Slayer Corps, Tanjiro masters the art of Water Breathing and later Hinokami Kagura to hunt down the demon king Muzan Kibutsuji. Alongside comrades Inosuke, Zenitsu, and Nezuko, he battles grotesque demons across Japan, seeking a cure for his sister while unraveling the tragic history of demonkind.",
+            "Gods' Game We Play": "In a world where gods challenge humans to intellectual games, the brilliant strategist Leshea and her human partner Fay engage in high-stakes contests against divine beings. Each game tests their wits, from logic puzzles to strategic showdowns, with the fate of humanity hanging in the balance. As they climb the ranks, they uncover the gods’ motives and forge an unlikely alliance, blending sharp dialogue, cunning tactics, and a touch of divine whimsy.",
+            "I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too": "Yuuya Tenjou, a bullied teen, stumbles into a portal leading to another world, where he gains an overpowered cheat skill and a magical arsenal. Transforming from a weakling into a formidable warrior, he returns to Earth, using his newfound abilities to excel in both realms. Balancing school life with monster-slaying adventures, Yuuya navigates friendships, rivalries, and self-discovery in a dual-world odyssey of empowerment and growth.",
+            "I Shall Survive Using Potions!": "After dying in a freak accident, Kaoru Nagase reincarnates in a medieval fantasy world with a unique gift: the ability to create any potion she imagines. Using her modern knowledge and potion-making prowess, she outsmarts bandits, heals the sick, and builds a life of independence. With her sharp wit and a knack for improvisation, Kaoru turns every challenge into an opportunity, crafting a legacy one potion at a time.",
+            "I Was Reincarnated as the 7th Prince so I Can Take My Time Perfecting My Magical Ability": "A skilled mage dies and reincarnates as Lloyd, the seventh prince of a kingdom, blessed with immense magical talent. Free from royal responsibilities, he dedicates his new life to mastering sorcery at his own pace. Experimenting with spells, battling magical beasts, and unraveling arcane secrets, Lloyd’s journey is a whimsical blend of scholarly pursuit and explosive magical showdowns, all fueled by his insatiable curiosity.",
+            "I'm in Love with the Villainess": "Rei Ohashi, an office worker, reincarnates as Rae Taylor, the heroine of her favorite otome game. Ignoring the game’s princes, she pursues Claire François, the villainess, with unabashed affection. As Rae navigates noble society and magical academies, her earnest love disrupts Claire’s schemes, leading to a heartfelt tale of romance, redemption, and defying destiny in a world unprepared for her unconventional devotion.",
+            "Jujutsu Kaisen": "Yuji Itadori, an athletic teen, swallows a cursed finger to save a friend, becoming host to the malevolent curse Sukuna. Enrolled in Tokyo Jujutsu High, he trains under Satoru Gojo to exorcise curses using jujutsu techniques. Alongside Megumi and Nobara, Yuji battles grotesque cursed spirits, uncovering a conspiracy tied to Sukuna’s resurrection, blending visceral action with emotional stakes in a dark supernatural saga.",
+            "Junji Ito Collection": "This anthology adapts the chilling works of horror maestro Junji Ito, featuring tales of grotesque transformations, inescapable curses, and psychological dread. From the spiraling obsession of Uzumaki to the haunting faces of Tomie, each episode plunges viewers into a nightmarish world where the mundane twists into the macabre, delivering unsettling visuals and eerie narratives that linger long after the credits roll.",
+            "Kaiju No. 8": "Kafka Hibino, a kaiju cleanup worker, dreams of joining the Defense Force but transforms into a kaiju himself after a freak incident. Hiding his monstrous form, he enlists to fight kaiju alongside childhood friend Mina Ashiro. Balancing his dual identity, Kafka battles towering beasts and internal doubts, delivering a mix of humor, heroism, and monster-smashing action in a world under constant threat.",
+            "Lookism": "Daniel Park, an overweight and bullied teen, wakes up in a second, handsome body, switching between his original and new self. Navigating high school with dual identities, he uncovers the shallow cruelty of society’s obsession with appearance. Through friendships, rivalries, and unexpected alliances, Daniel’s journey explores self-worth, identity, and the power dynamics of beauty in a poignant coming-of-age tale.",
+            "Mashle: Magic and Muscles": "In a world where magic reigns, Mash Burnedead, born without magical ability, relies on sheer physical strength. Enrolled in a wizarding academy to protect his family, he punches through spells and foes alike. With his deadpan humor and unyielding resolve, Mash subverts the magical hierarchy, proving brute force can rival sorcery in a hilarious and action-packed underdog story.",
+            "Mushoku Tensei: Jobless Reincarnation": "A 34-year-old shut-in dies and reincarnates as Rudeus Greyrat in a fantasy world, retaining his past life’s memories. Determined to live meaningfully, he masters magic under tutors like Roxy and navigates a continent-spanning journey with companions Sylphie and Eris. Facing family secrets, wars, and personal growth, Rudeus crafts a redemptive tale of second chances and epic adventure.",
+            "My One-Hit Kill Sister": "Asahi Ikusaba is transported to a fantasy world, where his overprotective sister Mayu gains a one-hit-kill ability. While Mayu obliterates threats with ease, Asahi struggles to find his footing, often overshadowed by her power. Their sibling dynamic fuels comedic misadventures and heartfelt moments as they face monsters and unravel the mysteries of their new reality.",
+            "My Unique Skill Makes Me OP Even at Level 1": "Ryota Sato dies and reincarnates in a dungeon-filled world with a skill that boosts his stats exponentially, even at level one. Defying the system’s rules, he amasses rare items and allies like Emily, thriving where others falter. His journey blends action, camaraderie, and clever exploitation of game-like mechanics in a tale of unconventional dominance.",
+            "Naruto": "Naruto Uzumaki, an orphaned ninja with a demon fox sealed inside him, dreams of becoming Hokage to earn his village’s respect. From a mischievous outcast, he grows into a formidable shinobi through grueling training and battles against rogue ninjas, akatsuki, and ancient threats. With friends Sasuke and Sakura, Naruto’s saga is a sprawling epic of perseverance, sacrifice, and unbreakable bonds.",
+            "One Punch Man": "Saitama, a bored hero, gains the power to defeat any foe with a single punch after intense training. Joining the Hero Association, he seeks a worthy opponent amidst quirky heroes and monstrous villains. His deadpan humor and overwhelming strength contrast with epic battles, delivering a satirical yet thrilling take on the superhero genre.",
+            "Record of Ragnarok": "Every thousand years, gods decide humanity’s fate, opting for extinction until Valkyrie Brunhilde proposes a tournament: 13 human champions vs. 13 gods. Historical figures like Jack the Ripper and Adam face divine titans in brutal, stylish duels. With humanity’s survival at stake, the series blends mythology, spectacle, and existential stakes in a cosmic clash of wills.",
+            "Reign of the Seven Spellblades": "At Kimberly Magic Academy, Oliver Horn and his friends study the deadly Seven Spellblades amidst a sinister curriculum. As they uncover the school’s dark secrets—murders, forbidden magic, and betrayals—they forge bonds and face lethal trials. This blend of magical school life and grim intrigue builds a tense, character-driven narrative of ambition and revenge.",
+            "Solo Leveling": "Jinwoo Sung, the weakest hunter, gains the System, a game-like interface that levels him up after a near-death experience. Rising from E-rank to unmatched power, he tackles dungeons, slays monsters, and unravels a hidden war between humanity and monstrous gates. His ascent is a gripping tale of grit, strategy, and relentless determination.",
+            "Spy x Family": "Twilight, a master spy, forms a fake family with assassin Yor and telepathic Anya to infiltrate an elite school and avert war. Each hides their true identity, leading to hilarious misunderstandings and heartfelt moments. Balancing espionage, action, and domestic comedy, their mission unfolds in a charming, high-stakes dance of deception and love.",
+            "Sword Art Online": "In 2022, players of the VRMMORPG Sword Art Online are trapped inside by its creator, dying in reality if they perish in-game. Kirito, a skilled player, teams with Asuna and others to clear 100 floors and escape. Across arcs, they face virtual worlds, AI dilemmas, and real-world threats, weaving a saga of survival, romance, and technology’s edge.",
+            "That Time I Got Reincarnated as a Slime": "Satoru Mikami dies and reincarnates as Rimuru, a slime in a fantasy world. Absorbing abilities with his skill Predator, he befriends monsters and builds a nation, Tempest. From humble beginnings to a demon lord, Rimuru’s journey blends kingdom-building, diplomacy, and epic battles in a heartwarming tale of unity and power.",
+            "The Daily Life of the Immortal King": "Wang Ling, an immortal with godlike power, attends high school to live quietly, suppressing his abilities. His mundane life is disrupted by magical threats, rival cultivators, and school antics with friends like Sun Rong. Balancing cosmic strength with teenage normalcy, this series delivers humor, action, and a quirky take on overpowered protagonists.",
+            "The Greatest Demon Lord Is Reborn as a Typical Nobody": "Demon Lord Varvatos, bored of invincibility, reincarnates as Ard Meteor, a village boy, to live modestly. His immense power slips through, drawing attention as he attends a magic academy. With companions like Ireena, Ard navigates friendships and ancient enemies, blending comedy and action in a tale of humility gone awry.",
+            "The Reincarnation of the Strongest Exorcist in Another World": "Haruyoshi, a master exorcist, reincarnates as Seika in a new world after betrayal. Using his past life’s sealing arts, he dominates magical threats while posing as a weak noble. With allies like Yifa, he unravels conspiracies and battles demons, crafting a story of cunning, restraint, and supernatural supremacy.",
+            "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat": "A legendary assassin dies and is reborn as Lugh Tuatha Dé, tasked by a goddess to kill a hero threatening the world. Trained in noble arts and deadly skills, he infiltrates high society with allies like Dia and Tarte. This tale weaves espionage, moral ambiguity, and precision strikes in a richly detailed fantasy setting.",
+            "Tower of God": "Bam enters the Tower to chase his friend Rachel, facing deadly trials on each floor to climb higher. Allied with Khun and Rak, he battles foes and navigates alliances in a mysterious, ever-shifting structure. Packed with intrigue, betrayal, and epic tests, Bam’s ascent explores friendship, power, and the cost of ambition.",
+            "Tsukimichi -Moonlit Fantasy-": "Makoto Misumi is summoned as a hero but rejected by a goddess, left to fend for himself in a harsh world. With enhanced strength and allies like Tomoe and Mio, he builds a trading empire among non-humans. Facing prejudice and divine schemes, Makoto’s journey blends action, humor, and resilience in a tale of defiance.",
+            "Vampire Dormitory": "Mito Yamamoto, orphaned and disguised as a boy, enters a vampire-run dormitory after being saved by Ruka. Living among bloodthirsty peers, she hides her gender and growing bond with Ruka, who harbors secrets. This gothic romance unfolds with tension, forbidden love, and supernatural intrigue in a shadowy boarding school.",
+            "Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord": "Yumiella Dolkness reincarnates as an otome game’s villainess, grinding to level 99 out of habit. Her overwhelming power alarms the kingdom, who suspect she’s the secret boss. With dry wit and reluctant heroism, Yumiella navigates school life and misunderstandings, subverting tropes in a lighthearted yet empowering isekai romp.",
+            "Zom 100: Bucket List of the Dead": "Akira Tendo, trapped in a soul-crushing job, finds freedom in a zombie apocalypse. Crafting a bucket list, he teams with Shizuka and Kencho to live vibrantly—skydiving, feasting, and more—amidst undead chaos. This darkly comedic odyssey celebrates life’s joys against a backdrop of survival and absurdity."
         };
 
         tbody.addEventListener('click', (e) => {
