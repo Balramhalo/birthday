@@ -5,183 +5,143 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime Chronicles</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #1a1e2e, #0d1117);
+            background: linear-gradient(135deg, #1f2a44, #0f172a);
             font-family: 'Poppins', sans-serif;
-            color: #e6e6e6;
+            color: #d1d5db;
             overflow-x: hidden;
             min-height: 100vh;
         }
         .container {
-            max-width: 1600px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 40px;
-            animation: fadeIn 1.5s ease-out;
+            padding: 30px;
+            animation: slideIn 1s ease-out;
         }
         .header {
             text-align: center;
-            padding: 70px 20px;
-            background: linear-gradient(45deg, #1e2a38, #2a3b4c);
-            border-radius: 30px;
-            margin-bottom: 60px;
-            box-shadow: 0 20px 50px rgba(0, 188, 212, 0.7);
+            padding: 40px 20px;
+            background: #1e293b;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
             position: relative;
-            overflow: hidden;
-        }
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 188, 212, 0.4), transparent);
-            animation: pulseWave 10s infinite ease-in-out;
         }
         .header h1 {
-            font-size: 4.5em;
-            color: #00eaff;
-            text-transform: uppercase;
-            letter-spacing: 10px;
+            font-size: 3em;
+            color: #38bdf8;
             margin: 0;
-            text-shadow: 0 0 25px rgba(0, 234, 255, 0.9), 0 0 50px rgba(0, 188, 212, 0.7);
-            position: relative;
-            z-index: 1;
-            animation: flicker 2s infinite alternate;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+            animation: fadeText 0.8s ease-in-out infinite alternate;
         }
         .header p {
-            font-size: 1.5em;
-            color: #b0e0e6;
-            z-index: 1;
-            position: relative;
+            font-size: 1.2em;
+            color: #94a3b8;
         }
         .filter-container {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
-            margin-bottom: 40px;
-            z-index: 1;
-            position: relative;
+            margin-bottom: 30px;
         }
         #search-bar, #filter-select {
-            padding: 15px;
-            background: rgba(30, 42, 56, 0.9);
-            color: #e6e6e6;
-            border: 3px solid #00bcd4;
-            border-radius: 12px;
-            font-size: 1.3em;
-            transition: all 0.4s ease;
-            box-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
+            padding: 12px;
+            background: #1e293b;
+            color: #d1d5db;
+            border: 2px solid #38bdf8;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
         }
         #search-bar {
             flex: 1;
         }
         #search-bar:focus, #filter-select:focus {
             outline: none;
-            border-color: #ff4081;
-            box-shadow: 0 0 25px rgba(255, 64, 129, 0.8);
-            transform: scale(1.03);
-        }
-        #search-bar:hover, #filter-select:hover {
-            border-color: #ff4081;
+            border-color: #f472b6;
+            box-shadow: 0 0 15px rgba(244, 114, 182, 0.5);
         }
         .anime-table {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 0 20px;
+            border-spacing: 0 15px;
         }
         .anime-table th {
-            padding: 25px;
-            background: linear-gradient(90deg, #2a3b4c, #1e2a38);
-            color: #00eaff;
+            padding: 15px;
+            background: #1e293b;
+            color: #38bdf8;
             text-transform: uppercase;
-            font-weight: 700;
+            font-weight: 600;
             position: sticky;
             top: 0;
             z-index: 2;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
         }
         .anime-table td {
-            padding: 25px;
-            color: #e6e6e6;
-            border-radius: 20px;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            position: relative;
-            overflow: hidden;
+            padding: 20px;
+            background: #2d3748;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .anime-table tr:hover td {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(255, 64, 129, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.4);
         }
-        .anime-table td.rating {
-            color: #ffd700;
+        .anime-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: linear-gradient(135deg, #334155, #2d3748);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #4b5563;
+            animation: boxFade 0.5s ease-in;
+        }
+        .anime-box .name {
+            font-size: 1.4em;
+            color: #38bdf8;
             font-weight: 600;
         }
-        /* Anime-Specific Styling */
-        .anime-row[data-anime="Naruto"] td {
-            background: linear-gradient(135deg, #ff8c00, #d2691e);
-            border: 2px solid #ff4500;
+        .anime-box .details {
+            font-size: 1em;
+            color: #d1d5db;
         }
-        .anime-row[data-anime="Naruto"]:hover td {
-            background: linear-gradient(135deg, #ff4500, #ff8c00);
-        }
-        .anime-row.high-rating td {
-            background: linear-gradient(135deg, #4a00e0, #8e2de2);
-            border: 2px solid #9400d3;
-        }
-        .anime-row.high-rating:hover td {
-            background: linear-gradient(135deg, #9400d3, #4a00e0);
-        }
-        .anime-row.mid-rating td {
-            background: linear-gradient(135deg, #008080, #00ced1);
-            border: 2px solid #00b7eb;
-        }
-        .anime-row.mid-rating:hover td {
-            background: linear-gradient(135deg, #00b7eb, #008080);
-        }
-        .info-box {
-            border: 1px dashed #e6e6e6;
-            padding: 10px;
-            border-radius: 8px;
-            background: rgba(0, 0, 0, 0.3);
+        .anime-box .rating {
+            color: #facc15;
+            font-weight: 600;
         }
         footer {
             text-align: center;
-            padding: 50px;
-            margin-top: 70px;
-            color: #b0c4de;
-            font-size: 1.2em;
-            background: linear-gradient(45deg, #1e2a38, #2a3b4c);
-            border-radius: 20px;
-            box-shadow: 0 -15px 30px rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            margin-top: 50px;
+            color: #94a3b8;
+            font-size: 1em;
+            background: #1e293b;
+            border-radius: 15px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.4);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
+        @keyframes slideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeText {
+            from { opacity: 0.8; }
             to { opacity: 1; }
         }
-        @keyframes flicker {
-            0%, 100% { text-shadow: 0 0 25px rgba(0, 234, 255, 0.9), 0 0 50px rgba(0, 188, 212, 0.7); }
-            50% { text-shadow: 0 0 15px rgba(0, 234, 255, 0.6), 0 0 30px rgba(0, 188, 212, 0.4); }
-        }
-        @keyframes pulseWave {
-            0% { transform: scale(1); opacity: 0.4; }
-            50% { transform: scale(1.2); opacity: 0.6; }
-            100% { transform: scale(1); opacity: 0.4; }
-        }
-        @keyframes rowPop {
-            0% { transform: scale(0.9); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+        @keyframes boxFade {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Anime Chronicles</h1>
+            <h1 id="dynamic-title">Anime Chronicles</h1>
             <p id="stats">Total Anime Watched: 0 | Total Seasons: 0 | Total Episodes: 0</p>
             <div class="filter-container">
                 <input type="text" id="search-bar" placeholder="Search anime...">
@@ -197,55 +157,52 @@
         <table class="anime-table">
             <thead>
                 <tr>
-                    <th>Anime Name</th>
-                    <th>Seasons</th>
-                    <th>Total Episodes</th>
+                    <th>Anime Info</th>
                     <th>IMDb Rating</th>
-                    <th>Notes</th>
                 </tr>
             </thead>
             <tbody id="anime-table-body">
-                <tr class="anime-row" data-anime="Baki Hanma" data-rating="7.8"><td>Baki Hanma</td><td>2</td><td>24</td><td class="rating">7.8</td><td class="info-box">Season 1 (12 episodes, 2021), Season 2 (12 episodes, 2023)</td></tr>
-                <tr class="anime-row" data-anime="Campfire Cooking in Another World with My Absurd Skill" data-rating="7.4"><td>Campfire Cooking in Another World with My Absurd Skill</td><td>1</td><td>12</td><td class="rating">7.4</td><td class="info-box">Aired from January to March 2023, second season announced for 2025</td></tr>
-                <tr class="anime-row" data-anime="Chainsaw Man" data-rating="8.7"><td>Chainsaw Man</td><td>2</td><td>24</td><td class="rating">8.7</td><td class="info-box">Season 1 (12 episodes, 2022), Season 2 (12 episodes, 2023), movie in 2025</td></tr>
-                <tr class="anime-row" data-anime="Classroom of the Elite" data-rating="8.0"><td>Classroom of the Elite</td><td>2</td><td>36</td><td class="rating">8.0</td><td class="info-box">Season 1 (12 episodes, 2017), Season 2 (24 episodes, 2022)</td></tr>
-                <tr class="anime-row" data-anime="Dan Da Dan" data-rating="8.5"><td>Dan Da Dan</td><td>1</td><td>12</td><td class="rating">8.5</td><td class="info-box">Aired from October to December 2024, second season set for July 2025</td></tr>
-                <tr class="anime-row" data-anime="Death Note" data-rating="9.0"><td>Death Note</td><td>1</td><td>39</td><td class="rating">9.0</td><td class="info-box">Aired from 2006 to 2007, total 39 episodes</td></tr>
-                <tr class="anime-row" data-anime="Demon Slayer" data-rating="8.7"><td>Demon Slayer</td><td>3</td><td>61</td><td class="rating">8.7</td><td class="info-box">Season 1 (26 episodes, 2019), Season 2 (24 episodes, 2021-2022), Season 3 (11 episodes, 2023)</td></tr>
-                <tr class="anime-row" data-anime="Gods' Game We Play" data-rating="7.2"><td>Gods' Game We Play</td><td>1</td><td>12</td><td class="rating">7.2</td><td class="info-box">Aired from April to June 2024</td></tr>
-                <tr class="anime-row" data-anime="I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too" data-rating="6.8"><td>I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too</td><td>1</td><td>12</td><td class="rating">6.8</td><td class="info-box">Aired from April to June 2023</td></tr>
-                <tr class="anime-row" data-anime="I Shall Survive Using Potions!" data-rating="6.9"><td>I Shall Survive Using Potions!</td><td>1</td><td>12</td><td class="rating">6.9</td><td class="info-box">Aired from October to December 2023</td></tr>
-                <tr class="anime-row" data-anime="I Was Reincarnated as the 7th Prince so I Can Take My Time Perfecting My Magical Ability" data-rating="7.6"><td>I Was Reincarnated as the 7th Prince so I Can Take My Time Perfecting My Magical Ability</td><td>1</td><td>12</td><td class="rating">7.6</td><td class="info-box">Aired from April to June 2024, second season set for July 2025</td></tr>
-                <tr class="anime-row" data-anime="I'm in Love with the Villainess" data-rating="7.5"><td>I'm in Love with the Villainess</td><td>1</td><td>12</td><td class="rating">7.5</td><td class="info-box">Aired from October to December 2023</td></tr>
-                <tr class="anime-row" data-anime="Jujutsu Kaisen" data-rating="8.6"><td>Jujutsu Kaisen</td><td>2</td><td>47</td><td class="rating">8.6</td><td class="info-box">Season 1 (24 episodes, 2020-2021), Season 2 (23 episodes, 2023)</td></tr>
-                <tr class="anime-row" data-anime="Junji Ito Collection" data-rating="6.7"><td>Junji Ito Collection</td><td>1</td><td>12</td><td class="rating">6.7</td><td class="info-box">Aired from January to March 2018</td></tr>
-                <tr class="anime-row" data-anime="Kaiju No. 8" data-rating="8.4"><td>Kaiju No. 8</td><td>1</td><td>12</td><td class="rating">8.4</td><td class="info-box">Aired from April to June 2024, second season set for July 2025</td></tr>
-                <tr class="anime-row" data-anime="Lookism" data-rating="7.7"><td>Lookism</td><td>1</td><td>8</td><td class="rating">7.7</td><td class="info-box">Released in December 2022, total 8 episodes</td></tr>
-                <tr class="anime-row" data-anime="Mashle: Magic and Muscles" data-rating="7.9"><td>Mashle: Magic and Muscles</td><td>2</td><td>36</td><td class="rating">7.9</td><td class="info-box">Season 1 (12 episodes, 2023), Season 2 (24 episodes, 2024)</td></tr>
-                <tr class="anime-row" data-anime="Mushoku Tensei: Jobless Reincarnation" data-rating="8.4"><td>Mushoku Tensei: Jobless Reincarnation</td><td>2</td><td>47</td><td class="rating">8.4</td><td class="info-box">Season 1 (23 episodes, 2021), Season 2 (24 episodes, 2023-2024)</td></tr>
-                <tr class="anime-row" data-anime="My One-Hit Kill Sister" data-rating="6.6"><td>My One-Hit Kill Sister</td><td>1</td><td>12</td><td class="rating">6.6</td><td class="info-box">Aired from April to June 2023</td></tr>
-                <tr class="anime-row" data-anime="My Unique Skill Makes Me OP Even at Level 1" data-rating="7.0"><td>My Unique Skill Makes Me OP Even at Level 1</td><td>1</td><td>12</td><td class="rating">7.0</td><td class="info-box">Aired from April to June 2023</td></tr>
-                <tr class="anime-row" data-anime="Naruto" data-rating="8.3"><td>Naruto</td><td>2</td><td>720</td><td class="rating">8.3</td><td class="info-box">Naruto (220 episodes, 2002-2007), Naruto: Shippuden (500 episodes, 2007-2017)</td></tr>
-                <tr class="anime-row" data-anime="One Punch Man" data-rating="8.8"><td>One Punch Man</td><td>2</td><td>24</td><td class="rating">8.8</td><td class="info-box">Season 1 (12 episodes, 2015), Season 2 (12 episodes, 2019)</td></tr>
-                <tr class="anime-row" data-anime="Record of Ragnarok" data-rating="7.5"><td>Record of Ragnarok</td><td>2</td><td>27</td><td class="rating">7.5</td><td class="info-box">Season 1 (12 episodes, 2021), Season 2 (15 episodes, 2023)</td></tr>
-                <tr class="anime-row" data-anime="Reign of the Seven Spellblades" data-rating="7.1"><td>Reign of the Seven Spellblades</td><td>1</td><td>12</td><td class="rating">7.1</td><td class="info-box">Aired from July to October 2023</td></tr>
-                <tr class="anime-row" data-anime="Solo Leveling" data-rating="8.6"><td>Solo Leveling</td><td>1</td><td>12</td><td class="rating">8.6</td><td class="info-box">Aired from January to March 2024</td></tr>
-                <tr class="anime-row" data-anime="Spy x Family" data-rating="8.5"><td>Spy x Family</td><td>2</td><td>37</td><td class="rating">8.5</td><td class="info-box">Season 1 (25 episodes, 2022), Season 2 (12 episodes, 2023)</td></tr>
-                <tr class="anime-row" data-anime="Sword Art Online" data-rating="7.6"><td>Sword Art Online</td><td>4</td><td>85</td><td class="rating">7.6</td><td class="info-box">Season 1 (25 episodes, 2012-2013), Season 2 (24 episodes, 2014), Season 3 (24 episodes, 2018-2019), Season 4 (12 episodes, 2020-2021)</td></tr>
-                <tr class="anime-row" data-anime="That Time I Got Reincarnated as a Slime" data-rating="8.1"><td>That Time I Got Reincarnated as a Slime</td><td>3</td><td>72</td><td class="rating">8.1</td><td class="info-box">Season 1 (24 episodes, 2018-2019), Season 2 (24 episodes, 2021), Season 3 (24 episodes, 2024)</td></tr>
-                <tr class="anime-row" data-anime="The Daily Life of the Immortal King" data-rating="7.3"><td>The Daily Life of the Immortal King</td><td>4</td><td>51</td><td class="rating">7.3</td><td class="info-box">Season 1 (15 episodes, 2020), Season 2 (12 episodes, 2021), Season 3 (12 episodes, 2022), Season 4 (12 episodes, 2024)</td></tr>
-                <tr class="anime-row" data-anime="The Greatest Demon Lord Is Reborn as a Typical Nobody" data-rating="6.9"><td>The Greatest Demon Lord Is Reborn as a Typical Nobody</td><td>1</td><td>12</td><td class="rating">6.9</td><td class="info-box">Aired from April to June 2022</td></tr>
-                <tr class="anime-row" data-anime="The Reincarnation of the Strongest Exorcist in Another World" data-rating="7.2"><td>The Reincarnation of the Strongest Exorcist in Another World</td><td>1</td><td>12</td><td class="rating">7.2</td><td class="info-box">Aired from January to March 2023</td></tr>
-                <tr class="anime-row" data-anime="The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat" data-rating="7.4"><td>The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat</td><td>1</td><td>12</td><td class="rating">7.4</td><td class="info-box">Aired from October to December 2021</td></tr>
-                <tr class="anime-row" data-anime="Tower of God" data-rating="7.7"><td>Tower of God</td><td>2</td><td>37</td><td class="rating">7.7</td><td class="info-box">Season 1 (13 episodes, 2020), Season 2 (24 episodes, 2024)</td></tr>
-                <tr class="anime-row" data-anime="Tsukimichi -Moonlit Fantasy-" data-rating="7.8"><td>Tsukimichi -Moonlit Fantasy-</td><td>2</td><td>36</td><td class="rating">7.8</td><td class="info-box">Season 1 (12 episodes, 2021), Season 2 (24 episodes, 2024)</td></tr>
-                <tr class="anime-row" data-anime="Vampire Dormitory" data-rating="6.8"><td>Vampire Dormitory</td><td>1</td><td>12</td><td class="rating">6.8</td><td class="info-box">Aired from April to June 2024</td></tr>
-                <tr class="anime-row" data-anime="Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord" data-rating="7.5"><td>Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord</td><td>1</td><td>12</td><td class="rating">7.5</td><td class="info-box">Aired from January to March 2024</td></tr>
-                <tr class="anime-row" data-anime="Zom 100: Bucket List of the Dead" data-rating="7.9"><td>Zom 100: Bucket List of the Dead</td><td>1</td><td>12</td><td class="rating">7.9</td><td class="info-box">Aired from July to October 2023</td></tr>
+                <tr><td><div class="anime-box" data-anime="Baki Hanma"><span class="name">Baki Hanma</span><span class="details">Seasons: 2 | Episodes: 24 | Notes: Season 1 (12 episodes, 2021), Season 2 (12 episodes, 2023)</span></div></td><td class="rating">7.8</td></tr>
+                <tr><td><div class="anime-box" data-anime="Campfire Cooking in Another World with My Absurd Skill"><span class="name">Campfire Cooking in Another World with My Absurd Skill</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from January to March 2023, second season announced for 2025</span></div></td><td class="rating">7.4</td></tr>
+                <tr><td><div class="anime-box" data-anime="Chainsaw Man"><span class="name">Chainsaw Man</span><span class="details">Seasons: 2 | Episodes: 24 | Notes: Season 1 (12 episodes, 2022), Season 2 (12 episodes, 2023), movie in 2025</span></div></td><td class="rating">8.7</td></tr>
+                <tr><td><div class="anime-box" data-anime="Classroom of the Elite"><span class="name">Classroom of the Elite</span><span class="details">Seasons: 2 | Episodes: 36 | Notes: Season 1 (12 episodes, 2017), Season 2 (24 episodes, 2022)</span></div></td><td class="rating">8.0</td></tr>
+                <tr><td><div class="anime-box" data-anime="Dan Da Dan"><span class="name">Dan Da Dan</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from October to December 2024, second season set for July 2025</span></div></td><td class="rating">8.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Death Note"><span class="name">Death Note</span><span class="details">Seasons: 1 | Episodes: 39 | Notes: Aired from 2006 to 2007, total 39 episodes</span></div></td><td class="rating">9.0</td></tr>
+                <tr><td><div class="anime-box" data-anime="Demon Slayer"><span class="name">Demon Slayer</span><span class="details">Seasons: 3 | Episodes: 61 | Notes: Season 1 (26 episodes, 2019), Season 2 (24 episodes, 2021-2022), Season 3 (11 episodes, 2023)</span></div></td><td class="rating">8.7</td></tr>
+                <tr><td><div class="anime-box" data-anime="Gods' Game We Play"><span class="name">Gods' Game We Play</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from April to June 2024</span></div></td><td class="rating">7.2</td></tr>
+                <tr><td><div class="anime-box" data-anime="I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too"><span class="name">I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from April to June 2023</span></div></td><td class="rating">6.8</td></tr>
+                <tr><td><div class="anime-box" data-anime="I Shall Survive Using Potions!"><span class="name">I Shall Survive Using Potions!</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from October to December 2023</span></div></td><td class="rating">6.9</td></tr>
+                <tr><td><div class="anime-box" data-anime="I Was Reincarnated as the 7th Prince so I Can Take My Time Perfecting My Magical Ability"><span class="name">I Was Reincarnated as the 7th Prince so I Can Take My Time Perfecting My Magical Ability</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from April to June 2024, second season set for July 2025</span></div></td><td class="rating">7.6</td></tr>
+                <tr><td><div class="anime-box" data-anime="I'm in Love with the Villainess"><span class="name">I'm in Love with the Villainess</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from October to December 2023</span></div></td><td class="rating">7.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Jujutsu Kaisen"><span class="name">Jujutsu Kaisen</span><span class="details">Seasons: 2 | Episodes: 47 | Notes: Season 1 (24 episodes, 2020-2021), Season 2 (23 episodes, 2023)</span></div></td><td class="rating">8.6</td></tr>
+                <tr><td><div class="anime-box" data-anime="Junji Ito Collection"><span class="name">Junji Ito Collection</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from January to March 2018</span></div></td><td class="rating">6.7</td></tr>
+                <tr><td><div class="anime-box" data-anime="Kaiju No. 8"><span class="name">Kaiju No. 8</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from April to June 2024, second season set for July 2025</span></div></td><td class="rating">8.4</td></tr>
+                <tr><td><div class="anime-box" data-anime="Lookism"><span class="name">Lookism</span><span class="details">Seasons: 1 | Episodes: 8 | Notes: Released in December 2022, total 8 episodes</span></div></td><td class="rating">7.7</td></tr>
+                <tr><td><div class="anime-box" data-anime="Mashle: Magic and Muscles"><span class="name">Mashle: Magic and Muscles</span><span class="details">Seasons: 2 | Episodes: 36 | Notes: Season 1 (12 episodes, 2023), Season 2 (24 episodes, 2024)</span></div></td><td class="rating">7.9</td></tr>
+                <tr><td><div class="anime-box" data-anime="Mushoku Tensei: Jobless Reincarnation"><span class="name">Mushoku Tensei: Jobless Reincarnation</span><span class="details">Seasons: 2 | Episodes: 47 | Notes: Season 1 (23 episodes, 2021), Season 2 (24 episodes, 2023-2024)</span></div></td><td class="rating">8.4</td></tr>
+                <tr><td><div class="anime-box" data-anime="My One-Hit Kill Sister"><span class="name">My One-Hit Kill Sister</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from April to June 2023</span></div></td><td class="rating">6.6</td></tr>
+                <tr><td><div class="anime-box" data-anime="My Unique Skill Makes Me OP Even at Level 1"><span class="name">My Unique Skill Makes Me OP Even at Level 1</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from April to June 2023</span></div></td><td class="rating">7.0</td></tr>
+                <tr><td><div class="anime-box" data-anime="Naruto"><span class="name">Naruto</span><span class="details">Seasons: 2 | Episodes: 720 | Notes: Naruto (220 episodes, 2002-2007), Naruto: Shippuden (500 episodes, 2007-2017)</span></div></td><td class="rating">8.3</td></tr>
+                <tr><td><div class="anime-box" data-anime="One Punch Man"><span class="name">One Punch Man</span><span class="details">Seasons: 2 | Episodes: 24 | Notes: Season 1 (12 episodes, 2015), Season 2 (12 episodes, 2019)</span></div></td><td class="rating">8.8</td></tr>
+                <tr><td><div class="anime-box" data-anime="Record of Ragnarok"><span class="name">Record of Ragnarok</span><span class="details">Seasons: 2 | Episodes: 27 | Notes: Season 1 (12 episodes, 2021), Season 2 (15 episodes, 2023)</span></div></td><td class="rating">7.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Reign of the Seven Spellblades"><span class="name">Reign of the Seven Spellblades</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from July to October 2023</span></div></td><td class="rating">7.1</td></tr>
+                <tr><td><div class="anime-box" data-anime="Solo Leveling"><span class="name">Solo Leveling</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from January to March 2024</span></div></td><td class="rating">8.6</td></tr>
+                <tr><td><div class="anime-box" data-anime="Spy x Family"><span class="name">Spy x Family</span><span class="details">Seasons: 2 | Episodes: 37 | Notes: Season 1 (25 episodes, 2022), Season 2 (12 episodes, 2023)</span></div></td><td class="rating">8.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Sword Art Online"><span class="name">Sword Art Online</span><span class="details">Seasons: 4 | Episodes: 85 | Notes: Season 1 (25 episodes, 2012-2013), Season 2 (24 episodes, 2014), Season 3 (24 episodes, 2018-2019), Season 4 (12 episodes, 2020-2021)</span></div></td><td class="rating">7.6</td></tr>
+                <tr><td><div class="anime-box" data-anime="That Time I Got Reincarnated as a Slime"><span class="name">That Time I Got Reincarnated as a Slime</span><span class="details">Seasons: 3 | Episodes: 72 | Notes: Season 1 (24 episodes, 2018-2019), Season 2 (24 episodes, 2021), Season 3 (24 episodes, 2024)</span></div></td><td class="rating">8.1</td></tr>
+                <tr><td><div class="anime-box" data-anime="The Daily Life of the Immortal King"><span class="name">The Daily Life of the Immortal King</span><span class="details">Seasons: 4 | Episodes: 51 | Notes: Season 1 (15 episodes, 2020), Season 2 (12 episodes, 2021), Season 3 (12 episodes, 2022), Season 4 (12 episodes, 2024)</span></div></td><td class="rating">7.3</td></tr>
+                <tr><td><div class="anime-box" data-anime="The Greatest Demon Lord Is Reborn as a Typical Nobody"><span class="name">The Greatest Demon Lord Is Reborn as a Typical Nobody</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from April to June 2022</span></div></td><td class="rating">6.9</td></tr>
+                <tr><td><div class="anime-box" data-anime="The Reincarnation of the Strongest Exorcist in Another World"><span class="name">The Reincarnation of the Strongest Exorcist in Another World</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from January to March 2023</span></div></td><td class="rating">7.2</td></tr>
+                <tr><td><div class="anime-box" data-anime="The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat"><span class="name">The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from October to December 2021</span></div></td><td class="rating">7.4</td></tr>
+                <tr><td><div class="anime-box" data-anime="Tower of God"><span class="name">Tower of God</span><span class="details">Seasons: 2 | Episodes: 37 | Notes: Season 1 (13 episodes, 2020), Season 2 (24 episodes, 2024)</span></div></td><td class="rating">7.7</td></tr>
+                <tr><td><div class="anime-box" data-anime="Tsukimichi -Moonlit Fantasy-"><span class="name">Tsukimichi -Moonlit Fantasy-</span><span class="details">Seasons: 2 | Episodes: 36 | Notes: Season 1 (12 episodes, 2021), Season 2 (24 episodes, 2024)</span></div></td><td class="rating">7.8</td></tr>
+                <tr><td><div class="anime-box" data-anime="Vampire Dormitory"><span class="name">Vampire Dormitory</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from April to June 2024</span></div></td><td class="rating">6.8</td></tr>
+                <tr><td><div class="anime-box" data-anime="Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord"><span class="name">Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from January to March 2024</span></div></td><td class="rating">7.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Zom 100: Bucket List of the Dead"><span class="name">Zom 100: Bucket List of the Dead</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from July to October 2023</span></div></td><td class="rating">7.9</td></tr>
             </tbody>
         </table>
         <footer>
-            Anime List watched by balram | Last Updated March 07, 2025
+            Anime List Watched by Balram | Last Updated March 07, 2025
         </footer>
     </div>
     <script>
@@ -253,35 +210,47 @@
         const rows = Array.from(tbody.querySelectorAll('tr'));
         const searchBar = document.getElementById('search-bar');
         const filterSelect = document.getElementById('filter-select');
+        const dynamicTitle = document.getElementById('dynamic-title');
 
         // Calculate totals dynamically
         let totalSeasons = 0;
         let totalEpisodes = 0;
         rows.forEach(row => {
-            totalSeasons += parseInt(row.cells[1].textContent);
-            totalEpisodes += parseInt(row.cells[2].textContent);
+            const details = row.querySelector('.details').textContent;
+            const seasonsMatch = details.match(/Seasons: (\d+)/);
+            const episodesMatch = details.match(/Episodes: (\d+)/);
+            totalSeasons += seasonsMatch ? parseInt(seasonsMatch[1]) : 0;
+            totalEpisodes += episodesMatch ? parseInt(episodesMatch[1]) : 0;
         });
         document.getElementById('stats').textContent =
             `Total Anime Watched: ${rows.length} | Total Seasons: ${totalSeasons} | Total Episodes: ${totalEpisodes}`;
 
-        // Apply rating-based classes
-        rows.forEach(row => {
-            const rating = parseFloat(row.dataset.rating);
-            if (rating >= 8.5) {
-                row.classList.add('high-rating');
-            } else if (rating >= 7.5) {
-                row.classList.add('mid-rating');
-            }
-        });
+        // Dynamic title rotation
+        const titles = ["Anime Chronicles", "Anime Diary", "Anime List Watched By Balram"];
+        let titleIndex = 0;
+        setInterval(() => {
+            dynamicTitle.style.opacity = 0;
+            setTimeout(() => {
+                titleIndex = (titleIndex + 1) % titles.length;
+                dynamicTitle.textContent = titles[titleIndex];
+                dynamicTitle.style.opacity = 1;
+            }, 500);
+        }, 3000);
 
-        // Render rows with pop animation
+        // Render rows with animation
         function renderRows(filteredRows) {
             tbody.innerHTML = '';
             filteredRows.forEach((row, index) => {
                 setTimeout(() => {
                     tbody.appendChild(row);
-                    row.style.animation = 'rowPop 0.6s ease-out forwards';
-                }, index * 150); // Staggered pop-in effect
+                    row.style.opacity = '0';
+                    row.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        row.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        row.style.opacity = '1';
+                        row.style.transform = 'translateY(0)';
+                    }, 50);
+                }, index * 100); // Staggered animation
             });
         }
 
@@ -291,20 +260,28 @@
             const filter = filterSelect.value;
 
             let filteredRows = rows.filter(row => {
-                const animeName = row.cells[0].textContent.toLowerCase();
+                const animeName = row.querySelector('.name').textContent.toLowerCase();
                 return searchTerm === '' || animeName.includes(searchTerm);
             });
 
             if (filter === 'az') {
-                filteredRows.sort((a, b) => a.cells[0].textContent.localeCompare(b.cells[0].textContent));
+                filteredRows.sort((a, b) => a.querySelector('.name').textContent.localeCompare(b.querySelector('.name').textContent));
             } else if (filter === 'random') {
                 filteredRows.sort(() => Math.random() - 0.5);
             } else if (filter === 'high-low') {
-                filteredRows.sort((a, b) => parseInt(b.cells[2].textContent) - parseInt(a.cells[2].textContent));
+                filteredRows.sort((a, b) => {
+                    const aEp = parseInt(a.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
+                    const bEp = parseInt(b.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
+                    return bEp - aEp;
+                });
             } else if (filter === 'low-high') {
-                filteredRows.sort((a, b) => parseInt(a.cells[2].textContent) - parseInt(b.cells[2].textContent));
+                filteredRows.sort((a, b) => {
+                    const aEp = parseInt(a.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
+                    const bEp = parseInt(b.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
+                    return aEp - bEp;
+                });
             } else if (filter === 'rating-high') {
-                filteredRows.sort((a, b) => parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating));
+                filteredRows.sort((a, b) => parseFloat(b.cells[1].textContent) - parseFloat(a.cells[1].textContent));
             }
 
             renderRows(filteredRows);
