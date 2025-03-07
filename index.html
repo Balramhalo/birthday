@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,151 +10,88 @@
         body {
             margin: 0;
             padding: 0;
-            background: #1f2a44;
+            background: linear-gradient(135deg, #1e2a3c, #0f172a);
             font-family: 'Poppins', sans-serif;
             color: #d1d5db;
-            transition: background 0.5s ease, color 0.5s ease;
-        }
-        body.light-mode {
-            background: #f1f5f9;
-            color: #1f2a44;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
-            animation: slideIn 1s ease-out;
+            padding: 30px;
+            animation: slideIn 1.2s ease-out;
         }
         .header {
             text-align: center;
-            padding: 30px 20px;
+            padding: 40px 20px;
             background: #1e293b;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
             position: relative;
+            overflow: hidden;
         }
-        body.light-mode .header {
-            background: #e2e8f0;
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.2), transparent);
+            animation: pulseGlow 6s infinite ease-in-out;
         }
         .header h1 {
-            font-size: 2.5em;
+            font-size: 3em;
             color: #38bdf8;
             margin: 0;
-            text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+            position: relative;
+            z-index: 1;
         }
-        body.light-mode .header h1 {
-            color: #2563eb;
-            text-shadow: none;
-        }
-        .header p {
-            font-size: 1.1em;
-            color: #94a3b8;
-        }
-        body.light-mode .header p {
-            color: #4b5563;
-        }
-        .hamburger {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 100;
-            cursor: pointer;
-            padding: 10px;
-            background: #1e293b;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-        body.light-mode .hamburger {
-            background: #e2e8f0;
-        }
-        .hamburger span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background: #38bdf8;
-            margin: 5px 0;
-            transition: all 0.3s ease;
-        }
-        body.light-mode .hamburger span {
-            background: #2563eb;
-        }
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(7px, 7px);
-        }
-        .hamburger.active span:nth-child(2) {
+        .header h1 span {
+            display: inline-block;
             opacity: 0;
         }
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -7px);
-        }
-        .menu {
-            position: fixed;
-            top: 0;
-            left: -250px;
-            width: 250px;
-            height: 100%;
-            background: #1e293b;
-            padding: 60px 20px 20px;
-            transition: left 0.3s ease;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
-            z-index: 99;
-        }
-        body.light-mode .menu {
-            background: #e2e8f0;
-        }
-        .menu.active {
-            left: 0;
-        }
-        .menu button {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            background: #38bdf8;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        body.light-mode .menu button {
-            background: #2563eb;
-            color: #fff;
-        }
-        .menu button:hover {
-            background: #f472b6;
+        .header p {
+            font-size: 1.2em;
+            color: #94a3b8;
+            z-index: 1;
+            position: relative;
+            animation: fadeInText 1s ease-out 2s forwards;
+            opacity: 0;
         }
         .filter-container {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             justify-content: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            margin-bottom: 30px;
+            animation: slideUp 1s ease-out 2.5s forwards;
+            opacity: 0;
         }
         #search-bar, #filter-select {
-            padding: 10px;
+            padding: 12px;
             background: #1e293b;
             color: #d1d5db;
             border: 2px solid #38bdf8;
-            border-radius: 5px;
-            font-size: 1em;
+            border-radius: 8px;
+            font-size: 1.1em;
             transition: all 0.3s ease;
         }
-        body.light-mode #search-bar, body.light-mode #filter-select {
-            background: #fff;
-            color: #1f2a44;
-            border-color: #2563eb;
+        #search-bar {
+            flex: 1;
         }
         #search-bar:focus, #filter-select:focus {
             outline: none;
             border-color: #f472b6;
-            box-shadow: 0 0 10px rgba(244, 114, 182, 0.5);
+            box-shadow: 0 0 15px rgba(244, 114, 182, 0.5);
+            transform: scale(1.02);
         }
         .anime-table {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 0 10px;
+            border-spacing: 0 15px;
         }
         .anime-table th {
             padding: 15px;
@@ -163,125 +99,80 @@
             color: #38bdf8;
             text-transform: uppercase;
             font-weight: 600;
-        }
-        body.light-mode .anime-table th {
-            background: #e2e8f0;
-            color: #2563eb;
+            position: sticky;
+            top: 0;
+            z-index: 2;
         }
         .anime-table td {
-            padding: 15px;
+            padding: 20px;
             background: #2d3748;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
-        }
-        body.light-mode .anime-table td {
-            background: #fff;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
         .anime-table tr:hover td {
-            transform: translateY(-3px);
+            transform: translateY(-5px) rotateX(5deg);
+            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.5);
         }
         .anime-box {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            background: #334155;
-            padding: 10px;
-            border-radius: 6px;
-            position: relative;
-        }
-        body.light-mode .anime-box {
-            background: #f1f5f9;
+            gap: 10px;
+            background: linear-gradient(135deg, #334155, #2d3748);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #4b5563;
+            transform-origin: center;
         }
         .anime-box .name {
-            font-size: 1.3em;
+            font-size: 1.4em;
             color: #38bdf8;
             font-weight: 600;
-            cursor: pointer;
-        }
-        body.light-mode .anime-box .name {
-            color: #2563eb;
         }
         .anime-box .details {
-            font-size: 0.95em;
+            font-size: 1em;
             color: #d1d5db;
         }
-        body.light-mode .anime-box .details {
-            color: #4b5563;
-        }
-        .anime-box .progress {
-            margin-top: 5px;
-            font-size: 0.9em;
-            color: #94a3b8;
-        }
-        body.light-mode .anime-box .progress {
-            color: #6b7280;
-        }
-        .anime-box .progress input {
-            width: 50px;
-            margin-left: 5px;
-        }
-        .favorite-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 1.2em;
-            cursor: pointer;
-            color: #94a3b8;
-            transition: color 0.3s ease;
-        }
-        .favorite-btn.favorited {
-            color: #f472b6;
-        }
-        body.light-mode .favorite-btn {
-            color: #6b7280;
-        }
-        body.light-mode .favorite-btn.favorited {
-            color: #db2777;
-        }
-        .rating {
+        .anime-box .rating {
             color: #facc15;
             font-weight: 600;
         }
         footer {
             text-align: center;
-            padding: 20px;
-            margin-top: 40px;
+            padding: 30px;
+            margin-top: 50px;
             color: #94a3b8;
-            font-size: 0.9em;
+            font-size: 1em;
             background: #1e293b;
-            border-radius: 10px;
-            box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.2);
-        }
-        body.light-mode footer {
-            background: #e2e8f0;
-            color: #4b5563;
+            border-radius: 15px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.4);
+            animation: slideUp 1s ease-out 3s forwards;
+            opacity: 0;
         }
         @keyframes slideIn {
-            from { transform: translateY(-20px); opacity: 0; }
+            from { transform: translateY(-50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-        @keyframes fadeIn {
+        @keyframes pulseGlow {
+            0% { transform: scale(1); opacity: 0.2; }
+            50% { transform: scale(1.1); opacity: 0.4; }
+            100% { transform: scale(1); opacity: 0.2; }
+        }
+        @keyframes fadeInText {
             from { opacity: 0; }
             to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.8) rotateX(-10deg); opacity: 0; }
+            100% { transform: scale(1) rotateX(0); opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <div class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-    <div class="menu">
-        <button id="toggle-mode">Toggle Light/Dark Mode</button>
-        <button id="export-csv">Export to CSV</button>
-        <button id="show-favorites">Show Favorites Only</button>
-        <button id="reset-progress">Reset Progress</button>
-    </div>
     <div class="container">
         <div class="header">
             <h1 id="dynamic-title"></h1>
@@ -305,7 +196,43 @@
                 </tr>
             </thead>
             <tbody id="anime-table-body">
-                <!-- Anime data will be populated dynamically -->
+                <tr><td><div class="anime-box" data-anime="Baki Hanma"><span class="name">Baki Hanma</span><span class="details">Seasons: 2 | Episodes: 24 | Notes: Season 1 (12 episodes, 2021), Season 2 (12 episodes, 2023)</span></div></td><td class="rating">7.8</td></tr>
+                <tr><td><div class="anime-box" data-anime="Campfire Cooking in Another World with My Absurd Skill"><span class="name">Campfire Cooking in Another World with My Absurd Skill</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from January to March 2023, second season announced for 2025</span></div></td><td class="rating">7.4</td></tr>
+                <tr><td><div class="anime-box" data-anime="Chainsaw Man"><span class="name">Chainsaw Man</span><span class="details">Seasons: 2 | Episodes: 24 | Notes: Season 1 (12 episodes, 2022), Season 2 (12 episodes, 2023), movie in 2025</span></div></td><td class="rating">8.7</td></tr>
+                <tr><td><div class="anime-box" data-anime="Classroom of the Elite"><span class="name">Classroom of the Elite</span><span class="details">Seasons: 2 | Episodes: 36 | Notes: Season 1 (12 episodes, 2017), Season 2 (24 episodes, 2022)</span></div></td><td class="rating">8.0</td></tr>
+                <tr><td><div class="anime-box" data-anime="Dan Da Dan"><span class="name">Dan Da Dan</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from October to December 2024, second season set for July 2025</span></div></td><td class="rating">8.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Death Note"><span class="name">Death Note</span><span class="details">Seasons: 1 | Episodes: 39 | Notes: Aired from 2006 to 2007, total 39 episodes</span></div></td><td class="rating">9.0</td></tr>
+                <tr><td><div class="anime-box" data-anime="Demon Slayer"><span class="name">Demon Slayer</span><span class="details">Seasons: 3 | Episodes: 61 | Notes: Season 1 (26 episodes, 2019), Season 2 (24 episodes, 2021-2022), Season 3 (11 episodes, 2023)</span></div></td><td class="rating">8.7</td></tr>
+                <tr><td><div class="anime-box" data-anime="Gods' Game We Play"><span class="name">Gods' Game We Play</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from April to June 2024</span></div></td><td class="rating">7.2</td></tr>
+                <tr><td><div class="anime-box" data-anime="I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too"><span class="name">I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from April to June 2023</span></div></td><td class="rating">6.8</td></tr>
+                <tr><td><div class="anime-box" data-anime="I Shall Survive Using Potions!"><span class="name">I Shall Survive Using Potions!</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from October to December 2023</span></div></td><td class="rating">6.9</td></tr>
+                <tr><td><div class="anime-box" data-anime="I Was Reincarnated as the 7th Prince so I Can Take My Time Perfecting My Magical Ability"><span class="name">I Was Reincarnated as the 7th Prince so I Can Take My Time Perfecting My Magical Ability</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from April to June 2024, second season set for July 2025</span></div></td><td class="rating">7.6</td></tr>
+                <tr><td><div class="anime-box" data-anime="I'm in Love with the Villainess"><span class="name">I'm in Love with the Villainess</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from October to December 2023</span></div></td><td class="rating">7.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Jujutsu Kaisen"><span class="name">Jujutsu Kaisen</span><span class="details">Seasons: 2 | Episodes: 47 | Notes: Season 1 (24 episodes, 2020-2021), Season 2 (23 episodes, 2023)</span></div></td><td class="rating">8.6</td></tr>
+                <tr><td><div class="anime-box" data-anime="Junji Ito Collection"><span class="name">Junji Ito Collection</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from January to March 2018</span></div></td><td class="rating">6.7</td></tr>
+                <tr><td><div class="anime-box" data-anime="Kaiju No. 8"><span class="name">Kaiju No. 8</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from April to June 2024, second season set for July 2025</span></div></td><td class="rating">8.4</td></tr>
+                <tr><td><div class="anime-box" data-anime="Lookism"><span class="name">Lookism</span><span class="details">Seasons: 1 | Episodes: 8 | Notes: Released in December 2022, total 8 episodes</span></div></td><td class="rating">7.7</td></tr>
+                <tr><td><div class="anime-box" data-anime="Mashle: Magic and Muscles"><span class="name">Mashle: Magic and Muscles</span><span class="details">Seasons: 2 | Episodes: 36 | Notes: Season 1 (12 episodes, 2023), Season 2 (24 episodes, 2024)</span></div></td><td class="rating">7.9</td></tr>
+                <tr><td><div class="anime-box" data-anime="Mushoku Tensei: Jobless Reincarnation"><span class="name">Mushoku Tensei: Jobless Reincarnation</span><span class="details">Seasons: 2 | Episodes: 47 | Notes: Season 1 (23 episodes, 2021), Season 2 (24 episodes, 2023-2024)</span></div></td><td class="rating">8.4</td></tr>
+                <tr><td><div class="anime-box" data-anime="My One-Hit Kill Sister"><span class="name">My One-Hit Kill Sister</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from April to June 2023</span></div></td><td class="rating">6.6</td></tr>
+                <tr><td><div class="anime-box" data-anime="My Unique Skill Makes Me OP Even at Level 1"><span class="name">My Unique Skill Makes Me OP Even at Level 1</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from April to June 2023</span></div></td><td class="rating">7.0</td></tr>
+                <tr><td><div class="anime-box" data-anime="Naruto"><span class="name">Naruto</span><span class="details">Seasons: 2 | Episodes: 720 | Notes: Naruto (220 episodes, 2002-2007), Naruto: Shippuden (500 episodes, 2007-2017)</span></div></td><td class="rating">8.3</td></tr>
+                <tr><td><div class="anime-box" data-anime="One Punch Man"><span class="name">One Punch Man</span><span class="details">Seasons: 2 | Episodes: 24 | Notes: Season 1 (12 episodes, 2015), Season 2 (12 episodes, 2019)</span></div></td><td class="rating">8.8</td></tr>
+                <tr><td><div class="anime-box" data-anime="Record of Ragnarok"><span class="name">Record of Ragnarok</span><span class="details">Seasons: 2 | Episodes: 27 | Notes: Season 1 (12 episodes, 2021), Season 2 (15 episodes, 2023)</span></div></td><td class="rating">7.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Reign of the Seven Spellblades"><span class="name">Reign of the Seven Spellblades</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from July to October 2023</span></div></td><td class="rating">7.1</td></tr>
+                <tr><td><div class="anime-box" data-anime="Solo Leveling"><span class="name">Solo Leveling</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from January to March 2024</span></div></td><td class="rating">8.6</td></tr>
+                <tr><td><div class="anime-box" data-anime="Spy x Family"><span class="name">Spy x Family</span><span class="details">Seasons: 2 | Episodes: 37 | Notes: Season 1 (25 episodes, 2022), Season 2 (12 episodes, 2023)</span></div></td><td class="rating">8.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Sword Art Online"><span class="name">Sword Art Online</span><span class="details">Seasons: 4 | Episodes: 85 | Notes: Season 1 (25 episodes, 2012-2013), Season 2 (24 episodes, 2014), Season 3 (24 episodes, 2018-2019), Season 4 (12 episodes, 2020-2021)</span></div></td><td class="rating">7.6</td></tr>
+                <tr><td><div class="anime-box" data-anime="That Time I Got Reincarnated as a Slime"><span class="name">That Time I Got Reincarnated as a Slime</span><span class="details">Seasons: 3 | Episodes: 72 | Notes: Season 1 (24 episodes, 2018-2019), Season 2 (24 episodes, 2021), Season 3 (24 episodes, 2024)</span></div></td><td class="rating">8.1</td></tr>
+                <tr><td><div class="anime-box" data-anime="The Daily Life of the Immortal King"><span class="name">The Daily Life of the Immortal King</span><span class="details">Seasons: 4 | Episodes: 51 | Notes: Season 1 (15 episodes, 2020), Season 2 (12 episodes, 2021), Season 3 (12 episodes, 2022), Season 4 (12 episodes, 2024)</span></div></td><td class="rating">7.3</td></tr>
+                <tr><td><div class="anime-box" data-anime="The Greatest Demon Lord Is Reborn as a Typical Nobody"><span class="name">The Greatest Demon Lord Is Reborn as a Typical Nobody</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from April to June 2022</span></div></td><td class="rating">6.9</td></tr>
+                <tr><td><div class="anime-box" data-anime="The Reincarnation of the Strongest Exorcist in Another World"><span class="name">The Reincarnation of the Strongest Exorcist in Another World</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from January to March 2023</span></div></td><td class="rating">7.2</td></tr>
+                <tr><td><div class="anime-box" data-anime="The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat"><span class="name">The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from October to December 2021</span></div></td><td class="rating">7.4</td></tr>
+                <tr><td><div class="anime-box" data-anime="Tower of God"><span class="name">Tower of God</span><span class="details">Seasons: 2 | Episodes: 37 | Notes: Season 1 (13 episodes, 2020), Season 2 (24 episodes, 2024)</span></div></td><td class="rating">7.7</td></tr>
+                <tr><td><div class="anime-box" data-anime="Tsukimichi -Moonlit Fantasy-"><span class="name">Tsukimichi -Moonlit Fantasy-</span><span class="details">Seasons: 2 | Episodes: 36 | Notes: Season 1 (12 episodes, 2021), Season 2 (24 episodes, 2024)</span></div></td><td class="rating">7.8</td></tr>
+                <tr><td><div class="anime-box" data-anime="Vampire Dormitory"><span class="name">Vampire Dormitory</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from April to June 2024</span></div></td><td class="rating">6.8</td></tr>
+                <tr><td><div class="anime-box" data-anime="Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord"><span class="name">Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from January to March 2024</span></div></td><td class="rating">7.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Zom 100: Bucket List of the Dead"><span class="name">Zom 100: Bucket List of the Dead</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired from July to October 2023</span></div></td><td class="rating">7.9</td></tr>
             </tbody>
         </table>
         <footer>
@@ -313,69 +240,32 @@
         </footer>
     </div>
     <script>
-        const animeData = [
-            { name: "Baki Hanma", seasons: 2, episodes: 24, notes: "Season 1 (12 episodes, 2021), Season 2 (12 episodes, 2023)", rating: 7.8 },
-            { name: "Chainsaw Man", seasons: 2, episodes: 24, notes: "Season 1 (12 episodes, 2022), Season 2 (12 episodes, 2023), movie in 2025", rating: 8.7 },
-            { name: "Death Note", seasons: 1, episodes: 39, notes: "Aired from 2006 to 2007, total 39 episodes", rating: 9.0 },
-            { name: "Demon Slayer", seasons: 3, episodes: 61, notes: "Season 1 (26 episodes, 2019), Season 2 (24 episodes, 2021-2022), Season 3 (11 episodes, 2023)", rating: 8.7 },
-            { name: "Jujutsu Kaisen", seasons: 2, episodes: 47, notes: "Season 1 (24 episodes, 2020-2021), Season 2 (23 episodes, 2023)", rating: 8.6 },
-            { name: "Naruto", seasons: 2, episodes: 720, notes: "Naruto (220 episodes, 2002-2007), Naruto: Shippuden (500 episodes, 2007-2017)", rating: 8.3 },
-            { name: "One Punch Man", seasons: 2, episodes: 24, notes: "Season 1 (12 episodes, 2015), Season 2 (12 episodes, 2019)", rating: 8.8 },
-            { name: "Solo Leveling", seasons: 1, episodes: 12, notes: "Aired from January to March 2024", rating: 8.6 },
-            { name: "Spy x Family", seasons: 2, episodes: 37, notes: "Season 1 (25 episodes, 2022), Season 2 (12 episodes, 2023)", rating: 8.5 },
-            { name: "Sword Art Online", seasons: 4, episodes: 85, notes: "Season 1 (25 episodes, 2012-2013), Season 2 (24 episodes, 2014), Season 3 (24 episodes, 2018-2019), Season 4 (12 episodes, 2020-2021)", rating: 7.6 }
-            // Add more anime as needed
-        ];
-
         const tbody = document.getElementById('anime-table-body');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
         const searchBar = document.getElementById('search-bar');
         const filterSelect = document.getElementById('filter-select');
         const dynamicTitle = document.getElementById('dynamic-title');
-        const hamburger = document.querySelector('.hamburger');
-        const menu = document.querySelector('.menu');
-        const toggleModeBtn = document.getElementById('toggle-mode');
-        const exportCsvBtn = document.getElementById('export-csv');
-        const showFavoritesBtn = document.getElementById('show-favorites');
-        const resetProgressBtn = document.getElementById('reset-progress');
 
-        // Local storage for favorites and progress
-        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        let progress = JSON.parse(localStorage.getItem('progress')) || {};
+        // Calculate totals dynamically
+        let totalSeasons = 0;
+        let totalEpisodes = 0;
+        rows.forEach(row => {
+            const details = row.querySelector('.details').textContent;
+            const seasonsMatch = details.match(/Seasons: (\d+)/);
+            const episodesMatch = details.match(/Episodes: (\d+)/);
+            totalSeasons += seasonsMatch ? parseInt(seasonsMatch[1]) : 0;
+            totalEpisodes += episodesMatch ? parseInt(episodesMatch[1]) : 0;
+        });
+        document.getElementById('stats').textContent =
+            `Total Anime Watched: ${rows.length} | Total Seasons: ${totalSeasons} | Total Episodes: ${totalEpisodes}`;
 
-        // Populate table
-        function populateTable(data) {
-            tbody.innerHTML = '';
-            data.forEach((anime, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>
-                        <div class="anime-box" data-anime="${anime.name}">
-                            <span class="name">${anime.name}</span>
-                            <span class="details">Seasons: ${anime.seasons} | Episodes: ${anime.episodes} | Notes: ${anime.notes}</span>
-                            <span class="progress">Watched: <input type="number" min="0" max="${anime.episodes}" value="${progress[anime.name] || 0}" data-anime="${anime.name}"> / ${anime.episodes}</span>
-                            <button class="favorite-btn ${favorites.includes(anime.name) ? 'favorited' : ''}" data-anime="${anime.name}">&#9829;</button>
-                        </div>
-                    </td>
-                    <td class="rating">${anime.rating}</td>
-                `;
-                row.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s forwards`;
-                row.style.opacity = '0';
-                tbody.appendChild(row);
-            });
-        }
-
-        // Initial stats
-        function updateStats(data) {
-            const totalSeasons = data.reduce((sum, anime) => sum + anime.seasons, 0);
-            const totalEpisodes = data.reduce((sum, anime) => sum + anime.episodes, 0);
-            document.getElementById('stats').textContent = `Total Anime Watched: ${data.length} | Total Seasons: ${totalSeasons} | Total Episodes: ${totalEpisodes}`;
-        }
-
-        // Title animation
+        // Title animation sequence
         const initialText = "ANIME CHRONICLES";
         const nextText = "DIARY";
         const finalTitles = ["ANIME DIARY", "ANIME LIST WATCHED BY BALRAM"];
         dynamicTitle.innerHTML = initialText.split('').map(char => `<span>${char}</span>`).join('');
+
+        // Write "ANIME CHRONICLES" letter by letter
         const spans = dynamicTitle.querySelectorAll('span');
         spans.forEach((span, index) => {
             setTimeout(() => {
@@ -383,26 +273,37 @@
                 span.style.transition = 'opacity 0.2s ease';
             }, index * 100);
         });
+
+        // Remove "CHRONICLES" and add "DIARY"
         setTimeout(() => {
-            const chroniclesStart = 5;
+            const chroniclesStart = 5; // Index after "ANIME "
             for (let i = spans.length - 1; i >= chroniclesStart; i--) {
                 setTimeout(() => {
                     spans[i].style.opacity = 0;
+                    spans[i].style.transition = 'opacity 0.2s ease';
                     if (i === chroniclesStart) {
                         setTimeout(() => {
-                            dynamicTitle.innerHTML = "ANIME " + nextText.split('').map(char => `<span style="opacity: 0">${char}</span>`).join('');
+                            let diaryIndex = 0;
+                            const diarySpans = nextText.split('').map(char => `<span style="opacity: 0">${char}</span>`);
+                            dynamicTitle.innerHTML = "ANIME " + diarySpans.join('');
                             const newSpans = dynamicTitle.querySelectorAll('span');
                             newSpans.forEach((span, idx) => {
-                                setTimeout(() => {
+                                if (idx >= 5) { // Start after "ANIME "
+                                    setTimeout(() => {
+                                        span.style.opacity = 1;
+                                        span.style.transition = 'opacity 0.2s ease';
+                                    }, (idx - 5) * 100);
+                                } else {
                                     span.style.opacity = 1;
-                                    span.style.transition = 'opacity 0.2s ease';
-                                }, (idx - 5) * 100);
+                                }
                             });
                         }, 200);
                     }
                 }, (spans.length - 1 - i) * 100);
             }
         }, initialText.length * 100 + 500);
+
+        // Random title rotation after initial sequence
         setTimeout(() => {
             let titleIndex = 0;
             setInterval(() => {
@@ -422,109 +323,56 @@
             }, 4000);
         }, initialText.length * 100 + nextText.length * 100 + 1500);
 
-        // Filter and search
+        // Render rows with animation
+        function renderRows(filteredRows) {
+            tbody.innerHTML = '';
+            filteredRows.forEach((row, index) => {
+                setTimeout(() => {
+                    tbody.appendChild(row);
+                    row.style.animation = 'popIn 0.6s ease-out forwards';
+                }, index * 150); // Staggered pop-in
+            });
+        }
+
+        // Search and filter logic
         function applyFilters() {
             const searchTerm = searchBar.value.trim().toLowerCase();
             const filter = filterSelect.value;
-            let filteredData = animeData.filter(anime => {
-                return searchTerm === '' || anime.name.toLowerCase().includes(searchTerm);
+
+            let filteredRows = rows.filter(row => {
+                const animeName = row.querySelector('.name').textContent.toLowerCase();
+                return searchTerm === '' || animeName.includes(searchTerm);
             });
+
             if (filter === 'az') {
-                filteredData.sort((a, b) => a.name.localeCompare(b.name));
+                filteredRows.sort((a, b) => a.querySelector('.name').textContent.localeCompare(b.querySelector('.name').textContent));
             } else if (filter === 'random') {
-                filteredData.sort(() => Math.random() - 0.5);
+                filteredRows.sort(() => Math.random() - 0.5);
             } else if (filter === 'high-low') {
-                filteredData.sort((a, b) => b.episodes - a.episodes);
+                filteredRows.sort((a, b) => {
+                    const aEp = parseInt(a.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
+                    const bEp = parseInt(b.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
+                    return bEp - aEp;
+                });
             } else if (filter === 'low-high') {
-                filteredData.sort((a, b) => a.episodes - b.episodes);
+                filteredRows.sort((a, b) => {
+                    const aEp = parseInt(a.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
+                    const bEp = parseInt(b.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
+                    return aEp - bEp;
+                });
             } else if (filter === 'rating-high') {
-                filteredData.sort((a, b) => b.rating - a.rating);
+                filteredRows.sort((a, b) => parseFloat(b.cells[1].textContent) - parseFloat(a.cells[1].textContent));
             }
-            populateTable(filteredData);
-            updateStats(filteredData);
+
+            renderRows(filteredRows);
         }
 
-        // Hamburger menu toggle
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            menu.classList.toggle('active');
-        });
-
-        // Light/Dark mode toggle
-        toggleModeBtn.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
-        });
-        if (localStorage.getItem('theme') === 'light') {
-            document.body.classList.add('light-mode');
-        }
-
-        // Export to CSV
-        exportCsvBtn.addEventListener('click', () => {
-            const csv = ['Name,Seasons,Episodes,Notes,Rating,Watched'].concat(
-                animeData.map(anime => `${anime.name},${anime.seasons},${anime.episodes},${anime.notes},${anime.rating},${progress[anime.name] || 0}`)
-            ).join('\n');
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'anime_list.csv';
-            a.click();
-            window.URL.revokeObjectURL(url);
-        });
-
-        // Show favorites only
-        let showFavoritesOnly = false;
-        showFavoritesBtn.addEventListener('click', () => {
-            showFavoritesOnly = !showFavoritesOnly;
-            showFavoritesBtn.textContent = showFavoritesOnly ? 'Show All' : 'Show Favorites Only';
-            applyFilters();
-            if (showFavoritesOnly) {
-                const filtered = animeData.filter(anime => favorites.includes(anime.name));
-                populateTable(filtered);
-                updateStats(filtered);
-            }
-        });
-
-        // Reset progress
-        resetProgressBtn.addEventListener('click', () => {
-            if (confirm('Reset all progress?')) {
-                progress = {};
-                localStorage.setItem('progress', JSON.stringify(progress));
-                applyFilters();
-            }
-        });
-
-        // Event delegation for favorites and progress
-        tbody.addEventListener('click', (e) => {
-            if (e.target.classList.contains('favorite-btn')) {
-                const animeName = e.target.dataset.anime;
-                if (favorites.includes(animeName)) {
-                    favorites = favorites.filter(name => name !== animeName);
-                    e.target.classList.remove('favorited');
-                } else {
-                    favorites.push(animeName);
-                    e.target.classList.add('favorited');
-                }
-                localStorage.setItem('favorites', JSON.stringify(favorites));
-            }
-        });
-        tbody.addEventListener('input', (e) => {
-            if (e.target.tagName === 'INPUT') {
-                const animeName = e.target.dataset.anime;
-                const value = parseInt(e.target.value);
-                const max = parseInt(e.target.max);
-                progress[animeName] = Math.min(Math.max(value, 0), max);
-                localStorage.setItem('progress', JSON.stringify(progress));
-                applyFilters(); // Refresh to update stats if needed
-            }
-        });
-
-        // Initial render
-        populateTable(animeData);
-        updateStats(animeData);
+        // Event listeners
         searchBar.addEventListener('input', applyFilters);
         filterSelect.addEventListener('change', applyFilters);
+
+        // Initial render
+        applyFilters();
     </script>
 </body>
 </html>
