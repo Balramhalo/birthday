@@ -5,170 +5,205 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime Chronicles</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #1e2a3c, #0f172a);
-            font-family: 'Poppins', sans-serif;
-            color: #d1d5db;
+            background: radial-gradient(circle at center, #0a1428, #000000);
+            font-family: 'Orbitron', sans-serif;
+            color: #e0e7ff;
             overflow-x: hidden;
             min-height: 100vh;
+            position: relative;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 30px;
-            animation: slideIn 1.2s ease-out;
+            padding: 40px;
+            animation: cosmicEntry 2s ease-out;
         }
         .header {
             text-align: center;
-            padding: 40px 20px;
-            background: #1e293b;
-            border-radius: 15px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(10, 20, 40, 0.9), rgba(20, 40, 80, 0.9));
+            border-radius: 20px;
+            margin-bottom: 50px;
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.5), inset 0 0 20px rgba(0, 255, 255, 0.2);
             position: relative;
             overflow: hidden;
         }
         .header::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(56, 189, 248, 0.2), transparent);
-            animation: pulseGlow 6s infinite ease-in-out;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.3), transparent);
+            animation: cosmicPulse 8s infinite ease-in-out;
+            pointer-events: none;
         }
         .header h1 {
-            font-size: 3em;
-            color: #38bdf8;
+            font-size: 4em;
+            color: #00ffff;
             margin: 0;
-            text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+            text-shadow: 0 0 20px #00ffff, 0 0 40px #00b7eb, 0 0 60px #007bff;
             position: relative;
             z-index: 1;
         }
         .header h1 span {
             display: inline-block;
             opacity: 0;
+            transform: scale(0.8) translateY(20px);
         }
         .header p {
-            font-size: 1.2em;
-            color: #94a3b8;
+            font-size: 1.4em;
+            color: #b0c4de;
             z-index: 1;
             position: relative;
-            animation: fadeInText 1s ease-out 2s forwards;
+            animation: statsGlow 1.5s ease-out 3s forwards;
             opacity: 0;
         }
         .filter-container {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
-            margin-bottom: 30px;
-            animation: slideUp 1s ease-out 2.5s forwards;
+            margin-bottom: 40px;
+            animation: filterOrbit 1.5s ease-out 3.5s forwards;
             opacity: 0;
+            transform: translateY(30px);
         }
         #search-bar, #filter-select {
-            padding: 12px;
-            background: #1e293b;
-            color: #d1d5db;
-            border: 2px solid #38bdf8;
-            border-radius: 8px;
-            font-size: 1.1em;
-            transition: all 0.3s ease;
+            padding: 15px;
+            background: rgba(10, 20, 40, 0.8);
+            color: #e0e7ff;
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            font-size: 1.2em;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
         }
         #search-bar {
             flex: 1;
         }
         #search-bar:focus, #filter-select:focus {
             outline: none;
-            border-color: #f472b6;
-            box-shadow: 0 0 15px rgba(244, 114, 182, 0.5);
-            transform: scale(1.02);
+            border-color: #ff00ff;
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.6), 0 0 40px rgba(255, 0, 255, 0.3);
+            transform: scale(1.05);
+        }
+        #search-bar:hover, #filter-select:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
         }
         .anime-table {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 0 15px;
+            border-spacing: 0 20px;
+            perspective: 1000px;
         }
         .anime-table th {
-            padding: 15px;
-            background: #1e293b;
-            color: #38bdf8;
+            padding: 20px;
+            background: linear-gradient(90deg, #0a1428, #1a2a50);
+            color: #00ffff;
             text-transform: uppercase;
-            font-weight: 600;
+            font-weight: 700;
             position: sticky;
             top: 0;
             z-index: 2;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
         }
         .anime-table td {
-            padding: 20px;
-            background: #2d3748;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            padding: 25px;
+            background: linear-gradient(135deg, #1a2a50, #0a1428);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 255, 255, 0.1);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            transform-style: preserve-3d;
         }
         .anime-table tr:hover td {
-            transform: translateY(-5px) rotateX(5deg);
-            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.5);
+            transform: translateZ(20px) rotateX(10deg) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 255, 255, 0.6), inset 0 0 25px rgba(0, 255, 255, 0.2);
         }
         .anime-box {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            background: linear-gradient(135deg, #334155, #2d3748);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #4b5563;
-            transform-origin: center;
+            gap: 12px;
+            background: linear-gradient(135deg, rgba(30, 50, 90, 0.9), rgba(10, 20, 40, 0.9));
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .anime-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.15), transparent);
+            animation: boxShimmer 5s infinite ease-in-out;
+            pointer-events: none;
         }
         .anime-box .name {
-            font-size: 1.4em;
-            color: #38bdf8;
-            font-weight: 600;
+            font-size: 1.6em;
+            color: #00ffff;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
         }
         .anime-box .details {
-            font-size: 1em;
-            color: #d1d5db;
+            font-size: 1.1em;
+            color: #b0c4de;
         }
         .anime-box .rating {
-            color: #facc15;
-            font-weight: 600;
+            color: #ffd700;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
         footer {
             text-align: center;
-            padding: 30px;
-            margin-top: 50px;
-            color: #94a3b8;
-            font-size: 1em;
-            background: #1e293b;
-            border-radius: 15px;
-            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.4);
-            animation: slideUp 1s ease-out 3s forwards;
+            padding: 40px;
+            margin-top: 60px;
+            color: #b0c4de;
+            font-size: 1.2em;
+            background: linear-gradient(45deg, #0a1428, #1a2a50);
+            border-radius: 20px;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(0, 255, 255, 0.1);
+            animation: footerRise 1.5s ease-out 4s forwards;
             opacity: 0;
+            transform: translateY(50px);
         }
-        @keyframes slideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes cosmicEntry {
+            0% { transform: scale(0.9) translateY(-100px); opacity: 0; filter: blur(5px); }
+            100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); }
         }
-        @keyframes pulseGlow {
-            0% { transform: scale(1); opacity: 0.2; }
-            50% { transform: scale(1.1); opacity: 0.4; }
-            100% { transform: scale(1); opacity: 0.2; }
+        @keyframes cosmicPulse {
+            0% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.15); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 0.3; }
         }
-        @keyframes fadeInText {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes statsGlow {
+            0% { opacity: 0; text-shadow: none; }
+            100% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 255, 0.3); }
         }
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes filterOrbit {
+            0% { opacity: 0; transform: translateY(30px) rotateX(-20deg); }
+            100% { opacity: 1; transform: translateY(0) rotateX(0); }
         }
-        @keyframes popIn {
-            0% { transform: scale(0.8) rotateX(-10deg); opacity: 0; }
-            100% { transform: scale(1) rotateX(0); opacity: 1; }
+        @keyframes boxShimmer {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        @keyframes cardSpawn {
+            0% { transform: scale(0.5) rotateY(-90deg); opacity: 0; filter: blur(3px); }
+            50% { transform: scale(1.05) rotateY(10deg); opacity: 0.8; }
+            100% { transform: scale(1) rotateY(0); opacity: 1; filter: blur(0); }
+        }
+        @keyframes footerRise {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -265,63 +300,73 @@
         const finalTitles = ["ANIME DIARY", "ANIME LIST WATCHED BY BALRAM"];
         dynamicTitle.innerHTML = initialText.split('').map(char => `<span>${char}</span>`).join('');
 
-        // Write "ANIME CHRONICLES" letter by letter
+        // Write "ANIME CHRONICLES" with flair
         const spans = dynamicTitle.querySelectorAll('span');
         spans.forEach((span, index) => {
             setTimeout(() => {
                 span.style.opacity = 1;
-                span.style.transition = 'opacity 0.2s ease';
-            }, index * 100);
+                span.style.transform = 'scale(1) translateY(0)';
+                span.style.transition = 'all 0.3s ease';
+                span.style.animation = 'pulseGlow 1s infinite alternate';
+            }, index * 150);
         });
 
-        // Remove "CHRONICLES" and add "DIARY"
+        // Transition to "ANIME DIARY"
         setTimeout(() => {
-            const chroniclesStart = 5; // Index after "ANIME "
+            const chroniclesStart = 5;
             for (let i = spans.length - 1; i >= chroniclesStart; i--) {
                 setTimeout(() => {
                     spans[i].style.opacity = 0;
-                    spans[i].style.transition = 'opacity 0.2s ease';
+                    spans[i].style.transform = 'scale(0.8) translateY(-20px)';
+                    spans[i].style.transition = 'all 0.3s ease';
                     if (i === chroniclesStart) {
                         setTimeout(() => {
                             let diaryIndex = 0;
-                            const diarySpans = nextText.split('').map(char => `<span style="opacity: 0">${char}</span>`);
+                            const diarySpans = nextText.split('').map(char => `<span style="opacity: 0; transform: scale(0.8) translateY(20px)">${char}</span>`);
                             dynamicTitle.innerHTML = "ANIME " + diarySpans.join('');
                             const newSpans = dynamicTitle.querySelectorAll('span');
                             newSpans.forEach((span, idx) => {
-                                if (idx >= 5) { // Start after "ANIME "
+                                if (idx >= 5) {
                                     setTimeout(() => {
                                         span.style.opacity = 1;
-                                        span.style.transition = 'opacity 0.2s ease';
-                                    }, (idx - 5) * 100);
+                                        span.style.transform = 'scale(1) translateY(0)';
+                                        span.style.transition = 'all 0.3s ease';
+                                        span.style.animation = 'pulseGlow 1s infinite alternate';
+                                    }, (idx - 5) * 150);
                                 } else {
                                     span.style.opacity = 1;
+                                    span.style.transform = 'scale(1) translateY(0)';
                                 }
                             });
-                        }, 200);
+                        }, 300);
                     }
-                }, (spans.length - 1 - i) * 100);
+                }, (spans.length - 1 - i) * 150);
             }
-        }, initialText.length * 100 + 500);
+        }, initialText.length * 150 + 500);
 
-        // Random title rotation after initial sequence
+        // Random title rotation
         setTimeout(() => {
             let titleIndex = 0;
             setInterval(() => {
                 dynamicTitle.style.opacity = 0;
+                dynamicTitle.style.transform = 'scale(0.9)';
                 setTimeout(() => {
                     titleIndex = (titleIndex + 1) % finalTitles.length;
-                    dynamicTitle.innerHTML = finalTitles[titleIndex].split('').map(char => `<span style="opacity: 0">${char}</span>`).join('');
+                    dynamicTitle.innerHTML = finalTitles[titleIndex].split('').map(char => `<span style="opacity: 0; transform: scale(0.8) translateY(20px)">${char}</span>`).join('');
                     const newSpans = dynamicTitle.querySelectorAll('span');
                     newSpans.forEach((span, idx) => {
                         setTimeout(() => {
                             span.style.opacity = 1;
-                            span.style.transition = 'opacity 0.2s ease';
-                        }, idx * 50);
+                            span.style.transform = 'scale(1) translateY(0)';
+                            span.style.transition = 'all 0.3s ease';
+                            span.style.animation = 'pulseGlow 1s infinite alternate';
+                        }, idx * 80);
                     });
                     dynamicTitle.style.opacity = 1;
-                }, 300);
-            }, 4000);
-        }, initialText.length * 100 + nextText.length * 100 + 1500);
+                    dynamicTitle.style.transform = 'scale(1)';
+                }, 400);
+            }, 5000);
+        }, initialText.length * 150 + nextText.length * 150 + 1500);
 
         // Render rows with animation
         function renderRows(filteredRows) {
@@ -329,8 +374,8 @@
             filteredRows.forEach((row, index) => {
                 setTimeout(() => {
                     tbody.appendChild(row);
-                    row.style.animation = 'popIn 0.6s ease-out forwards';
-                }, index * 150); // Staggered pop-in
+                    row.style.animation = 'cardSpawn 0.8s ease-out forwards';
+                }, index * 200); // Dramatic staggered spawn
             });
         }
 
@@ -375,4 +420,4 @@
         applyFilters();
     </script>
 </body>
-</html>  
+</html>
