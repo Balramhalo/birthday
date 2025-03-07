@@ -49,10 +49,12 @@
             text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
             position: relative;
             z-index: 1;
+            letter-spacing: 2px; /* Adds slight spacing between letters */
         }
         .header h1 span {
             display: inline-block;
             opacity: 0;
+            margin-right: 8px; /* Space between words */
         }
         .header p {
             font-size: 1.2em;
@@ -123,6 +125,7 @@
             border-radius: 10px;
             border: 1px solid #4b5563;
             transform-origin: center;
+            cursor: pointer;
         }
         .anime-box .name {
             font-size: 1.4em;
@@ -149,6 +152,48 @@
             animation: slideUp 1s ease-out 3s forwards;
             opacity: 0;
         }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        .modal-content h2 {
+            color: #38bdf8;
+            margin-top: 0;
+        }
+        .modal-content p {
+            color: #d1d5db;
+            line-height: 1.5;
+        }
+        .close-btn {
+            float: right;
+            font-size: 1.5em;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .close-btn:hover {
+            color: #f472b6;
+        }
         @keyframes slideIn {
             from { transform: translateY(-50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
@@ -169,6 +214,10 @@
         @keyframes popIn {
             0% { transform: scale(0.8) rotateX(-10deg); opacity: 0; }
             100% { transform: scale(1) rotateX(0); opacity: 1; }
+        }
+        @keyframes modalFadeIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
     </style>
 </head>
@@ -239,12 +288,23 @@
             Anime List Watched by Balram | Last Updated March 07, 2025
         </footer>
     </div>
+    <div class="modal" id="plot-modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-plot"></p>
+        </div>
+    </div>
     <script>
         const tbody = document.getElementById('anime-table-body');
         const rows = Array.from(tbody.querySelectorAll('tr'));
         const searchBar = document.getElementById('search-bar');
         const filterSelect = document.getElementById('filter-select');
         const dynamicTitle = document.getElementById('dynamic-title');
+        const modal = document.getElementById('plot-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalPlot = document.getElementById('modal-plot');
+        const closeModal = document.getElementById('close-modal');
 
         // Calculate totals dynamically
         let totalSeasons = 0;
@@ -259,10 +319,10 @@
         document.getElementById('stats').textContent =
             `Total Anime Watched: ${rows.length} | Total Seasons: ${totalSeasons} | Total Episodes: ${totalEpisodes}`;
 
-        // Title animation sequence
-        const initialText = "ANIME CHRONICLES";
-        const nextText = "DIARY";
-        const finalTitles = ["ANIME DIARY", "ANIME LIST WATCHED BY BALRAM"];
+        // Title animation sequence with gaps
+        const initialText = "A N I M E  C H R O N I C L E S";
+        const nextText = "A N I M E  D I A R Y";
+        const finalTitles = ["A N I M E  D I A R Y", "A N I M E  L I S T  W A T C H E D  B Y  B A L R A M"];
         dynamicTitle.innerHTML = initialText.split('').map(char => `<span>${char}</span>`).join('');
 
         // Write "ANIME CHRONICLES" letter by letter
@@ -276,26 +336,20 @@
 
         // Remove "CHRONICLES" and add "DIARY"
         setTimeout(() => {
-            const chroniclesStart = 5; // Index after "ANIME "
+            const chroniclesStart = 6; // Index after "A N I M E "
             for (let i = spans.length - 1; i >= chroniclesStart; i--) {
                 setTimeout(() => {
                     spans[i].style.opacity = 0;
                     spans[i].style.transition = 'opacity 0.2s ease';
                     if (i === chroniclesStart) {
                         setTimeout(() => {
-                            let diaryIndex = 0;
-                            const diarySpans = nextText.split('').map(char => `<span style="opacity: 0">${char}</span>`);
-                            dynamicTitle.innerHTML = "ANIME " + diarySpans.join('');
+                            dynamicTitle.innerHTML = nextText.split('').map(char => `<span style="opacity: 0">${char}</span>`).join('');
                             const newSpans = dynamicTitle.querySelectorAll('span');
                             newSpans.forEach((span, idx) => {
-                                if (idx >= 5) { // Start after "ANIME "
-                                    setTimeout(() => {
-                                        span.style.opacity = 1;
-                                        span.style.transition = 'opacity 0.2s ease';
-                                    }, (idx - 5) * 100);
-                                } else {
+                                setTimeout(() => {
                                     span.style.opacity = 1;
-                                }
+                                    span.style.transition = 'opacity 0.2s ease';
+                                }, idx * 100);
                             });
                         }, 200);
                     }
@@ -352,7 +406,7 @@
                 filteredRows.sort((a, b) => {
                     const aEp = parseInt(a.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
                     const bEp = parseInt(b.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
-                    return bEp - aEp;
+                    return bEp - aEp; // Total episodes, already correct
                 });
             } else if (filter === 'low-high') {
                 filteredRows.sort((a, b) => {
@@ -366,6 +420,67 @@
 
             renderRows(filteredRows);
         }
+
+        // Modal handling
+        const plots = {
+            "Baki Hanma": "Baki Hanma trains to surpass his father, the world's strongest fighter, facing brutal martial arts battles and intense rivalries.",
+            "Campfire Cooking in Another World with My Absurd Skill": "A salaryman is transported to another world with a skill that lets him cook divine meals, attracting powerful allies.",
+            "Chainsaw Man": "Denji, a devil hunter, merges with his pet devil Pochita to become Chainsaw Man, battling demons for the Public Safety Bureau.",
+            "Classroom of the Elite": "Students at an elite high school compete using wits and strategy in a system that ranks them by merit.",
+            "Dan Da Dan": "A boy and girl, believers in ghosts and aliens respectively, face supernatural chaos after a dare gone wrong.",
+            "Death Note": "Light Yagami finds a supernatural notebook that allows him to kill anyone by writing their name, sparking a cat-and-mouse game with detective L.",
+            "Demon Slayer": "Tanjiro Kamado becomes a demon slayer to avenge his family and save his demon-turned sister Nezuko.",
+            "Gods' Game We Play": "Humans and gods engage in strategic games to determine fate, blending intellect and divine power.",
+            "I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too": "A boy gains a cheat skill in another world, using it to become unstoppable in both realms.",
+            "I Shall Survive Using Potions!": "A girl reincarnates with the ability to create potions, using them to survive and thrive in a new world.",
+            "I Was Reincarnated as the 7th Prince so I Can Take My Time Perfecting My Magical Ability": "A mage reincarnates as a prince, focusing on mastering magic at his own pace.",
+            "I'm in Love with the Villainess": "A girl reincarnates into an otome game, pursuing the villainess instead of the heroes.",
+            "Jujutsu Kaisen": "Yuji Itadori swallows a cursed finger to save a friend, becoming a vessel for a powerful curse and joining jujutsu sorcerers.",
+            "Junji Ito Collection": "A series of horror stories exploring the macabre and unsettling, adapted from Junji Ito’s works.",
+            "Kaiju No. 8": "Kafka Hibino transforms into a kaiju while working to exterminate them, balancing his dual life.",
+            "Lookism": "A boy switches bodies between an unattractive and handsome version of himself, navigating social hierarchies.",
+            "Mashle: Magic and Muscles": "In a magic-dominated world, Mash uses brute strength to succeed at a wizarding school.",
+            "Mushoku Tensei: Jobless Reincarnation": "A man reincarnates into a fantasy world, determined to live a fulfilling life with his past knowledge.",
+            "My One-Hit Kill Sister": "A boy’s overpowered sister protects him in a new world, often overshadowing his own journey.",
+            "My Unique Skill Makes Me OP Even at Level 1": "A hero’s unique skill makes him overwhelmingly powerful despite being at the lowest level.",
+            "Naruto": "Naruto Uzumaki, a young ninja, seeks recognition and dreams of becoming the Hokage, facing countless challenges.",
+            "One Punch Man": "Saitama, a hero who can defeat any opponent with one punch, searches for a worthy challenge.",
+            "Record of Ragnarok": "Gods and humans battle in a tournament to decide humanity’s fate, with epic showdowns.",
+            "Reign of the Seven Spellblades": "Students at a magic academy uncover dark secrets while mastering deadly spellblades.",
+            "Solo Leveling": "Jinwoo Sung rises from the weakest hunter to a powerhouse in a world of dungeons and monsters.",
+            "Spy x Family": "A spy, assassin, and telepath form a fake family to maintain peace, hiding their true identities.",
+            "Sword Art Online": "Players trapped in a virtual reality MMORPG fight to survive and escape.",
+            "That Time I Got Reincarnated as a Slime": "A man reincarnates as a slime in a fantasy world, building a nation of monsters.",
+            "The Daily Life of the Immortal King": "A teenage immortal navigates high school while concealing his overwhelming power.",
+            "The Greatest Demon Lord Is Reborn as a Typical Nobody": "A demon lord reincarnates as an ordinary boy, hiding his past strength.",
+            "The Reincarnation of the Strongest Exorcist in Another World": "An exorcist reincarnates, using his skills to dominate a new world.",
+            "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat": "An assassin reincarnates to fulfill a divine mission with his deadly skills.",
+            "Tower of God": "Bam climbs a mysterious tower to find his friend, facing trials and betrayals.",
+            "Tsukimichi -Moonlit Fantasy-": "Makoto Misumi, rejected by a goddess, builds his own path in a harsh fantasy world.",
+            "Vampire Dormitory": "A girl disguises herself as a boy in a vampire-run dormitory, uncovering secrets.",
+            "Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord": "A girl reincarnates as a villainess, accidentally becoming overpowered.",
+            "Zom 100: Bucket List of the Dead": "Akira completes his bucket list during a zombie apocalypse, finding joy in chaos."
+        };
+
+        tbody.addEventListener('click', (e) => {
+            const animeBox = e.target.closest('.anime-box');
+            if (animeBox) {
+                const animeName = animeBox.dataset.anime;
+                modalTitle.textContent = animeName;
+                modalPlot.textContent = plots[animeName] || "Plot details not available.";
+                modal.style.display = 'flex';
+            }
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
 
         // Event listeners
         searchBar.addEventListener('input', applyFilters);
