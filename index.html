@@ -327,13 +327,13 @@
 
         // Title animation sequence
         const stages = [
-            "ANINE CHRONICLES",
+            "ANIME CHRONICLES",
             
             "ANIME LIST",
             
             "ANIME DIARY"
         ];
-        const finalTitles = ["ANIME DIARY", "ANIME LIST WATCHED BY BALRAM"];
+        const finalTitles = ["ANIME DIARY", "LIST OF ANIME WATCHED BY BALRAM"];
 
         let currentStage = 0;
         function animateTitle() {
@@ -342,7 +342,7 @@
             spans.forEach((span, idx) => {
                 setTimeout(() => {
                     span.style.opacity = 1;
-                    span.style.transition = 'opacity 0.2s ease';
+                    span.style.transition = 'opacity 0.34s ease';
                 }, idx * 100);
             });
 
