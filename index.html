@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -316,4 +317,213 @@
                 <tr><td><div class="anime-box" data-anime="Tower of God"><span class="name">Tower of God</span><span class="details">Seasons: 2 | Episodes: 26 | Notes: Season 1 (13 episodes, 2020), Season 2 (13 episodes, 2024)</span></div></td><td class="rating">7.7</td></tr>
                 <tr><td><div class="anime-box" data-anime="Tsukimichi -Moonlit Fantasy-"><span class="name">Tsukimichi -Moonlit Fantasy-</span><span class="details">Seasons: 2 | Episodes: 37 | Notes: Season 1 (12 episodes, 2021), Season 2 (25 episodes, 2024)</span></div></td><td class="rating">7.8</td></tr>
                 <tr><td><div class="anime-box" data-anime="Vampire Dormitory"><span class="name">Vampire Dormitory</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired April-June 2024</span></div></td><td class="rating">6.8</td></tr>
-                <tr><td><div class="anime-box" data-anime="Villainess Level 99: I May Be the Hidden Boss but I'm Not t
+                <tr><td><div class="anime-box" data-anime="Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord"><span class="name">Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired January-March 2024</span></div></td><td class="rating">7.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Zom 100: Bucket List of the Dead"><span class="name">Zom 100: Bucket List of the Dead</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired July-December 2023</span></div></td><td class="rating">7.9</td></tr>
+            </tbody>
+        </table>
+        <footer>
+            Anime List Watched by Balram | Last Updated March 12, 2025
+        </footer>
+    </div>
+    <div class="modal" id="plot-modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal">×</span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-plot"></p>
+        </div>
+    </div>
+    <script>
+        const tbody = document.getElementById('anime-table-body');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const searchBar = document.getElementById('search-bar');
+        const filterSelect = document.getElementById('filter-select');
+        const dynamicTitle = document.getElementById('dynamic-title');
+        const modal = document.getElementById('plot-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalPlot = document.getElementById('modal-plot');
+        const closeModal = document.getElementById('close-modal');
+
+        // Calculate totals dynamically
+        let totalSeasons = 0;
+        let totalEpisodes = 0;
+        rows.forEach(row => {
+            const details = row.querySelector('.details').textContent;
+            const seasonsMatch = details.match(/Seasons: (\d+)/);
+            const episodesMatch = details.match(/Episodes: (\d+)/);
+            totalSeasons += seasonsMatch ? parseInt(seasonsMatch[1]) : 0;
+            totalEpisodes += episodesMatch ? parseInt(episodesMatch[1]) : 0;
+        });
+        document.getElementById('stats').textContent =
+            `Total Anime Watched: ${rows.length} | Total Seasons: ${totalSeasons} | Total Episodes: ${totalEpisodes}`;
+
+        // Title animation sequence
+        const stages = [
+            "ANIME CHRONICLES",
+            "ANIME LIST",
+            "ANIME DIARY"
+        ];
+        const finalTitles = ["ANIME DIARY", "LIST OF ANIME WATCHED BY BALRAM"];
+
+        let currentStage = 0;
+        function animateTitle() {
+            dynamicTitle.innerHTML = stages[currentStage].split('').map(char => `<span style="opacity: 0">${char}</span>`).join('');
+            const spans = dynamicTitle.querySelectorAll('span');
+            spans.forEach((span, idx) => {
+                setTimeout(() => {
+                    span.style.opacity = 1;
+                    span.style.transition = 'opacity 0.34s ease';
+                }, idx * 100);
+            });
+
+            if (currentStage < stages.length - 1) {
+                setTimeout(() => {
+                    spans.forEach((span, idx) => {
+                        setTimeout(() => {
+                            span.style.opacity = 0;
+                        }, idx * 50);
+                    });
+                    setTimeout(() => {
+                        currentStage++;
+                        animateTitle();
+                    }, spans.length * 50 + 200);
+                }, spans.length * 100 + 500);
+            } else {
+                setTimeout(() => {
+                    let titleIndex = 0;
+                    setInterval(() => {
+                        dynamicTitle.style.opacity = 0;
+                        setTimeout(() => {
+                            titleIndex = (titleIndex + 1) % finalTitles.length;
+                            dynamicTitle.innerHTML = finalTitles[titleIndex].split('').map(char => `<span style="opacity: 0">${char}</span>`).join('');
+                            const newSpans = dynamicTitle.querySelectorAll('span');
+                            newSpans.forEach((span, idx) => {
+                                setTimeout(() => {
+                                    span.style.opacity = 1;
+                                    span.style.transition = 'opacity 0.2s ease';
+                                }, idx * 50);
+                            });
+                            dynamicTitle.style.opacity = 1;
+                        }, 300);
+                    }, 4000);
+                }, stages.length * 100 + 1500);
+            }
+        }
+        animateTitle();
+
+        // Render rows with animation
+        function renderRows(filteredRows) {
+            tbody.innerHTML = '';
+            filteredRows.forEach((row, index) => {
+                setTimeout(() => {
+                    tbody.appendChild(row);
+                    row.style.animation = 'rowFadeSlide 0.6s ease-out forwards';
+                }, index * 150); // Staggered slide-in
+            });
+        }
+
+        // Search and filter logic
+        function applyFilters() {
+            const searchTerm = searchBar.value.trim().toLowerCase();
+            const filter = filterSelect.value;
+
+            let filteredRows = rows.filter(row => {
+                const animeName = row.querySelector('.name').textContent.toLowerCase();
+                return searchTerm === '' || animeName.includes(searchTerm);
+            });
+
+            if (filter === 'az') {
+                filteredRows.sort((a, b) => a.querySelector('.name').textContent.localeCompare(b.querySelector('.name').textContent));
+            } else if (filter === 'random') {
+                filteredRows.sort(() => Math.random() - 0.5);
+            } else if (filter === 'high-low') {
+                filteredRows.sort((a, b) => {
+                    const aEp = parseInt(a.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
+                    const bEp = parseInt(b.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
+                    return bEp - aEp;
+                });
+            } else if (filter === 'low-high') {
+                filteredRows.sort((a, b) => {
+                    const aEp = parseInt(a.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
+                    const bEp = parseInt(b.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
+                    return aEp - bEp;
+                });
+            } else if (filter === 'rating-high') {
+                filteredRows.sort((a, b) => parseFloat(b.cells[1].textContent) - parseFloat(a.cells[1].textContent));
+            }
+
+            renderRows(filteredRows);
+        }
+
+        // Modal handling with updated summaries
+        const plots = {
+            "Baki Hanma": "Baki Hanma, son of the invincible Yujiro Hanma, strives to outmatch his father’s unparalleled strength. After enduring savage underground martial arts tournaments, he faces off against lethal fighters like Pickle and Musashi, sharpening his skills to a deadly edge. With allies like Kozue and rivals pushing his limits, Baki’s journey is a brutal odyssey through a world where only the toughest survive.",
+            "Campfire Cooking in Another World with My Absurd Skill": "Tsuyoshi Mukoda, a regular office worker, gets whisked into a fantasy realm with a bizarre power: summoning Earth groceries via 'Online Supermarket.' His culinary creations enchant mighty creatures like Fenrir, who joins him as a loyal companion. Together, they roam, cooking exquisite meals that turn perilous quests into delightful gastronomic adventures.",
+            "Chainsaw Man": "Denji, a debt-ridden teen, fuses with his devil dog Pochita to become Chainsaw Man, wielding chainsaws from his limbs. Hired by the Public Safety Devil Hunters, he slays grotesque devils alongside allies Power and Aki. Fueled by basic dreams—food, a home, love—Denji’s bloody battles reveal a chaotic world of betrayal and raw survival.",
+            "Classroom of the Elite": "Kiyotaka Ayanokoji enters Tokyo’s elite high school, where students vie for supremacy in a ruthless merit system. Hiding his genius, he manipulates events with peers Suzune Horikita and Kikyo Kushida, exposing the school’s sinister secrets. It’s a cerebral battlefield where strategy trumps all in a quest for dominance.",
+            "Dan Da Dan": "Momo Ayase (ghost believer) and Ken Takakura (alien enthusiast) spark a rivalry that unleashes their hidden powers after a dare gone wild. Thrust into a frenzy of ghosts, aliens, and yokai, their bickering evolves into teamwork, facing off against absurd supernatural foes in a mix of hilarity and high-octane action.",
+            "Death Note": "Light Yagami finds the Death Note, a shinigami’s tool that kills with a name and a face. As Kira, he purges criminals to craft a utopian world, clashing with the brilliant detective L in a gripping mental chess game. Power, justice, and madness collide in this dark, twist-filled thriller.",
+            "Demon Slayer": "Tanjiro Kamado joins the Demon Slayer Corps after demons butcher his family, sparing only his sister Nezuko, now a demon with a human heart. Mastering Water Breathing and Hinokami Kagura, he hunts Muzan Kibutsuji with Inosuke, Zenitsu, and Nezuko, seeking her cure amid visceral battles and tragic revelations.",
+            "Dragon Ball Daima": "Goku and friends are shrunk into kids by a mysterious conspiracy in the Demon Realm. Exploring this strange world, they battle new foes with pint-sized power, blending classic Dragon Ball action with fresh stakes. It’s a nostalgic yet innovative romp through a compact heroic saga.",
+            "Gods' Game We Play": "Leshea, a divine trickster, teams with human genius Fay to outwit gods in cerebral games that decide humanity’s fate. From riddles to tactical showdowns, their ascent unveils divine secrets, mixing sharp banter with mind-bending strategy in a contest where mortals defy the heavens.",
+            "I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too": "Bullied Yuuya Tenjou gains a cheat skill in a fantasy world, wielding magic and might. Back on Earth, he transforms his life, juggling school with monster hunts. It’s a dual-realm tale of empowerment, friendships, and proving strength isn’t just physical.",
+            "I Shall Survive Using Potions!": "Kaoru Nagase reincarnates with potion-crafting powers after a bizarre death. In a medieval land, she brews solutions to outsmart foes and aid allies, carving an independent path with wit and alchemy. Every vial she crafts turns survival into triumph.",
+            "I Was Reincarnated as the 7th Prince so I Can Take My Time Perfecting My Magical Ability": "A mage reborn as Prince Lloyd revels in his magical talent, free from duty. Experimenting with spells and battling beasts, he hones his craft leisurely, blending whimsy with explosive magic in a quest for arcane mastery.",
+            "I'm in Love with the Villainess": "Office worker Rei reincarnates as Rae Taylor in an otome game, chasing the villainess Claire François instead of princes. Her bold affection shakes noble society, weaving a tender, subversive romance amid magical school antics and defied fate.",
+            "Jujutsu Kaisen": "Yuji Itadori ingests a cursed finger, hosting the evil Sukuna. Trained by Satoru Gojo at Jujutsu High, he fights cursed spirits with Megumi and Nobara, unraveling a dark plot tied to Sukuna’s return in a visceral, emotion-charged supernatural epic.",
+            "Junji Ito Collection": "Junji Ito’s horror tales come alive—spiraling madness in Uzumaki, seductive dread in Tomie. Each story twists the everyday into nightmares, delivering chilling visuals and creeping unease that haunt long after the screen fades.",
+            "Kaiju No. 8": "Kafka Hibino, a kaiju cleaner, becomes one himself yet joins the Defense Force to fight them. Hiding his secret from friend Mina Ashiro, he smashes monsters with humor and grit, balancing dual lives in a kaiju-ravaged world.",
+            "Lookism": "Daniel Park toggles between an ugly and handsome body, exposing society’s obsession with looks. High school becomes a lens for self-worth and power, blending raw emotion with sharp social critique in a dual-identity drama.",
+            "Mashle: Magic and Muscles": "Mash Burnedead, magic-less in a wizarding world, punches through spells at a magic academy. His brute strength and deadpan humor upend the status quo, proving muscle can outshine magic in a riotous underdog tale.",
+            "Mushoku Tensei: Jobless Reincarnation": "A shut-in reincarnates as Rudeus Greyrat, wielding past-life smarts in a fantasy realm. Tutored by Roxy, he explores with Sylphie and Eris, facing wars and redemption in a sprawling, heartfelt journey of second chances.",
+            "My One-Hit Kill Sister": "Asahi Ikusaba’s sister Mayu gains a one-hit-kill power in a fantasy world, overshadowing him. Their sibling antics fuel comedy and warmth as they tackle monsters and mysteries, proving family ties outlast any foe.",
+            "My Unique Skill Makes Me OP Even at Level 1": "Ryota Sato reincarnates with a stat-boosting skill, dominating dungeons at level one. With ally Emily, he exploits game-like rules, crafting a tale of clever triumphs and camaraderie in a world of endless loot.",
+            "Naruto": "Naruto Uzumaki, a fox-demon host, rises from outcast to ninja legend, aiming for Hokage. With Sasuke and Sakura, he battles rogues and ancient evils, forging a saga of grit, bonds, and relentless heart.",
+            "One Punch Man": "Saitama’s one-punch power leaves him bored in a hero-filled world. Joining the Hero Association, he seeks a challenge amid quirky allies and epic foes, blending satire with jaw-dropping action.",
+            "Record of Ragnarok": "Gods vote to end humanity, but Brunhilde pits 13 human legends against divine warriors. From Jack the Ripper to Zeus, brutal duels decide fate in a mythic, high-stakes spectacle of survival.",
+            "Reign of the Seven Spellblades": "Oliver Horn studies deadly spellblades at Kimberly Magic Academy, uncovering murder and dark magic. With friends, he navigates lethal trials, weaving a tense tale of ambition and vengeance in a magical crucible.",
+            "Solo Leveling": "Weak hunter Jinwoo Sung gains the System, leveling up to unrivaled power. Slaying monsters and probing gate secrets, his rise is a gritty, strategic ascent through a world on the brink.",
+            "Spy x Family": "Spy Twilight, assassin Yor, and telepath Anya fake a family to stop war. Hiding their truths, they mix espionage with comedy and heart, crafting a charming tale of deception and unity.",
+            "Sword Art Online": "Kirito and 10,000 players are trapped in Sword Art Online, a VRMMORPG where death is real. With Asuna, he fights to clear 100 floors, blending romance and survival in a virtual gauntlet.",
+            "That Time I Got Reincarnated as a Slime": "Satoru Mikami reborn as slime Rimuru builds Tempest with absorbed powers. From monster allies to demon lord status, his journey mixes diplomacy and battles in a warm, expansive fantasy.",
+            "The Daily Life of the Immortal King": "Immortal Wang Ling hides his cosmic power in high school, dodging threats and antics with Sun Rong. It’s a quirky blend of teenage life and godly chaos, served with humor.",
+            "The Greatest Demon Lord Is Reborn as a Typical Nobody": "Demon Lord Varvatos reincarnates as Ard Meteor, masking his might at a magic academy. With Ireena, he faces old foes, mixing comedy with action in a tale of hidden strength.",
+            "The Reincarnation of the Strongest Exorcist in Another World": "Exorcist Haruyoshi reborn as Seika wields sealing arts in secret. With Yifa, he thwarts magical threats, blending cunning and power in a tale of quiet supremacy.",
+            "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat": "An assassin reborn as Lugh Tuatha Dé aims to kill a hero for a goddess. With Dia and Tarte, he masters deadly skills, weaving espionage and precision in a fantasy intrigue.",
+            "Tower of God": "Bam climbs the Tower for Rachel, facing trials with Khun and Rak. Betrayal and epic tests shape a climb fueled by friendship and ambition in a shifting enigma.",
+            "Tsukimichi -Moonlit Fantasy-": "Makoto Misumi, rejected as a hero, builds a non-human empire with Tomoe and Mio. Defying gods and prejudice, his tale mixes humor and action in a resilient rise.",
+            "Vampire Dormitory": "Mito Yamamoto, disguised as a boy, enters a vampire dorm under Ruka’s wing. Secrets and forbidden love brew in a gothic tale of blood and shadowed bonds.",
+            "Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord": "Yumiella Dolkness, an otome villainess, hits level 99, sparking fear. Her dry wit flips tropes, crafting a lighthearted isekai of reluctant power and schoolyard chaos.",
+            "Zom 100: Bucket List of the Dead": "Akira Tendo embraces a zombie apocalypse, chasing bucket-list dreams with Shizuka and Kencho. From skydiving to feasts, it’s a darkly funny ode to life amid undead ruin."
+        };
+
+        tbody.addEventListener('click', (e) => {
+            const animeBox = e.target.closest('.anime-box');
+            if (animeBox) {
+                const animeName = animeBox.dataset.anime;
+                modalTitle.textContent = animeName;
+                modalPlot.textContent = plots[animeName] || "Plot details not available.";
+                modal.style.display = 'flex';
+            }
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Event listeners
+        searchBar.addEventListener('input', applyFilters);
+        filterSelect.addEventListener('change', applyFilters);
+
+        // Initial render
+        applyFilters();
+    </script>
+</body>
+</html>
+
+In above code calculate all animes number
