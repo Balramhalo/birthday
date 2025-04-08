@@ -3,399 +3,318 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coding Rizz (kinda)</title>
-    <link rel="icon" type="image/png" href="https://ibb.co/FkDMDxWR">
+    <title>Anime Chronicles</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-color: #0a0a0a;
-            --text-color: #f5f5f5;
-            --primary-color: #00ff88;
-            --secondary-color: #ff4444;
-            --border-color: #2a2a2a;
-            --typing-bg: #1a1a1a;
-            --accent: #00ff88;
-            --star-color: rgba(255, 255, 255, 0.8);
-        }
-
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        body {
+            background: linear-gradient(135deg, #1e2a3c, #0f172a);
+            font-family: 'Poppins', sans-serif;
+            color: #d1d5db;
+            overflow-x: hidden;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
-            color: var(--text-color);
-            overflow: hidden;
-            position: relative;
         }
-
-        /* Starfield Background */
-        .stars {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            transform: rotate(-45deg);
-        }
-
-        .star {
-            position: absolute;
-            background: var(--star-color);
-            border-radius: 50%;
-            animation: twinkle var(--duration) ease-in-out infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
-        /* Shooting Stars */
-        .shooting-star {
-            position: absolute;
-            width: 120px;
-            height: 2px;
-            background: linear-gradient(-45deg, rgba(0, 255, 136, 0), var(--accent), rgba(0, 255, 136, 0));
-            border-radius: 999px;
-            filter: drop-shadow(0 0 6px var(--accent));
-            animation: shooting 2s infinite;
-        }
-
-        @keyframes shooting {
-            0% {
-                transform: translateX(-100%) translateY(-100%) rotate(-45deg);
-                opacity: 0;
-            }
-            20%, 100% { opacity: 0; }
-            10% {
-                opacity: 1;
-                transform: translateX(0%) translateY(0%) rotate(-45deg);
-            }
-        }
-
         .container {
-            background: rgba(10, 10, 10, 0.9);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 2px solid var(--border-color);
-            box-shadow: 0 0 40px rgba(0, 255, 136, 0.1),
-                        inset 0 0 20px rgba(0, 255, 136, 0.2);
-            width: 95%;
-            max-width: 600px;
-            position: relative;
-            z-index: 2;
-            backdrop-filter: blur(10px);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+            animation: slideIn 1.2s ease-out;
         }
-
-        h1 {
+        .header {
             text-align: center;
-            margin-bottom: 2rem;
-            font-size: 2rem;
-            font-weight: 600;
-            text-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .cyber-btn {
-            padding: 1.2rem 2.5rem;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            cursor: pointer;
+            padding: 40px 20px;
+            background: #1e293b;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
             position: relative;
             overflow: hidden;
-            background: var(--typing-bg);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            transition: all 0.3s;
+            animation: headerPulse 2s ease-in-out infinite;
         }
-
-        .cyber-btn::before {
+        .header::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg,
-                transparent,
-                rgba(0, 255, 136, 0.2),
-                transparent
-            );
-            transition: 0.5s;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.2), transparent);
+            animation: pulseGlow 6s infinite ease-in-out;
         }
-
-        .cyber-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.2);
+        .header h1 {
+            font-size: 3em;
+            color: #38bdf8;
+            margin: 0;
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+            position: relative;
+            z-index: 1;
+            letter-spacing: 2px;
         }
-
-        .cyber-btn:hover::before {
-            left: 100%;
-        }
-
-        #achaBtn {
-            border-color: var(--primary-color);
-        }
-
-        #bekarBtn {
-            border-color: var(--secondary-color);
-        }
-
-        .message-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: calc(100% - 4rem);
-            background: var(--typing-bg);
-            padding: 2rem;
-            border-radius: 15px;
+        .header h1 span {
+            display: inline-block;
             opacity: 0;
-            pointer-events: none;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
+            margin-right: 8px;
         }
-
-        .message-container.visible {
-            opacity: 1;
-            animation: messageIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        .header p {
+            font-size: 1.2em;
+            color: #94a3b8;
+            z-index: 1;
+            position: relative;
+            animation: fadeInText 1s ease-out 2s forwards;
+            opacity: 0;
         }
-
-        .typing-indicator {
+        .filter-container {
             display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            animation: filterBounce 1.5s ease-out forwards;
+            opacity: 0;
         }
-
-        .typing-dots {
+        #search-bar, #filter-select {
+            padding: 12px;
+            background: #1e293b;
+            color: #d1d5db;
+            border: 2px solid #38bdf8;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+        #search-bar {
+            flex: 1;
+        }
+        #search-bar:focus, #filter-select:focus {
+            outline: none;
+            border-color: #f472b6;
+            box-shadow: 0 0 15px rgba(244, 114, 182, 0.5);
+            transform: scale(1.02);
+        }
+        .anime-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 15px;
+        }
+        .anime-table th {
+            padding: 15px;
+            background: #1e293b;
+            color: #38bdf8;
+            text-transform: uppercase;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        .anime-table td {
+            padding: 20px;
+            background: #2d3748;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .anime-table tr:hover td {
+            transform: translateY(-5px) rotateX(5deg);
+            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.5);
+        }
+        .anime-box {
             display: flex;
-            gap: 8px;
+            flex-direction: column;
+            gap: 10px;
+            background: linear-gradient(135deg, #334155, #2d3748);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #4b5563;
+            transform-origin: center;
+            cursor: pointer;
         }
-
-        .dot {
-            width: 10px;
-            height: 10px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: pulse 1.4s infinite;
+        .anime-box .name {
+            font-size: 1.4em;
+            color: #38bdf8;
+            font-weight: 600;
         }
-
-        .dot:nth-child(2) { animation-delay: 0.2s; }
-        .dot:nth-child(3) { animation-delay: 0.4s; }
-
-        .message-text {
-            font-size: 1.4rem;
+        .anime-box .details {
+            font-size: 1em;
+            color: #d1d5db;
+        }
+        .anime-box .rating {
+            color: #facc15;
+            font-weight: 600;
+        }
+        footer {
             text-align: center;
-            line-height: 1.6;
-            background: linear-gradient(45deg, var(--primary-color), #00ff88);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            padding: 30px;
+            margin-top: 50px;
+            color: #94a3b8;
+            font-size: 1em;
+            background: #1e293b;
+            border-radius: 15px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.4);
+            animation: slideUp 1s ease-out 3s forwards;
             opacity: 0;
-            transform: translateY(20px);
         }
-
-        .message-text.visible {
-            opacity: 1;
-            transform: translateY(0);
-            transition: all 0.6s 0.3s;
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            animation: backdropFadeIn 0.3s ease-out;
         }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        .modal-content {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            animation: modalSlideIn 0.4s ease-out;
+            position: relative;
+            border: 2px solid transparent;
+            background-clip: padding-box;
         }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.4; }
-            50% { transform: scale(1.2); opacity: 1; }
-        }
-
-        @keyframes messageIn {
-            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-
-        .particles {
+        .modal-content::before {
+            content: '';
             position: absolute;
-            width: 2px;
-            height: 2px;
-            background: var(--accent);
-            pointer-events: none;
-            animation: particle 2s linear infinite;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 12px;
+            background: linear-gradient(45deg, #38bdf8, #f472b6, #38bdf8);
+            z-index: -1;
+            animation: borderGlow 3s infinite linear;
         }
-
-        @keyframes particle {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        .modal-content h2 {
+            color: #38bdf8;
+            margin-top: 0;
         }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 1.5rem;
-            }
-
-            h1 {
-                font-size: 1.6rem;
-            }
-
-            .cyber-btn {
-                padding: 1rem 2rem;
-            }
+        .modal-content p {
+            color: #d1d5db;
+            line-height: 1.6;
+        }
+        .close-btn {
+            float: right;
+            font-size: 1.5em;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .close-btn:hover {
+            color: #f472b6;
+            transform: rotate(90deg);
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes pulseGlow {
+            0% { transform: scale(1); opacity: 0.2; }
+            50% { transform: scale(1.1); opacity: 0.4; }
+            100% { transform: scale(1); opacity: 0.2; }
+        }
+        @keyframes headerPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        @keyframes fadeInText {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes filterBounce {
+            0% { transform: translateY(30px); opacity: 0; }
+            60% { transform: translateY(-10px); opacity: 1; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes rowFadeSlide {
+            0% { transform: translateX(-20px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes backdropFadeIn {
+            from { background: rgba(0, 0, 0, 0); }
+            to { background: rgba(0, 0, 0, 0.8); }
+        }
+        @keyframes modalSlideIn {
+            from { transform: translateY(-30px) scale(0.95); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @keyframes borderGlow {
+            0% { box-shadow: 0 0 10px #38bdf8, 0 0 20px #f472b6; }
+            50% { box-shadow: 0 0 20px #f472b6, 0 0 30px #38bdf8; }
+            100% { box-shadow: 0 0 10px #38bdf8, 0 0 20px #f472b6; }
         }
     </style>
 </head>
 <body>
-    <div class="stars" id="stars"></div>
     <div class="container">
-        <h1>Yeh Batao, do you love me?💫</h1>
-        <div class="button-group">
-            <button id="achaBtn" class="cyber-btn">Yes 😇</button>
-            <button id="bekarBtn" class="cyber-btn">No 😈</button>
-        </div>
-
-        <div class="message-container" id="messageContainer">
-            <div class="typing-indicator">
-                <div class="typing-dots">
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                </div>
-                <span>Typing...</span>
+        <div class="header">
+            <h1 id="dynamic-title"></h1>
+            <p id="stats">Total Anime Watched: 0 | Total Seasons: 0 | Total Episodes: 0</p>
+            <div class="filter-container">
+                <input type="text" id="search-bar" placeholder="Search anime...">
+                <select id="filter-select">
+                    <option value="az">A to Z</option>
+                    <option value="random">Random</option>
+                    <option value="high-low">High to Low Episodes</option>
+                    <option value="low-high">Low to High Episodes</option>
+                    <option value="rating-high">High to Low Rating</option>
+                </select>
             </div>
-            <div class="message-text" id="messageText"></div>
         </div>
-    </div>
-
-    <script>
-        // Starfield Initialization
-        function createStarfield() {
-            const starsContainer = document.getElementById('stars');
-            const starCount = 200;
-
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.width = Math.random() * 3 + 'px';
-                star.style.height = star.style.width;
-                star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
-                starsContainer.appendChild(star);
-            }
-        }
-
-        // Shooting Stars Generator
-        function createShootingStar() {
-            const star = document.createElement('div');
-            star.className = 'shooting-star';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.left = Math.random() * 100 + '%';
-            document.body.appendChild(star);
-            
-            setTimeout(() => {
-                star.remove();
-            }, 2000);
-        }
-
-        // Initialize background effects
-        createStarfield();
-        setInterval(createShootingStar, 3000);
-
-        // Original Application Logic
-        const achaBtn = document.getElementById('achaBtn');
-        const bekarBtn = document.getElementById('bekarBtn');
-        const messageContainer = document.getElementById('messageContainer');
-        const messageText = document.getElementById('messageText');
-        let bekarAttempts = 0;
-
-        const typeText = async (element, text, speed = 100) => {
-            for (let i = 0; i < text.length; i++) {
-                element.textContent += text[i];
-                await new Promise(resolve => setTimeout(resolve, speed + Math.random() * 50));
-            }
-        };
-
-        const deleteText = async (element, count, speed = 50) => {
-            for (let i = 0; i < count; i++) {
-                element.textContent = element.textContent.slice(0, -1);
-                await new Promise(resolve => setTimeout(resolve, speed));
-            }
-        };
-
-        achaBtn.addEventListener('click', async () => {
-            createParticles();
-            document.querySelector('.button-group').style.opacity = '0';
-            messageContainer.classList.add('visible');
-            messageText.textContent = '';
-
-            await typeText(messageText, '', 120);
-            await new Promise(resolve => setTimeout(resolve, 300));
-            await deleteText(messageText, 3);
-            await typeText(messageText, 'in', 150);
-            await new Promise(resolve => setTimeout(resolve, 200));
-            await deleteText(messageText, 2);
-            await new Promise(resolve => setTimeout(resolve, 100));
-            await typeText(messageText, 'Aww, me bhi apko bohot love karta hu!! 💖', 40);
-
-            messageText.classList.add('visible');
-            document.querySelector('.typing-indicator').style.display = 'none';
-        });
-
-        bekarBtn.addEventListener('click', () => {
-            bekarAttempts++;
-            const containerRect = document.querySelector('.container').getBoundingClientRect();
-            const maxX = containerRect.width - bekarBtn.offsetWidth - 40;
-            const maxY = containerRect.height - bekarBtn.offsetHeight - 20;
-
-            bekarBtn.style.transition = `all ${Math.max(0.1, 0.5 - bekarAttempts*0.04)}s`;
-            bekarBtn.style.transform = `translate(
-                ${Math.random() * maxX}px,
-                ${Math.random() * maxY}px
-            ) rotate(${Math.random() * 15 - 7.5}deg)`;
-
-            if(bekarAttempts > 3) {
-                bekarBtn.style.filter = `hue-rotate(${bekarAttempts*30}deg)`;
-            }
-        });
-
-        function createParticles() {
-            for(let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particles';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 2 + 's';
-                document.body.appendChild(particle);
-                setTimeout(() => particle.remove(), 2000);
-            }
-        }
-
-        // Mobile optimizations
-        [achaBtn, bekarBtn].forEach(btn => {
-            btn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                btn.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    btn.style.transform = 'scale(1)';
-                }, 100);
-                btn.click();
-            });
-        });
-    </script>
-</body>
-</html>
+        <table class="anime-table">
+            <thead>
+                <tr>
+                    <th>Anime Info</th>
+                    <th>IMDb Rating</th>
+                </tr>
+            </thead>
+            <tbody id="anime-table-body">
+                <tr><td><div class="anime-box" data-anime="Assassination Classroom"><span class="name">Assassination Classroom</span><span class="details">Seasons: 2 | Episodes: 47 | Notes: Season 1 (22 episodes, 2015), Season 2 (25 episodes, 2016)</span></div></td><td class="rating">8.0</td></tr>
+                <tr><td><div class="anime-box" data-anime="Baki Hanma"><span class="name">Baki Hanma</span><span class="details">Seasons: 2 | Episodes: 39 | Notes: Season 1 (13 episodes, 2021), Season 2 (26 episodes, 2023)</span></div></td><td class="rating">7.8</td></tr>
+                <tr><td><div class="anime-box" data-anime="Boku no Pico"><span class="name">Boku no Pico</span><span class="details">Seasons: 1 | Episodes: 3 | Notes: OVA series (3 episodes, 2006-2008)</span></div></td><td class="rating">4.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Campfire Cooking in Another World with My Absurd Skill"><span class="name">Campfire Cooking in Another World with My Absurd Skill</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired January-March 2023, Season 2 announced for 2025</span></div></td><td class="rating">7.4</td></tr>
+                <tr><td><div class="anime-box" data-anime="Chainsaw Man"><span class="name">Chainsaw Man</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Season 1 (12 episodes, 2022), Season 2 TBD</span></div></td><td class="rating">8.7</td></tr>
+                <tr><td><div class="anime-box" data-anime="Classroom of the Elite"><span class="name">Classroom of the Elite</span><span class="details">Seasons: 3 | Episodes: 38 | Notes: Season 1 (13 episodes, 2017), Season 2 (13 episodes, 2022), Season 3 (12 episodes, 2024)</span></div></td><td class="rating">8.0</td></tr>
+                <tr><td><div class="anime-box" data-anime="Dan Da Dan"><span class="name">Dan Da Dan</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired October-December 2024, Season 2 set for July 2025</span></div></td><td class="rating">8.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Death Note"><span class="name">Death Note</span><span class="details">Seasons: 1 | Episodes: 37 | Notes: Aired October 2006-June 2007</span></div></td><td class="rating">9.0</td></tr>
+                <tr><td><div class="anime-box" data-anime="Demon Slayer"><span class="name">Demon Slayer</span><span class="details">Seasons: 4 | Episodes: 55 | Notes: Season 1 (26 episodes, 2019), Season 2 (18 episodes, 2021-2022), Season 3 (11 episodes, 2023), Season 4 (8 episodes, 2024)</span></div></td><td class="rating">8.7</td></tr>
+                <tr><td><div class="anime-box" data-anime="Dragon Ball Daima"><span class="name">Dragon Ball Daima</span><span class="details">Seasons: 1 | Episodes: 20 | Notes: Aired October 2024-March 2025</span></div></td><td class="rating">8.0</td></tr>
+                <tr><td><div class="anime-box" data-anime="Gods' Game We Play"><span class="name">Gods' Game We Play</span><span class="details">Seasons: 1 | Episodes: 13 | Notes: Aired April-June 2024</span></div></td><td class="rating">7.2</td></tr>
+                <tr><td><div class="anime-box" data-anime="I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too"><span class="name">I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too</span><span class="details">Seasons: 1 | Episodes: 13 | Notes: Aired April-June 2023</span></div></td><td class="rating">6.8</td></tr>
+                <tr><td><div class="anime-box" data-anime="I Shall Survive Using Potions!"><span class="name">I Shall Survive Using Potions!</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired October-December 2023</span></div></td><td class="rating">6.9</td></tr>
+                <tr><td><div class="anime-box" data-anime="I Was Reincarnated as the 7th Prince so I Can Take My Time Perfecting My Magical Ability"><span class="name">I Was Reincarnated as the 7th Prince so I Can Take My Time Perfecting My Magical Ability</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired April-June 2024, Season 2 set for July 2025</span></div></td><td class="rating">7.6</td></tr>
+                <tr><td><div class="anime-box" data-anime="I'm in Love with the Villainess"><span class="name">I'm in Love with the Villainess</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired October-December 2023</span></div></td><td class="rating">7.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Jujutsu Kaisen"><span class="name">Jujutsu Kaisen</span><span class="details">Seasons: 2 | Episodes: 47 | Notes: Season 1 (24 episodes, 2020-2021), Season 2 (23 episodes, 2023)</span></div></td><td class="rating">8.6</td></tr>
+                <tr><td><div class="anime-box" data-anime="Junji Ito Collection"><span class="name">Junji Ito Collection</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired January-March 2018</span></div></td><td class="rating">6.7</td></tr>
+                <tr><td><div class="anime-box" data-anime="Kaiju No. 8"><span class="name">Kaiju No. 8</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired April-June 2024, Season 2 set for July 2025</span></div></td><td class="rating">8.4</td></tr>
+                <tr><td><div class="anime-box" data-anime="Lookism"><span class="name">Lookism</span><span class="details">Seasons: 1 | Episodes: 8 | Notes: Released December 2022</span></div></td><td class="rating">7.7</td></tr>
+                <tr><td><div class="anime-box" data-anime="Mashle: Magic and Muscles"><span class="name">Mashle: Magic and Muscles</span><span class="details">Seasons: 2 | Episodes: 24 | Notes: Season 1 (12 episodes, 2023), Season 2 (12 episodes, 2024)</span></div></td><td class="rating">7.9</td></tr>
+                <tr><td><div class="anime-box" data-anime="Mushoku Tensei: Jobless Reincarnation"><span class="name">Mushoku Tensei: Jobless Reincarnation</span><span class="details">Seasons: 2 | Episodes: 48 | Notes: Season 1 (23 episodes, 2021), Season 2 (25 episodes, 2023-2024)</span></div></td><td class="rating">8.4</td></tr>
+                <tr><td><div class="anime-box" data-anime="My One-Hit Kill Sister"><span class="name">My One-Hit Kill Sister</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired April-June 2023</span></div></td><td class="rating">6.6</td></tr>
+                <tr><td><div class="anime-box" data-anime="My Unique Skill Makes Me OP Even at Level 1"><span class="name">My Unique Skill Makes Me OP Even at Level 1</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired July-September 2023</span></div></td><td class="rating">7.0</td></tr>
+                <tr><td><div class="anime-box" data-anime="Naruto"><span class="name">Naruto</span><span class="details">Seasons: 2 | Episodes: 720 | Notes: Naruto (220 episodes, 2002-2007), Naruto: Shippuden (500 episodes, 2007-2017)</span></div></td><td class="rating">8.3</td></tr>
+                <tr><td><div class="anime-box" data-anime="One Punch Man"><span class="name">One Punch Man</span><span class="details">Seasons: 2 | Episodes: 24 | Notes: Season 1 (12 episodes, 2015), Season 2 (12 episodes, 2019)</span></div></td><td class="rating">8.8</td></tr>
+                <tr><td><div class="anime-box" data-anime="Record of Ragnarok"><span class="name">Record of Ragnarok</span><span class="details">Seasons: 2 | Episodes: 25 | Notes: Season 1 (12 episodes, 2021), Season 2 (13 episodes, 2023)</span></div></td><td class="rating">7.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Reign of the Seven Spellblades"><span class="name">Reign of the Seven Spellblades</span><span class="details">Seasons: 1 | Episodes: 13 | Notes: Aired July-September 2023</span></div></td><td class="rating">7.1</td></tr>
+                <tr><td><div class="anime-box" data-anime="Solo Leveling"><span class="name">Solo Leveling</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired January-March 2024, Season 2 announced</span></div></td><td class="rating">8.6</td></tr>
+                <tr><td><div class="anime-box" data-anime="Spy x Family"><span class="name">Spy x Family</span><span class="details">Seasons: 2 | Episodes: 37 | Notes: Season 1 (25 episodes, 2022), Season 2 (12 episodes, 2023)</span></div></td><td class="rating">8.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Sword Art Online"><span class="name">Sword Art Online</span><span class="details">Seasons: 1 | Episodes: 25 | Notes: Season 1 (25 episodes, 2012)</span></div></td><td class="rating">7.6</td></tr>
+                <tr><td><div class="anime-box" data-anime="That Time I Got Reincarnated as a Slime"><span class="name">That Time I Got Reincarnated as a Slime</span><span class="details">Seasons: 3 | Episodes: 62 | Notes: Season 1 (24 episodes, 2018-2019), Season 2 (24 episodes, 2021), Season 3 (14 episodes, 2024 ongoing)</span></div></td><td class="rating">8.1</td></tr>
+                <tr><td><div class="anime-box" data-anime="The Daily Life of the Immortal King"><span class="name">The Daily Life of the Immortal King</span><span class="details">Seasons: 4 | Episodes: 51 | Notes: Season 1 (15 episodes, 2020), Season 2 (12 episodes, 2021), Season 3 (12 episodes, 2022), Season 4 (12 episodes, 2023-2024)</span></div></td><td class="rating">7.3</td></tr>
+                <tr><td><div class="anime-box" data-anime="The Greatest Demon Lord Is Reborn as a Typical Nobody"><span class="name">The Greatest Demon Lord Is Reborn as a Typical Nobody</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired April-June 2022</span></div></td><td class="rating">6.9</td></tr>
+                <tr><td><div class="anime-box" data-anime="The Reincarnation of the Strongest Exorcist in Another World"><span class="name">The Reincarnation of the Strongest Exorcist in Another World</span><span class="details">Seasons: 1 | Episodes: 13 | Notes: Aired January-March 2023</span></div></td><td class="rating">7.2</td></tr>
+                <tr><td><div class="anime-box" data-anime="The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat"><span class="name">The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired October-December 2021</span></div></td><td class="rating">7.4</td></tr>
+                <tr><td><div class="anime-box" data-anime="Tower of God"><span class="name">Tower of God</span><span class="details">Seasons: 2 | Episodes: 26 | Notes: Season 1 (13 episodes, 2020), Season 2 (13 episodes, 2024)</span></div></td><td class="rating">7.7</td></tr>
+                <tr>
