@@ -317,4 +317,182 @@
                 <tr><td><div class="anime-box" data-anime="The Reincarnation of the Strongest Exorcist in Another World"><span class="name">The Reincarnation of the Strongest Exorcist in Another World</span><span class="details">Seasons: 1 | Episodes: 13 | Notes: Aired January-March 2023</span></div></td><td class="rating">7.2</td></tr>
                 <tr><td><div class="anime-box" data-anime="The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat"><span class="name">The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired October-December 2021</span></div></td><td class="rating">7.4</td></tr>
                 <tr><td><div class="anime-box" data-anime="Tower of God"><span class="name">Tower of God</span><span class="details">Seasons: 2 | Episodes: 26 | Notes: Season 1 (13 episodes, 2020), Season 2 (13 episodes, 2024)</span></div></td><td class="rating">7.7</td></tr>
-                <tr>
+                <tr><td><div class="anime-box" data-anime="Tsukimichi -Moonlit Fantasy-"><span class="name">Tsukimichi -Moonlit Fantasy-</span><span class="details">Seasons: 2 | Episodes: 37 | Notes: Season 1 (12 episodes, 2021), Season 2 (25 episodes, 2024)</span></div></td><td class="rating">7.8</td></tr>
+                <tr><td><div class="anime-box" data-anime="Vampire Dormitory"><span class="name">Vampire Dormitory</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired April-June 2024</span></div></td><td class="rating">6.8</td></tr>
+                <tr><td><div class="anime-box" data-anime="Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord"><span class="name">Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired January-March 2024</span></div></td><td class="rating">7.5</td></tr>
+                <tr><td><div class="anime-box" data-anime="Zom 100: Bucket List of the Dead"><span class="name">Zom 100: Bucket List of the Dead</span><span class="details">Seasons: 1 | Episodes: 12 | Notes: Aired July-December 2023</span></div></td><td class="rating">7.9</td></tr>
+            </tbody>
+        </table>
+        <footer>
+            Anime List Watched by Balram | Last Updated March 12, 2025
+        </footer>
+    </div>
+    <div class="modal" id="plot-modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal">×</span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-plot"></p>
+        </div>
+    </div>
+    <script>
+        const tbody = document.getElementById('anime-table-body');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const searchBar = document.getElementById('search-bar');
+        const filterSelect = document.getElementById('filter-select');
+        const dynamicTitle = document.getElementById('dynamic-title');
+        const modal = document.getElementById('plot-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalPlot = document.getElementById('modal-plot');
+        const closeModal = document.getElementById('close-modal');
+
+        // Calculate totals dynamically
+        let totalSeasons = 0;
+        let totalEpisodes = 0;
+        rows.forEach(row => {
+            const details = row.querySelector('.details').textContent;
+            const seasonsMatch = details.match(/Seasons: (\d+)/);
+            const episodesMatch = details.match(/Episodes: (\d+)/);
+            totalSeasons += seasonsMatch ? parseInt(seasonsMatch[1]) : 0;
+            totalEpisodes += episodesMatch ? parseInt(episodesMatch[1]) : 0;
+        });
+        document.getElementById('stats').textContent =
+            `Total Anime Watched: ${rows.length} | Total Seasons: ${totalSeasons} | Total Episodes: ${totalEpisodes}`;
+
+        // Title animation sequence
+        const stages = [
+            "ANIME CHRONICLES",
+            "ANIME LIST",
+            "ANIME DIARY"
+        ];
+        const finalTitles = ["ANIME DIARY", "LIST OF ANIME WATCHED BY BALRAM"];
+
+        let currentStage = 0;
+        function animateTitle() {
+            dynamicTitle.innerHTML = stages[currentStage].split('').map(char => `<span style="opacity: 0">${char}</span>`).join('');
+            const spans = dynamicTitle.querySelectorAll('span');
+            spans.forEach((span, idx) => {
+                setTimeout(() => {
+                    span.style.opacity = 1;
+                    span.style.transition = 'opacity 0.34s ease';
+                }, idx * 100);
+            });
+
+            if (currentStage < stages.length - 1) {
+                setTimeout(() => {
+                    spans.forEach((span, idx) => {
+                        setTimeout(() => {
+                            span.style.opacity = 0;
+                        }, idx * 50);
+                    });
+                    setTimeout(() => {
+                        currentStage++;
+                        animateTitle();
+                    }, spans.length * 50 + 200);
+                }, spans.length * 100 + 500);
+            } else {
+                setTimeout(() => {
+                    let titleIndex = 0;
+                    setInterval(() => {
+                        dynamicTitle.style.opacity = 0;
+                        setTimeout(() => {
+                            titleIndex = (titleIndex + 1) % finalTitles.length;
+                            dynamicTitle.innerHTML = finalTitles[titleIndex].split('').map(char => `<span style="opacity: 0">${char}</span>`).join('');
+                            const newSpans = dynamicTitle.querySelectorAll('span');
+                            newSpans.forEach((span, idx) => {
+                                setTimeout(() => {
+                                    span.style.opacity = 1;
+                                    span.style.transition = 'opacity 0.2s ease';
+                                }, idx * 50);
+                            });
+                            dynamicTitle.style.opacity = 1;
+                        }, 300);
+                    }, 4000);
+                }, stages.length * 100 + 1500);
+            }
+        }
+        animateTitle();
+
+        // Render rows with animation
+        function renderRows(filteredRows) {
+            tbody.innerHTML = '';
+            filteredRows.forEach((row, index) => {
+                setTimeout(() => {
+                    tbody.appendChild(row);
+                    row.style.animation = 'rowFadeSlide 0.6s ease-out forwards';
+                }, index * 150); // Staggered slide-in
+            });
+        }
+
+        // Search and filter logic
+        function applyFilters() {
+            const searchTerm = searchBar.value.trim().toLowerCase();
+            const filter = filterSelect.value;
+
+            let filteredRows = rows.filter(row => {
+                const animeName = row.querySelector('.name').textContent.toLowerCase();
+                return searchTerm === '' || animeName.includes(searchTerm);
+            });
+
+            if (filter === 'az') {
+                filteredRows.sort((a, b) => a.querySelector('.name').textContent.localeCompare(b.querySelector('.name').textContent));
+            } else if (filter === 'random') {
+                filteredRows.sort(() => Math.random() - 0.5);
+            } else if (filter === 'high-low') {
+                filteredRows.sort((a, b) => {
+                    const aEp = parseInt(a.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
+                    const bEp = parseInt(b.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
+                    return bEp - aEp;
+                });
+            } else if (filter === 'low-high') {
+                filteredRows.sort((a, b) => {
+                    const aEp = parseInt(a.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
+                    const bEp = parseInt(b.querySelector('.details').textContent.match(/Episodes: (\d+)/)[1]);
+                    return aEp - bEp;
+                });
+            } else if (filter === 'rating-high') {
+                filteredRows.sort((a, b) => parseFloat(b.cells[1].textContent) - parseFloat(a.cells[1].textContent));
+            }
+
+            renderRows(filteredRows);
+        }
+
+        // Modal handling with updated summaries
+        const plots = {
+            "Assassination Classroom": "A class of misfit students is tasked with assassinating their alien teacher, Koro-sensei, who threatens to destroy Earth. As they plot his demise, they grow under his unconventional mentorship, learning life lessons and uncovering his mysterious past. It’s a blend of comedy, action, and heartfelt growth.",
+            "Baki Hanma": "Baki Hanma trains to surpass his father, the invincible Yujiro Hanma, in underground martial arts battles. Facing brutal opponents, his journey is a relentless test of strength and will.",
+            "Boku no Pico": "A controversial OVA series following the encounters between Pico, a young boy, and various characters in intimate situations. Known for its explicit content, it explores themes of youth and relationships in a provocative manner. Viewer discretion is advised.",
+            "Campfire Cooking in Another World with My Absurd Skill": "Tsuyoshi Mukoda uses his 'Online Supermarket' skill to cook gourmet meals in a fantasy world, taming beasts like Fenrir with food. A lighthearted culinary adventure ensues.",
+            "Chainsaw Man": "Denji becomes Chainsaw Man, a devil-human hybrid, hunting devils for survival and simple dreams. His bloody battles mix chaos with dark humor.",
+            "Classroom of the Elite": "Kiyotaka Ayanokoji manipulates a cutthroat high school’s merit system, hiding his genius to dominate strategically in a psychological contest."
+            // Add more summaries as needed for existing anime...
+        };
+
+        tbody.addEventListener('click', (e) => {
+            const animeBox = e.target.closest('.anime-box');
+            if (animeBox) {
+                const animeName = animeBox.dataset.anime;
+                modalTitle.textContent = animeName;
+                modalPlot.textContent = plots[animeName] || "Plot details not available.";
+                modal.style.display = 'flex';
+            }
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Event listeners
+        searchBar.addEventListener('input', applyFilters);
+        filterSelect.addEventListener('change', applyFilters);
+
+        // Initial render
+        applyFilters();
+    </script>
+</body>
+</html>
