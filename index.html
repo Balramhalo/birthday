@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distance List - Official</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .admin-link {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .admin-link:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .list-section {
+            padding: 50px 40px;
+        }
+
+        .list-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .list-header h2 {
+            color: #333;
+            font-size: 2.2em;
+            margin-bottom: 15px;
+        }
+
+        .list-header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .search-box {
+            margin-bottom: 35px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 18px 25px;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            font-size: 1.1em;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .stats {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .stats h3 {
+            color: #e74c3c;
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .stats p {
+            color: #666;
+            font-size: 1em;
+        }
+
+        .person-card {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            animation: fadeIn 0.5s ease;
+            border-left: 5px solid #e74c3c;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .person-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .person-card h3 {
+            color: #d63031;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .person-card .reason {
+            color: #2d3436;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+        }
+
+        .person-card .date {
+            color: #636e72;
+            font-size: 0.95em;
+            font-style: italic;
+        }
+
+        .warning-badge {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.5em;
+            font-weight: 600;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #95a5a6;
+        }
+
+        .empty-state svg {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 25px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        /* Admin Page Styles */
+        .admin-container {
+            display: none;
+            max-width: 700px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .admin-container.active {
+            display: block;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .admin-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: white;
+            text-decoration: none;
+            padding: 10px 25px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .admin-body {
+            padding: 40px;
+        }
+
+        .login-form {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.05em;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-logout {
+            background: #dc3545;
+            padding: 10px 25px;
+            width: auto;
+            font-size: 0.95em;
+            margin-top: 20px;
+        }
+
+        .btn-logout:hover {
+            background: #c82333;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95em;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .admin-list {
+            margin-top: 40px;
+        }
+
+        .admin-list h3 {
+            color: #333;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+            animation: slideDown 0.3s ease;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .admin-link {
+                position: static;
+                display: inline-block;
+                margin-top: 20px;
+            }
+            
+            .container, .admin-container {
+                border-radius: 10px;
+                margin: 10px;
+            }
+
+            .list-section {
+                padding: 30px 20px;
+            }
+
+            .admin-body {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Public Page -->
+    <div class="container" id="mainPage">
+        <div class="header">
+            <a href="#" class="admin-link" onclick="showAdmin(); return false;">🔐 Admin Access</a>
+            <h1>⚠️ Maintain Distance</h1>
+            <p>Important Notice: People to Avoid Contact With<br>Please maintain appropriate distance from the following individuals</p>
+        </div>
+
+        <div class="list-section">
+            <div class="stats">
+                <h3 id="totalCount">0</h3>
+                <p>People on the Distance List</p>
+            </div>
+
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Search by name..." onkeyup="searchList()">
+            </div>
+
+            <div id="personList">
+                <div class="loading">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Page -->
+    <div class="admin-container" id="adminPage">
+        <div class="admin-header">
+            <h1>🔐 Admin Panel</h1>
+            <p>Manage Distance List</p>
+            <a href="#" class="back-link" onclick="showMain(); return false;">← Back to Main Page</a>
+        </div>
+
+        <div class="admin-body">
+            <!-- Login Form -->
+            <div id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label>Admin Password</label>
+                    <input type="password" id="passwordInput" placeholder="Enter password" onkeypress="if(event.key==='Enter') login()">
+                </div>
+                <button class="btn" onclick="login()">🔓 Login</button>
+            </div>
+
+            <!-- Admin Panel (Hidden until login) -->
+            <div id="adminPanel" style="display: none;">
+                <div id="adminMessage"></div>
+
+                <div class="form-group">
+                    <label>Person's Name *</label>
+                    <input type="text" id="personName" placeholder="Enter full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Reason for Distance *</label>
+                    <textarea id="personReason" placeholder="Explain why distance should be maintained..." required></textarea>
+                </div>
+
+                <button class="btn" id="addBtn" onclick="addPerson()">➕ Add to Distance List</button>
+
+                <div class="admin-list">
+                    <h3>📋 Manage List</h3>
+                    <div id="adminPersonList"></div>
+                </div>
+
+                <center><button class="btn btn-logout" onclick="logout()">Logout</button></center>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const ADMIN_PASSWORD = 'balram';
+        const STORAGE_KEY = 'distanceListData_v2';
+        
+        // Initial default data
+        const DEFAULT_PEOPLE = [
+            {
+                id: 1732982400000,
+                name: 'Rakshit',
+                reason: 'Inappropriate behavior and disrespectful attitude. Has shown concerning patterns that warrant maintaining distance.',
+                dateAdded: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            },
+            {
+                id: 1732982401000,
+                name: 'Tushar',
+                reason: 'Unreliable and untrustworthy behavior observed. History of causing problems and negative influence.',
+                dateAdded: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            },
+            {
+                id: 1732982402000,
+                name: 'Varun',
+                reason: 'Demonstrated dishonest behavior and poor character. It is important to maintain a safe distance.',
+                dateAdded: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            }
+        ];
+
+        // State management
+        let people = [];
+        let isLoggedIn = false;
+
+        // Initialize application
+        function init() {
+            console.log('🚀 Initializing Distance List Application...');
+            loadData();
+            displayList();
+            updateStats();
+            console.log('✅ Application initialized successfully');
+        }
+
+        // Load data from localStorage with fallback to defaults
+        function loadData() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved && saved !== 'undefined') {
+                    people = JSON.parse(saved);
+                    console.log(`📥 Loaded ${people.length} entries from storage`);
+                } else {
+                    people = [...DEFAULT_PEOPLE];
+                    saveData();
+                    console.log('📦 Initialized with default data');
+                }
+            } catch (error) {
+                console.error('❌ Error loading data:', error);
+                people = [...DEFAULT_PEOPLE];
+                saveData();
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(people));
+                console.log('💾 Data saved successfully');
+                return true;
+            } catch (error) {
+                console.error('❌ Error saving data:', error);
+                showMessage('Error saving data. Please try again.', 'error');
+                return false;
+            }
+        }
+
+        // Show/hide pages
+        function showAdmin() {
+            document.getElementById('mainPage').style.display = 'none';
+            document.getElementById('adminPage').classList.add('active');
+            if (isLoggedIn) {
+                displayAdminList();
+            }
+        }
+
+        function showMain() {
+            document.getElementById('mainPage').style.display = 'block';
+            document.getElementById('adminPage').classList.remove('active');
+            displayList();
+            updateStats();
+        }
+
+        // Admin login
+        function login() {
+            const password = document.getElementById('passwordInput').value;
+            if (password === ADMIN_PASSWORD) {
+                isLoggedIn = true;
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+                displayAdminList();
+                console.log('✅ Admin logged in successfully');
+            } else {
+                showMessage('❌ Incorrect password! Please try again.', 'error', 'adminMessage');
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
+        }
+
+        // Admin logout
+        function logout() {
+            isLoggedIn = false;
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('adminMessage').innerHTML = '';
+            console.log('👋 Admin logged out');
+        }
+
+        // Add person to list
+        function addPerson() {
+            const nameInput = document.getElementById('personName');
+            const reasonInput = document.getElementById('personReason');
+            const name = nameInput.value.trim();
+            const reason = reasonInput.value.trim();
+
+            // Validation
+            if (!name) {
+                showMessage('⚠️ Please enter a name', 'error', 'adminMessage');
+                nameInput.focus();
+                return;
+            }
+
+            if (!reason) {
+                showMessage('⚠️ Please enter a reason', 'error', 'adminMessage');
+                reasonInput.focus();
+                return;
+            }
+
+            // Check for duplicates
+            const duplicate = people.find(p => p.name.toLowerCase() === name.toLowerCase());
+            if (duplicate) {
+                showMessage('⚠️ This person is already on the list', 'error', 'adminMessage');
+                return;
+            }
+
+            // Create new entry
+            const newPerson = {
+                id: Date.now(),
+                name: name,
+                reason: reason,
+                dateAdded: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            };
+
+            // Add and save
+            people.push(newPerson);
+            people.sort((a, b) => a.name.localeCompare(b.name));
+            
+            if (saveData()) {
+                displayList();
+                displayAdminList();
+                updateStats();
+
+                // Clear form
+                nameInput.value = '';
+                reasonInput.value = '';
+
+                showMessage(`✅ Successfully added "${name}" to the distance list!`, 'success', 'adminMessage');
+                console.log(`➕ Added new person: ${name}`);
+            }
+        }
+
+        // Delete person from list
+        function deletePerson(id) {
+            const person = people.find(p => p.id === id);
+            if (!person) return;
+
+            if (confirm(`⚠️ Are you sure you want to remove "${person.name}" from the list?`)) {
+                people = people.filter(p => p.id !== id);
+                
+                if (saveData()) {
+                    displayList();
+                    displayAdminList();
+                    updateStats();
+                    showMessage(`✅ Successfully removed "${person.name}" from list`, 'success', 'adminMessage');
+                    console.log(`🗑️ Deleted person: ${person.name}`);
+                }
+            }
+        }
+
+        // Display list on main page
+        function displayList() {
+            const listDiv = document.getElementById('personList');
+            
+            if (people.length === 0) {
+                listDiv.innerHTML = `
+                    <div class="empty-state">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <h3>No entries yet</h3>
+                        <p>The distance list is currently empty</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const sortedPeople = [...people].sort((a, b) => a.name.localeCompare(b.name));
+            
+            let html = '';
+            sortedPeople.forEach(person => {
+                html += `
+                    <div class="person-card" data-name="${person.name.toLowerCase()}">
+                        <h3>
+                            🚫 ${escapeHtml(person.name)}
+                            <span class="warning-badge">AVOID</span>
+                        </h3>
+                        <div class="reason"><strong>Reason:</strong> ${escapeHtml(person.reason)}</div>
+                        <div class="date">📅 Added on: ${person.dateAdded}</div>
+                    </div>
+                `;
+            });
+
+            listDiv.innerHTML = html;
+        }
+
+        // Display list in admin panel
+        function displayAdminList() {
+            const listDiv = document.getElementById('adminPersonList');
+            
+            if (people.length === 0) {
+                listDiv.innerHTML = '<p style="text-align:center; color:#999; padding: 20px;">No entries yet</p>';
+                return;
+            }
+
+            const sortedPeople = [...people].sort((a, b) => a.name.localeCompare(b.name));
+            
+            let html = '';
+            sortedPeople.forEach(person => {
+                html += `
+                    <div class="person-card">
+                        <h3>🚫 ${escapeHtml(person.name)}</h3>
+                        <div class="reason"><strong>Reason:</strong> ${escapeHtml(person.reason)}</div>
+                        <div class="date">Added: ${person.dateAdded}</div>
+                        <button class="btn-delete" onclick="deletePerson(${person.id})">🗑️ Remove</button>
+                    </div>
+                `;
+            });
+
+            listDiv.innerHTML = html;
+        }
+
+        // Search functionality
+        function searchList() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('#personList .person-card');
+
+            let visibleCount = 0;
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name');
+                if (name.includes(search)) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            console.log(`🔍 Search: "${search}" - ${visibleCount} results`);
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('totalCount').textContent = people.length;
+        }
+
+        // Show message
+        function showMessage(text, type, elementId) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+
+            const className = type === 'success' ? 'success-message' : 'error-message';
+            element.innerHTML = `<div class="${className}">${text}</div>`;
+
+            setTimeout(() => {
+                element.innerHTML = '';
+            }, 5000);
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Handle Enter key in password field
+        window.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && document.activeElement.id === 'passwordInput') {
+                login();
+            }
+        });
+
+        console.log('📋 Distance List Application Loaded');
+    </script>
+</body>
+</html>
