@@ -70,20 +70,23 @@
             padding: 50px 40px;
         }
 
-        .list-header {
+        .stats {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
         }
 
-        .list-header h2 {
-            color: #333;
-            font-size: 2.2em;
-            margin-bottom: 15px;
+        .stats h3 {
+            color: #e74c3c;
+            font-size: 2em;
+            margin-bottom: 5px;
         }
 
-        .list-header p {
+        .stats p {
             color: #666;
-            font-size: 1.1em;
+            font-size: 1em;
         }
 
         .search-box {
@@ -103,25 +106,6 @@
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .stats {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 15px;
-        }
-
-        .stats h3 {
-            color: #e74c3c;
-            font-size: 2em;
-            margin-bottom: 5px;
-        }
-
-        .stats p {
-            color: #666;
-            font-size: 1em;
         }
 
         .person-card {
@@ -184,28 +168,32 @@
             font-weight: 600;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 80px 20px;
-            color: #95a5a6;
+        .star-rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            margin-left: 15px;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 5px 12px;
+            border-radius: 20px;
         }
 
-        .empty-state svg {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 25px;
-            opacity: 0.5;
+        .star {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
         }
 
-        .empty-state h3 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
+        .infinity-symbol {
+            font-size: 24px;
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-left: 5px;
         }
 
-        /* Admin Page Styles */
         .admin-container {
             display: none;
-            max-width: 700px;
+            max-width: 900px;
             margin: 50px auto;
             background: white;
             border-radius: 20px;
@@ -248,6 +236,39 @@
             padding: 40px;
         }
 
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .tab-btn {
+            padding: 15px 30px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
         .login-form {
             text-align: center;
         }
@@ -266,7 +287,8 @@
         }
 
         .form-group input,
-        .form-group textarea {
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             padding: 15px 20px;
             border: 2px solid #ddd;
@@ -277,7 +299,8 @@
         }
 
         .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group textarea:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
@@ -306,22 +329,12 @@
             box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
         }
 
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
         .btn-logout {
             background: #dc3545;
             padding: 10px 25px;
             width: auto;
             font-size: 0.95em;
             margin-top: 20px;
-        }
-
-        .btn-logout:hover {
-            background: #c82333;
         }
 
         .btn-delete {
@@ -341,22 +354,23 @@
             transform: translateY(-2px);
         }
 
-        .admin-list {
-            margin-top: 40px;
+        .visitor-log {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
         }
 
-        .admin-list h3 {
+        .visitor-log .time {
+            font-weight: 600;
             color: #333;
-            font-size: 1.8em;
-            margin-bottom: 25px;
-            text-align: center;
+            margin-bottom: 5px;
         }
 
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #667eea;
-            font-size: 1.2em;
+        .visitor-log .details {
+            color: #666;
+            font-size: 0.95em;
         }
 
         .success-message {
@@ -366,7 +380,6 @@
             border-radius: 10px;
             margin-bottom: 20px;
             border: 1px solid #c3e6cb;
-            animation: slideDown 0.3s ease;
         }
 
         .error-message {
@@ -376,18 +389,12 @@
             border-radius: 10px;
             margin-bottom: 20px;
             border: 1px solid #f5c6cb;
-            animation: slideDown 0.3s ease;
         }
 
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #95a5a6;
         }
 
         @media (max-width: 768px) {
@@ -401,17 +408,8 @@
                 margin-top: 20px;
             }
             
-            .container, .admin-container {
-                border-radius: 10px;
-                margin: 10px;
-            }
-
-            .list-section {
-                padding: 30px 20px;
-            }
-
-            .admin-body {
-                padding: 30px 20px;
+            .admin-tabs {
+                overflow-x: auto;
             }
         }
     </style>
@@ -435,17 +433,15 @@
                 <input type="text" id="searchInput" placeholder="🔍 Search by name..." onkeyup="searchList()">
             </div>
 
-            <div id="personList">
-                <div class="loading">Loading...</div>
-            </div>
+            <div id="personList"></div>
         </div>
     </div>
 
     <!-- Admin Page -->
     <div class="admin-container" id="adminPage">
         <div class="admin-header">
-            <h1>🔐 Admin Panel</h1>
-            <p>Manage Distance List</p>
+            <h1>🔐 Admin Dashboard</h1>
+            <p>Manage Distance List & Monitor Activity</p>
             <a href="#" class="back-link" onclick="showMain(); return false;">← Back to Main Page</a>
         </div>
 
@@ -459,25 +455,55 @@
                 <button class="btn" onclick="login()">🔓 Login</button>
             </div>
 
-            <!-- Admin Panel (Hidden until login) -->
+            <!-- Admin Panel -->
             <div id="adminPanel" style="display: none;">
+                <div class="admin-tabs">
+                    <button class="tab-btn active" onclick="switchTab('manage')">📋 Manage List</button>
+                    <button class="tab-btn" onclick="switchTab('visitors')">👁️ Visitor Logs</button>
+                </div>
+
                 <div id="adminMessage"></div>
 
-                <div class="form-group">
-                    <label>Person's Name *</label>
-                    <input type="text" id="personName" placeholder="Enter full name" required>
+                <!-- Manage Tab -->
+                <div id="manageTab" class="tab-content active">
+                    <div class="form-group">
+                        <label>Person's Name *</label>
+                        <input type="text" id="personName" placeholder="Enter full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Reason for Distance *</label>
+                        <textarea id="personReason" placeholder="Explain why distance should be maintained..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Warning Level (Stars) *</label>
+                        <select id="starRating">
+                            <option value="1">⭐ 1 Star - Low Risk</option>
+                            <option value="1.5">⭐ 1.5 Stars</option>
+                            <option value="2">⭐⭐ 2 Stars</option>
+                            <option value="2.5">⭐⭐ 2.5 Stars</option>
+                            <option value="3">⭐⭐⭐ 3 Stars - Moderate Risk</option>
+                            <option value="3.5">⭐⭐⭐ 3.5 Stars</option>
+                            <option value="4">⭐⭐⭐⭐ 4 Stars - High Risk</option>
+                            <option value="4.5">⭐⭐⭐⭐ 4.5 Stars</option>
+                            <option value="5">⭐⭐⭐⭐⭐ 5 Stars - Critical Risk</option>
+                            <option value="infinity">∞ Infinity - Maximum Warning</option>
+                        </select>
+                    </div>
+
+                    <button class="btn" onclick="addPerson()">➕ Add to Distance List</button>
+
+                    <div style="margin-top: 40px;">
+                        <h3 style="margin-bottom: 20px; color: #333;">Current List</h3>
+                        <div id="adminPersonList"></div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Reason for Distance *</label>
-                    <textarea id="personReason" placeholder="Explain why distance should be maintained..." required></textarea>
-                </div>
-
-                <button class="btn" id="addBtn" onclick="addPerson()">➕ Add to Distance List</button>
-
-                <div class="admin-list">
-                    <h3>📋 Manage List</h3>
-                    <div id="adminPersonList"></div>
+                <!-- Visitors Tab -->
+                <div id="visitorsTab" class="tab-content">
+                    <h3 style="margin-bottom: 20px; color: #333;">Recent Visitor Activity</h3>
+                    <div id="visitorsList"></div>
                 </div>
 
                 <center><button class="btn btn-logout" onclick="logout()">Logout</button></center>
@@ -486,89 +512,126 @@
     </div>
 
     <script>
-        // Configuration
         const ADMIN_PASSWORD = 'balram';
-        const STORAGE_KEY = 'distanceListData_v2';
-        
-        // Initial default data
-        const DEFAULT_PEOPLE = [
+        const STORAGE_KEY = 'distanceListData_v3';
+        const VISITORS_KEY = 'visitorsLog_v3';
+
+        // Database with default people
+        let people = [
             {
-                id: 1732982400000,
+                id: 1,
                 name: 'Rakshit',
                 reason: 'Inappropriate behavior and disrespectful attitude. Has shown concerning patterns that warrant maintaining distance.',
+                stars: 5,
                 dateAdded: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
             },
             {
-                id: 1732982401999,
-                name: 'Naman',
-                reason: 'Bad handwriting.',
-                dateAdded: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-           {
-                id: 1732982401000,
+                id: 2,
                 name: 'Tushar',
                 reason: 'Unreliable and untrustworthy behavior observed. History of causing problems and negative influence.',
+                stars: 3.5,
                 dateAdded: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
             },
             {
-                id: 1732982402000,
+                id: 3,
                 name: 'Varun',
                 reason: 'Demonstrated dishonest behavior and poor character. It is important to maintain a safe distance.',
+                stars: 3,
+                dateAdded: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            },
+            {
+                id: 4,
+                name: 'Naman',
+                reason: 'Bad handwriting.',
+                stars: 'infinity',
                 dateAdded: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
             }
         ];
 
-        // State management
-        let people = [];
+        let visitors = [];
         let isLoggedIn = false;
 
-        // Initialize application
+        // SVG star icon
+        const starSVG = `<svg class="star" viewBox="0 0 24 24" fill="#FFD700" stroke="#FFA500" stroke-width="1">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>`;
+
+        const halfStarSVG = `<svg class="star" viewBox="0 0 24 24" fill="url(#half)" stroke="#FFA500" stroke-width="1">
+            <defs>
+                <linearGradient id="half">
+                    <stop offset="50%" stop-color="#FFD700"/>
+                    <stop offset="50%" stop-color="transparent"/>
+                </linearGradient>
+            </defs>
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>`;
+
         function init() {
-            console.log('🚀 Initializing Distance List Application...');
             loadData();
+            logVisitor();
             displayList();
             updateStats();
-            console.log('✅ Application initialized successfully');
         }
 
-        // Load data from localStorage with fallback to defaults
         function loadData() {
-            try {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                if (saved && saved !== 'undefined') {
-                    people = JSON.parse(saved);
-                    console.log(`📥 Loaded ${people.length} entries from storage`);
-                } else {
-                    people = [...DEFAULT_PEOPLE];
-                    saveData();
-                    console.log('📦 Initialized with default data');
-                }
-            } catch (error) {
-                console.error('❌ Error loading data:', error);
-                people = [...DEFAULT_PEOPLE];
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                people = JSON.parse(saved);
+            } else {
                 saveData();
             }
-        }
 
-        // Save data to localStorage
-        function saveData() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(people));
-                console.log('💾 Data saved successfully');
-                return true;
-            } catch (error) {
-                console.error('❌ Error saving data:', error);
-                showMessage('Error saving data. Please try again.', 'error');
-                return false;
+            const savedVisitors = localStorage.getItem(VISITORS_KEY);
+            if (savedVisitors) {
+                visitors = JSON.parse(savedVisitors);
             }
         }
 
-        // Show/hide pages
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(people));
+        }
+
+        function saveVisitors() {
+            localStorage.setItem(VISITORS_KEY, JSON.stringify(visitors));
+        }
+
+        function logVisitor() {
+            const now = new Date();
+            const visitor = {
+                timestamp: now.toISOString(),
+                date: now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                time: now.toLocaleTimeString('en-US'),
+                userAgent: navigator.userAgent,
+                page: 'Main Page'
+            };
+
+            visitors.unshift(visitor);
+            if (visitors.length > 100) visitors = visitors.slice(0, 100);
+            saveVisitors();
+        }
+
+        function renderStars(rating) {
+            if (rating === 'infinity') {
+                return '<span class="infinity-symbol">∞</span>';
+            }
+
+            let html = '';
+            const fullStars = Math.floor(rating);
+            const hasHalf = rating % 1 !== 0;
+
+            for (let i = 0; i < fullStars; i++) {
+                html += starSVG;
+            }
+            if (hasHalf) {
+                html += halfStarSVG;
+            }
+
+            return html;
+        }
+
         function showAdmin() {
             document.getElementById('mainPage').style.display = 'none';
             document.getElementById('adminPage').classList.add('active');
-            if (isLoggedIn) {
-                displayAdminList();
-            }
         }
 
         function showMain() {
@@ -578,7 +641,20 @@
             updateStats();
         }
 
-        // Admin login
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            if (tab === 'manage') {
+                document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+                document.getElementById('manageTab').classList.add('active');
+            } else if (tab === 'visitors') {
+                document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+                document.getElementById('visitorsTab').classList.add('active');
+                displayVisitors();
+            }
+        }
+
         function login() {
             const password = document.getElementById('passwordInput').value;
             if (password === ADMIN_PASSWORD) {
@@ -587,146 +663,104 @@
                 document.getElementById('adminPanel').style.display = 'block';
                 document.getElementById('passwordInput').value = '';
                 displayAdminList();
-                console.log('✅ Admin logged in successfully');
             } else {
-                showMessage('❌ Incorrect password! Please try again.', 'error', 'adminMessage');
+                showMessage('❌ Incorrect password!', 'error');
                 document.getElementById('passwordInput').value = '';
-                document.getElementById('passwordInput').focus();
             }
         }
 
-        // Admin logout
         function logout() {
             isLoggedIn = false;
             document.getElementById('loginForm').style.display = 'block';
             document.getElementById('adminPanel').style.display = 'none';
-            document.getElementById('adminMessage').innerHTML = '';
-            console.log('👋 Admin logged out');
         }
 
-        // Add person to list
         function addPerson() {
-            const nameInput = document.getElementById('personName');
-            const reasonInput = document.getElementById('personReason');
-            const name = nameInput.value.trim();
-            const reason = reasonInput.value.trim();
+            const name = document.getElementById('personName').value.trim();
+            const reason = document.getElementById('personReason').value.trim();
+            const stars = document.getElementById('starRating').value;
 
-            // Validation
-            if (!name) {
-                showMessage('⚠️ Please enter a name', 'error', 'adminMessage');
-                nameInput.focus();
+            if (!name || !reason) {
+                showMessage('⚠️ Please fill all fields', 'error');
                 return;
             }
 
-            if (!reason) {
-                showMessage('⚠️ Please enter a reason', 'error', 'adminMessage');
-                reasonInput.focus();
-                return;
-            }
-
-            // Check for duplicates
             const duplicate = people.find(p => p.name.toLowerCase() === name.toLowerCase());
             if (duplicate) {
-                showMessage('⚠️ This person is already on the list', 'error', 'adminMessage');
+                showMessage('⚠️ This person is already on the list', 'error');
                 return;
             }
 
-            // Create new entry
             const newPerson = {
                 id: Date.now(),
                 name: name,
                 reason: reason,
+                stars: stars === 'infinity' ? 'infinity' : parseFloat(stars),
                 dateAdded: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
             };
 
-            // Add and save
             people.push(newPerson);
             people.sort((a, b) => a.name.localeCompare(b.name));
-            
-            if (saveData()) {
-                displayList();
-                displayAdminList();
-                updateStats();
+            saveData();
+            displayList();
+            displayAdminList();
+            updateStats();
 
-                // Clear form
-                nameInput.value = '';
-                reasonInput.value = '';
+            document.getElementById('personName').value = '';
+            document.getElementById('personReason').value = '';
+            document.getElementById('starRating').value = '3';
 
-                showMessage(`✅ Successfully added "${name}" to the distance list!`, 'success', 'adminMessage');
-                console.log(`➕ Added new person: ${name}`);
-            }
+            showMessage(`✅ Successfully added "${name}" to the list!`, 'success');
         }
 
-        // Delete person from list
         function deletePerson(id) {
             const person = people.find(p => p.id === id);
             if (!person) return;
 
-            if (confirm(`⚠️ Are you sure you want to remove "${person.name}" from the list?`)) {
+            if (confirm(`⚠️ Remove "${person.name}" from the list?`)) {
                 people = people.filter(p => p.id !== id);
-                
-                if (saveData()) {
-                    displayList();
-                    displayAdminList();
-                    updateStats();
-                    showMessage(`✅ Successfully removed "${person.name}" from list`, 'success', 'adminMessage');
-                    console.log(`🗑️ Deleted person: ${person.name}`);
-                }
+                saveData();
+                displayList();
+                displayAdminList();
+                updateStats();
+                showMessage(`✅ Removed "${person.name}"`, 'success');
             }
         }
 
-        // Display list on main page
         function displayList() {
             const listDiv = document.getElementById('personList');
-            
-            if (people.length === 0) {
-                listDiv.innerHTML = `
-                    <div class="empty-state">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <h3>No entries yet</h3>
-                        <p>The distance list is currently empty</p>
-                    </div>
-                `;
-                return;
-            }
-
             const sortedPeople = [...people].sort((a, b) => a.name.localeCompare(b.name));
-            
-            let html = '';
-            sortedPeople.forEach(person => {
-                html += `
-                    <div class="person-card" data-name="${person.name.toLowerCase()}">
-                        <h3>
-                            🚫 ${escapeHtml(person.name)}
-                            <span class="warning-badge">AVOID</span>
-                        </h3>
-                        <div class="reason"><strong>Reason:</strong> ${escapeHtml(person.reason)}</div>
-                        <div class="date">📅 Added on: ${person.dateAdded}</div>
-                    </div>
-                `;
-            });
 
-            listDiv.innerHTML = html;
-        }
-
-        // Display list in admin panel
-        function displayAdminList() {
-            const listDiv = document.getElementById('adminPersonList');
-            
-            if (people.length === 0) {
-                listDiv.innerHTML = '<p style="text-align:center; color:#999; padding: 20px;">No entries yet</p>';
-                return;
-            }
-
-            const sortedPeople = [...people].sort((a, b) => a.name.localeCompare(b.name));
-            
             let html = '';
             sortedPeople.forEach(person => {
                 html += `
                     <div class="person-card">
-                        <h3>🚫 ${escapeHtml(person.name)}</h3>
+                        <h3>
+                            🚫 ${escapeHtml(person.name)}
+                            <span class="warning-badge">AVOID</span>
+                            <span class="star-rating">${renderStars(person.stars)}</span>
+                        </h3>
+                        <div class="reason"><strong>Reason:</strong> ${escapeHtml(person.reason)}</div>
+                        <div class="date">📅 Added: ${person.dateAdded}</div>
+                    </div>
+                `;
+            });
+
+            listDiv.innerHTML = html || '<div class="empty-state"><p>No entries</p></div>';
+        }
+
+        function displayAdminList() {
+            const listDiv = document.getElementById('adminPersonList');
+            const sortedPeople = [...people].sort((a, b) => a.name.localeCompare(b.name));
+
+            let html = '';
+            sortedPeople.forEach(person => {
+                html += `
+                    <div class="person-card">
+                        <h3>
+                            🚫 ${escapeHtml(person.name)}
+                            <span class="star-rating">${renderStars(person.stars)}</span>
+                        </h3>
                         <div class="reason"><strong>Reason:</strong> ${escapeHtml(person.reason)}</div>
                         <div class="date">Added: ${person.dateAdded}</div>
                         <button class="btn-delete" onclick="deletePerson(${person.id})">🗑️ Remove</button>
@@ -737,61 +771,56 @@
             listDiv.innerHTML = html;
         }
 
-        // Search functionality
+        function displayVisitors() {
+            const listDiv = document.getElementById('visitorsList');
+
+            if (visitors.length === 0) {
+                listDiv.innerHTML = '<div class="empty-state"><p>No visitors yet</p></div>';
+                return;
+            }
+
+            let html = '';
+            visitors.forEach(v => {
+                const deviceInfo = v.userAgent.includes('Mobile') ? '📱 Mobile' : '💻 Desktop';
+                html += `
+                    <div class="visitor-log">
+                        <div class="time">🕐 ${v.date} at ${v.time}</div>
+                        <div class="details">${deviceInfo} • ${v.page}</div>
+                    </div>
+                `;
+            });
+
+            listDiv.innerHTML = html;
+        }
+
         function searchList() {
             const search = document.getElementById('searchInput').value.toLowerCase();
             const cards = document.querySelectorAll('#personList .person-card');
 
-            let visibleCount = 0;
             cards.forEach(card => {
-                const name = card.getAttribute('data-name');
-                if (name.includes(search)) {
-                    card.style.display = 'block';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
-                }
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(search) ? 'block' : 'none';
             });
-
-            console.log(`🔍 Search: "${search}" - ${visibleCount} results`);
         }
 
-        // Update statistics
         function updateStats() {
             document.getElementById('totalCount').textContent = people.length;
         }
 
-        // Show message
-        function showMessage(text, type, elementId) {
-            const element = document.getElementById(elementId);
-            if (!element) return;
-
+        function showMessage(text, type) {
+            const element = document.getElementById('adminMessage');
             const className = type === 'success' ? 'success-message' : 'error-message';
             element.innerHTML = `<div class="${className}">${text}</div>`;
-
-            setTimeout(() => {
-                element.innerHTML = '';
-            }, 5000);
+            setTimeout(() => element.innerHTML = '', 4000);
         }
 
-        // Escape HTML to prevent XSS
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
 
-        // Event listeners
-        document.addEventListener('DOMContentLoaded', init);
-
-        // Handle Enter key in password field
-        window.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && document.activeElement.id === 'passwordInput') {
-                login();
-            }
-        });
-
-        console.log('📋 Distance List Application Loaded');
+        init();
     </script>
 </body>
 </html>
